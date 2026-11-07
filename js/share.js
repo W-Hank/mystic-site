@@ -2,19 +2,9 @@
 window.MysticShare = (function () {
   const W = 1080;
   const PAD = 84;
-  const BG = "#0b0d14";
+  const INNER = W - PAD * 2;
+  const S = 2;
 
-  function rr(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
-  }
-
-  /* 按字符宽度折行（中文逐字，英文按空格） */
   function wrap(ctx, text, maxW) {
     const out = [];
     let line = "";
@@ -22,48 +12,96 @@ window.MysticShare = (function () {
       const ch = text[i];
       if (ch === "\n") { out.push(line); line = ""; continue; }
       const test = line + ch;
-      if (ctx.measureText(test).width > maxW && line) {
-        out.push(line);
-        line = ch;
-      } else {
-        line = test;
-      }
+      if (ctx.measureText(test).width > maxW && line) { out.push(line); line = ch; }
+      else line = test;
     }
     if (line) out.push(line);
     return out;
   }
 
+  function ctx2d(w, h) {
+    const cv = document.createElement("canvas");
+    if (!cv.getContext) return null;
+    const c = cv.getContext("2d");
+    if (!c) return null;
+    cv.width = w * S;
+    cv.height = h * S;
+    c.scale(S, S);
+    return { cv, c };
+  }
+
+  /* 直接画六爻：不依赖字体里的 ䷀ 区段 */
+  function drawHex(ctx, cx, top, bin, changes) {
+    const barW = 210;
+    const barH = 15;
+    const gapY = 27;
+    const left = cx - barW / 2;
+    const ch = changes || [];
+    for (let row = 0; row < 6; row++) {
+      const idx = 5 - row;                       // bin 是自下而上
+      const isYang = bin.charAt(idx) === "1";
+      const dong = ch.indexOf(idx) !== -1;
+      const y = top + row * gapY;
+      ctx.fillStyle = dong ? "#c9a86a" : "#e6d3ac";
+      if (isYang) {
+        ctx.fillRect(left, y, barW, barH);
+      } else {
+        const half = (barW - 34) / 2;
+        ctx.fillRect(left, y, half, barH);
+        ctx.fillRect(left + half + 34, y, half, barH);
+      }
+    }
+  }
+
   function build(data) {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext && canvas.getContext("2d");
-    if (!ctx) return null;
+    const probe = ctx2d(10, 10);
+    if (!probe) return null;
+    const meas = probe.c;
 
-    const S = 2;               // 2x 高清
-    const innerW = W - PAD * 2;
+    const hasSymbol = !!data.hex;
+    const tags = data.tags || [];
+    const cols = data.cols || [];
+    const rows = data.rows || [];
 
-    /* 先量高度 */
-    const meas = document.createElement("canvas").getContext && document.createElement("canvas").getContext("2d");
-    if (!meas) return null;
-    meas.font = "28px 'Noto Serif SC', serif";
-
-    let h = PAD + 8;                                // 起点
-    h += 92;                                        // 品牌 + 日期
-    h += 84;                                        // 标题
-    if (data.headline) h += 96;                     // 主字
-    (data.rows || []).forEach(r => {
-      h += 40;                                      // 小标
-      h += wrap(meas, r.text, innerW).length * 44;
-      h += 18;                                      // 行距
+    /* ---- 量高 ---- */
+    meas.font = "27px 'Noto Serif SC', serif";
+    let h = PAD + 8 + 92;                                  // 品牌行
+    if (hasSymbol) h += 190;                               // 卦画
+    h += 84;                                               // 标题
+    if (data.headline) h += 56;                            // 副标
+    if (tags.length) {
+      meas.font = "22px 'Noto Serif SC', serif";
+      let tw = 0, lines = 1;
+      tags.forEach(function (t) {
+        const w = meas.measureText(t).width + 34;
+        if (tw + w > INNER) { lines++; tw = w; } else tw += w;
+      });
+      h += lines * 52 + 10;
+    }
+    if (cols.length) {
+      let maxItems = 0;
+      cols.forEach(function (c) { maxItems = Math.max(maxItems, (c.items || []).length); });
+      const perRow = 4;
+      const itemLines = Math.max(1, Math.ceil(maxItems / perRow));
+      h += 44 + itemLines * 46 + 24;
+    }
+    rows.forEach(function (r) {
+      meas.font = "27px 'Noto Serif SC', serif";
+      h += 40;
+      h += wrap(meas, r.text, INNER).length * 44;
+      h += 18;
     });
-    h += 40 + 26;                                   // 分隔线 + 间距
-    h += wrap(meas, data.footer || "mystic · 塔罗 / 星盘 / 黄历 / 易经", innerW).length * 32;
+    h += 40 + 26;
+    meas.font = "20px 'Noto Serif SC', serif";
+    h += wrap(meas, data.footer || "mystic", INNER).length * 32;
     h += PAD;
 
-    canvas.width = W * S;
-    canvas.height = h * S;
-    ctx.scale(S, S);
+    const made = ctx2d(W, h);
+    if (!made) return null;
+    const cv = made.cv, ctx = made.c;
+    ctx.textBaseline = "top";
 
-    /* 背景 */
+    /* ---- 背景 ---- */
     const g = ctx.createLinearGradient(0, 0, W, h);
     g.addColorStop(0, "#12162a");
     g.addColorStop(0.55, "#0b0d14");
@@ -84,7 +122,7 @@ window.MysticShare = (function () {
     /* 品牌 + 日期 */
     ctx.fillStyle = "#c9a86a";
     ctx.font = "600 24px 'Noto Serif SC', serif";
-    ctx.textBaseline = "top";
+    ctx.textAlign = "left";
     ctx.fillText("MYSTIC", PAD, y);
     ctx.fillStyle = "#6f7286";
     ctx.font = "22px 'Noto Serif SC', serif";
@@ -93,22 +131,82 @@ window.MysticShare = (function () {
     ctx.textAlign = "left";
     y += 92;
 
+    /* 卦画 */
+    if (hasSymbol) {
+      drawHex(ctx, W / 2, y + 6, data.hex, data.changes);
+      ctx.textAlign = "left";
+      y += 190;
+    }
+
     /* 标题 */
     ctx.fillStyle = "#e8e4dc";
     ctx.font = "600 46px 'Noto Serif SC', serif";
-    ctx.fillText(data.title || "", PAD, y);
+    ctx.textAlign = hasSymbol ? "center" : "left";
+    ctx.fillText(data.title || "", hasSymbol ? W / 2 : PAD, y);
     y += 84;
 
-    /* 主字 */
+    /* 副标 */
     if (data.headline) {
-      ctx.fillStyle = "#d8b98a";
-      ctx.font = "600 54px 'Noto Serif SC', serif";
-      ctx.fillText(data.headline, PAD, y);
-      y += 96;
+      ctx.fillStyle = "#a99a7e";
+      ctx.font = "24px 'Noto Serif SC', serif";
+      ctx.textAlign = hasSymbol ? "center" : "left";
+      ctx.fillText(data.headline, hasSymbol ? W / 2 : PAD, y);
+      y += 56;
+    }
+    ctx.textAlign = "left";
+
+    /* 标签 */
+    if (tags.length) {
+      ctx.font = "22px 'Noto Serif SC', serif";
+      let tx = PAD, ty = y;
+      tags.forEach(function (t) {
+        const tw = ctx.measureText(t).width + 34;
+        if (tx + tw > W - PAD) { tx = PAD; ty += 52; }
+        ctx.strokeStyle = "rgba(201,168,106,.45)";
+        ctx.fillStyle = "rgba(201,168,106,.10)";
+        const rr = 14;
+        ctx.beginPath();
+        ctx.moveTo(tx + rr, ty);
+        ctx.arcTo(tx + tw, ty, tx + tw, ty + 38, rr);
+        ctx.arcTo(tx + tw, ty + 38, tx, ty + 38, rr);
+        ctx.arcTo(tx, ty + 38, tx, ty, rr);
+        ctx.arcTo(tx, ty, tx + tw, ty, rr);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#c9a86a";
+        ctx.fillText(t, tx + 17, ty + 8);
+        tx += tw + 10;
+      });
+      y = ty + 52 + 10;
+    }
+
+    /* 两栏（如宜 / 忌） */
+    if (cols.length) {
+      const cw = (INNER - 24) / 2;
+      cols.forEach(function (col, ci) {
+        const cx = PAD + ci * (cw + 24);
+        ctx.fillStyle = ci === 0 ? "#8fbf9a" : "#c98b8b";
+        ctx.font = "600 22px 'Noto Serif SC', serif";
+        ctx.fillText(col.label, cx, y);
+        let iy = y + 44;
+        let ix = cx;
+        (col.items || []).forEach(function (it) {
+          const tw = ctx.measureText(it).width + 26;
+          if (ix + tw > cx + cw) { ix = cx; iy += 46; }
+          ctx.fillStyle = "rgba(255,255,255,.05)";
+          ctx.fillRect(ix, iy - 2, tw, 38);
+          ctx.fillStyle = "#cfcbc2";
+          ctx.font = "22px 'Noto Serif SC', serif";
+          ctx.fillText(it, ix + 13, iy + 6);
+          ix += tw + 8;
+        });
+      });
+      y += 44 + Math.max(1, Math.ceil(Math.max.apply(null, cols.map(function (c) { return (c.items || []).length; })) / 4)) * 46 + 24;
     }
 
     /* 内容行 */
-    (data.rows || []).forEach(r => {
+    rows.forEach(function (r) {
       ctx.fillStyle = "#8d7648";
       ctx.font = "600 22px 'Noto Serif SC', serif";
       ctx.fillText(r.label, PAD, y);
@@ -116,8 +214,7 @@ window.MysticShare = (function () {
 
       ctx.fillStyle = "#cfcbc2";
       ctx.font = "27px 'Noto Serif SC', serif";
-      const lines = wrap(ctx, r.text, innerW);
-      lines.forEach(ln => {
+      wrap(ctx, r.text, INNER).forEach(function (ln) {
         ctx.fillText(ln, PAD, y);
         y += 44;
       });
@@ -135,12 +232,12 @@ window.MysticShare = (function () {
 
     ctx.fillStyle = "#6d7085";
     ctx.font = "20px 'Noto Serif SC', serif";
-    wrap(ctx, data.footer || "mystic · 塔罗 / 星盘 / 黄历 / 易经", innerW).forEach(ln => {
+    wrap(ctx, data.footer || "mystic · 塔罗 / 星盘 / 黄历 / 易经", INNER).forEach(function (ln) {
       ctx.fillText(ln, PAD, y);
       y += 32;
     });
 
-    return canvas;
+    return cv;
   }
 
   function fileName(base) {
@@ -152,31 +249,15 @@ window.MysticShare = (function () {
   function download(canvas, base) {
     if (!canvas) return false;
     try {
-      const url = canvas.toDataURL("image/png");
       const a = document.createElement("a");
-      a.href = url;
+      a.href = canvas.toDataURL("image/png");
       a.download = fileName(base);
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       return true;
-    } catch (e) {
-      return false;
-    }
+    } catch (e) { return false; }
   }
 
-  function share(canvas, base) {
-    if (!canvas || !canvas.toBlob) return Promise.resolve(false);
-    return new Promise(resolve => {
-      canvas.toBlob(function (blob) {
-        if (!blob) return resolve(false);
-        const file = new File([blob], fileName(base), { type: "image/png" });
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          navigator.share({ files: [file] }).then(() => resolve(true)).catch(() => resolve(false));
-        } else resolve(false);
-      }, "image/png");
-    });
-  }
-
-  return { build: build, download: download, share: share };
+  return { build: build, download: download };
 })();

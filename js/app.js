@@ -974,6 +974,33 @@
     6: "六爻全动：这不是转折，是换了一个局面。旧的先放手。"
   };
 
+  /* 爻辞里的断语：直接从原文取，不臆测 */
+  const JUDGE_ORDER = ["元吉", "无不利", "大吉", "吉", "无咎", "悔亡", "无悔", "悔", "吝", "厉", "凶", "无攸利", "无誉"];
+  const JUDGE_PLAIN = {
+    "元吉": "大顺，基本没有阻碍",
+    "无不利": "怎么做都顺",
+    "大吉": "很顺",
+    "吉": "顺",
+    "无咎": "不算好，但也不会出错，可以走一步",
+    "悔亡": "后悔会慢慢消失",
+    "无悔": "不会后悔",
+    "悔": "会后悔，做完心里堵",
+    "吝": "有点憋屈、有点难看，但不致命",
+    "厉": "有危险，得小心",
+    "凶": "明说不吉，别硬来",
+    "无攸利": "往前走没什么好处",
+    "无誉": "没什么可夸的，平平过"
+  };
+
+  function judgeOf(text) {
+    if (!text) return null;
+    for (let i = 0; i < JUDGE_ORDER.length; i++) {
+      const w = JUDGE_ORDER[i];
+      if (text.indexOf(w) !== -1) return { word: w, plain: JUDGE_PLAIN[w] };
+    }
+    return null;
+  }
+
   function plainReading(r, q) {
     const b = r.ben, v = r.bian;
     const n = r.changes.length;
@@ -997,7 +1024,10 @@
       third = "没有哪一爻在动——整件事现在是静止的。没有暗流，也没有突变。";
     } else {
       const i = r.changes[0];
+      const yaoText = (b.yao && b.yao[i]) || "";
+      const j = judgeOf(yaoText);
       third = "变化发生在第 " + (i + 1) + " 爻。" + window.MysticYijing.POS_MEAN[i] +
+        (j ? " 这一爻的断语是「" + j.word + "」——" + j.plain + "。" : "") +
         (n > 1 ? " 另外还有 " + (n - 1) + " 爻在动，说明不止一处松动了。" : "");
     }
     out.push({ h: "卡在哪", p: third });

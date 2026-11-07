@@ -583,3 +583,8 @@ header nav button.on{
 .yjsum p{margin:0;font-size:15px;line-height:2.05;color:#e0dcd4}
 
 .err{color:#c98b8b;font-size:12.5px;margin-top:12px;min-height:16px;line-height:1.7}
+
+.yjsum .psum{margin-bottom:16px}
+.yjsum .psum:last-child{margin-bottom:0}
+.yjsum .psum b{display:block;font-size:12px;letter-spacing:.16em;color:var(--gold-dim);font-weight:500;margin-bottom:6px}
+.yjsum .psum p{margin:0;font-size:15px;line-height:2;color:#ded9d0}

@@ -1015,7 +1015,10 @@
     const bai = (window.YIJING_BAI && window.YIJING_BAI[b.name]) || "";
     out.push({
       h: "现在的局面",
-      p: "「" + b.name + "」这个卦，外面是" + TRI_PLAIN[b.upper] + "，里面是" + TRI_PLAIN[b.lower] +
+      p: "「" + b.name + "」这个卦，" +
+        (b.upper === b.lower
+          ? "上下都是" + TRI_PLAIN[b.upper]
+          : "外面是" + TRI_PLAIN[b.upper] + "，里面是" + TRI_PLAIN[b.lower]) +
         "。换句话说：" + bai
     });
 
@@ -1026,8 +1029,11 @@
       const i = r.changes[0];
       const yaoText = (b.yao && b.yao[i]) || "";
       const j = judgeOf(yaoText);
+      const ybArr = (window.YIJING_YAO_BAI && window.YIJING_YAO_BAI[b.name]) || [];
+      const ybText = ybArr[i] || "";
       third = "变化发生在第 " + (i + 1) + " 爻。" + window.MysticYijing.POS_MEAN[i] +
-        (j ? " 这一爻的断语是「" + j.word + "」——" + j.plain + "。" : "") +
+        (ybText ? " 这一爻说的是：" + ybText + "（大意）" : "") +
+        (j ? " 断语是「" + j.word + "」——" + j.plain + "。" : "") +
         (n > 1 ? " 另外还有 " + (n - 1) + " 爻在动，说明不止一处松动了。" : "");
     }
     out.push({ h: "卡在哪", p: third });

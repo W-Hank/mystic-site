@@ -592,6 +592,14 @@ window.MysticAstro = (function () {
   }
 
   function pctStars(signIdx, def, score) {
+    const t = (window.MYSTIC_CALIB || {})[signIdx + "|" + def.name];
+    if (t) {
+      if (score >= t[3]) return 5;
+      if (score >= t[2]) return 4;
+      if (score >= t[1]) return 3;
+      if (score >= t[0]) return 2;
+      return 1;
+    }
     const arr = calOf(signIdx, def);
     let lo = 0, hi = arr.length;
     while (lo < hi) {

@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mystic · 塔罗与星盘</title>
+<meta name="description" content="免费塔罗占卜与星盘查询：78 张牌、真实牌阵解读、日月升与相位计算。">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1>MYSTIC</h1>
+    <span>tarot &amp; natal</span>
+  </div>
+  <nav>
+    <button data-tab="home" class="on">首 页</button>
+    <button data-tab="tarot">塔 罗</button>
+    <button data-tab="astro">星 盘</button>
+    <button data-tab="today">星 座</button>
+    <button data-tab="huangli">黄 历</button>
+    <button data-tab="yijing">易 经</button>
+    <button data-tab="he">合 参</button>
+  </nav>
+  <button id="globalShare" class="sharetop">存 图</button>
+</header>
+
+<main>
+  <!-- ================= 首页 ================= -->
+  <section class="panel on" id="panel-home">
+    <div class="hero">
+      <div class="hero-mark">☯</div>
+      <h1>MYSTIC</h1>
+      <p class="lead">塔罗 · 星盘 · 黄历 · 易经。所有计算都在你的浏览器里完成——不上传、不收费、不接任何 API。</p>
+    </div>
+
+    <div class="sec" style="margin-top:38px">
+      <h3>今 日 一 眼</h3>
+      <div class="homefacts" id="homeFacts"></div>
+    </div>
+
+    <div class="sec" style="margin-top:42px">
+      <h3>六 个 入 口</h3>
+      <div class="homegrid">
+        <div class="hentry" data-go="huangli"><b>黄历</b><span>农历 · 干支 · 值神 · 建除 · 宜忌</span><i>今天适合做什么</i></div>
+        <div class="hentry" data-go="today"><b>星座</b><span>十二星座 × 六个周期 × 五个领域</span><i>先看今天的天气</i></div>
+        <div class="hentry" data-go="astro"><b>星盘</b><span>日月五星 · 上升 · 相位 · 轮盘</span><i>看你自己的结构</i></div>
+        <div class="hentry" data-go="tarot"><b>塔罗</b><span>78 张牌 · 牌阵 · 详解与略解</span><i>看此刻你卡在哪</i></div>
+        <div class="hentry" data-go="yijing"><b>易经</b><span>三枚铜钱 · 本卦变卦 · 经文与白话</span><i>看这件事的势</i></div>
+        <div class="hentry" data-go="he"><b>合参</b><span>同一件事 · 三面对照</span><i>看三面哪里不一致</i></div>
+      </div>
+    </div>
+
+    <div class="cite">本站全部计算在浏览器本地完成：行星位置据 JPL 近似根数与 Meeus《Astronomical Algorithms》，黄历数据由 cnlunar 生成并经抽样复核，《周易》经文为公有领域原文并双源核对。塔罗、星盘、易与黄历都不具备可验证的预测力——这里是四种照见自己的镜子，不是四种预言。各页底部另有该页的具体依据。</div>
+  </section>
+
+  <!-- ================= 塔罗 ================= -->
+  <section class="panel" id="panel-tarot">
+
+    <div id="step-ask" class="ask">
+      <h2>把你要问的，写成一句真话</h2>
+      <textarea id="q" placeholder="例如：我给她发那条消息，现在合适吗？&#10;或者：我们之间有没有可能，往下该怎么走。"></textarea>
+      <div class="hint">问题越具体，牌越有话说。避免「我的运势怎么样」这类没有落点的问题。</div>
+      <div class="notice">你的问题只在这个浏览器里被处理——不发送、不留存。</div>
+
+      <div class="spread-head">牌 阵</div>
+      <div class="spreads" id="spreads"></div>
+      <button class="btn" id="toPick">洗 牌</button>
+    </div>
+
+    <div id="step-pick" hidden>
+      <div class="pickbar">
+        <div class="q" id="pickQ"></div>
+        <div class="counter" id="counter">已选 0 / 0</div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <div id="step-read" class="read" hidden>
+      <div class="readhead">
+        <div class="qtext" id="rq"></div>
+        <div class="meta" id="rmeta"></div>
+      </div>
+      <div class="verdict" id="rverdict"></div>
+
+      <div class="sec">
+        <h3>牌 阵</h3>
+        <div class="cards-row" id="rcards"></div>
+      </div>
+
+      <div class="sec">
+        <h3>逐 位 解 读</h3>
+        <div id="rper"></div>
+      </div>
+
+      <div class="sec rels">
+        <h3>牌 与 牌 的 对 话</h3>
+        <ul id="rrels"></ul>
+      </div>
+
+      <div class="sec adv">
+        <h3>落 地 的 建 议</h3>
+        <ul id="radv"></ul>
+      </div>
+
+      <div class="sec">
+        <h3>时 机</h3>
+        <p id="rtime" style="margin:0;font-size:15px;line-height:1.95;color:#d9d5cc"></p>
+      </div>
+
+      <button class="btn ghost" id="again" style="margin-top:38px">再问一次</button>
+    </div>
+    <div class="cite">塔罗：牌意为韦特体系（A. E. Waite《The Pictorial Key to the Tarot》1911；R. Pollack《Seventy-Eight Degrees of Wisdom》1980）；「牌位 × 牌意」的读法出自 M. K. Greer《Tarot for Your Self》1984。牌阵结构属通行教学体系，各家不尽相同。塔罗不具备可验证的预测力，本站只把它当反思工具。</div>
+  </section>
+
+  <!-- ================= 星盘 ================= -->
+  <section class="panel" id="panel-astro">
+    <div class="ask" style="max-width:520px;margin-top:14px">
+      <h2>出生信息</h2>
+      <div class="form-row">
+        <div class="field"><label>年</label><input id="by" type="number" value="2000" min="1800" max="2060"></div>
+        <div class="field"><label>月</label><input id="bm" type="number" placeholder="—" min="1" max="12"></div>
+        <div class="field"><label>日</label><input id="bd" type="number" placeholder="—" min="1" max="31"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>时</label><input id="bh" type="number" value="12" min="0" max="23"></div>
+        <div class="field"><label>分</label><input id="bmin" type="number" value="0" min="0" max="59"></div>
+        <div class="field"><label>时区</label><input id="btz" type="number" value="8" step="0.5"></div>
+      </div>
+      <label class="check"><input type="checkbox" id="notime"> 我不知道准确的出生时间</label>
+
+      <details class="place" id="place">
+        <summary>可选：出生城市（排上升才需要）</summary>
+        <div class="form-row" style="margin-top:12px">
+          <div class="field" style="flex:1 1 190px"><label>城市</label><select id="bcity"></select></div>
+          <div class="field"><label>纬度</label><input id="blat" type="number" step="0.01" value="31.23"></div>
+          <div class="field"><label>经度（东正）</label><input id="blon" type="number" step="0.01" value="121.47"></div>
+        </div>
+      </details>
+
+      <div class="hint">不填城市也能看：太阳、月亮、水星、金星、火星、木星、土星和它们的相位。上升必须有出生地点和时间，这两个缺一个就不排。</div>
+      <div class="notice">只为自己，或已征得同意的人排盘。所有计算都在你的浏览器里完成，不上传、不存储、没有后端。</div>
+      <button class="btn" id="calc">排 盘</button>
+      <div class="err" id="calcErr"></div>
+    <div class="astro-wrap" id="astroOut" hidden>
+      <div>
+        <svg class="wheel" id="wheel" viewBox="0 0 420 420"></svg>
+      </div>
+      <div>
+        <div class="bod-list" id="bods"></div>
+        <div class="aspects" id="asps"></div>
+        <div class="reading" id="aread"></div>
+      </div>
+    </div>
+    <div class="cite">星盘：行星位置据 JPL 近似开普勒根数（1800–2050）与 Meeus《Astronomical Algorithms》月球级数，已做 J2000 → 当日黄道岁差修正。宫位含义采 William Lilly《Christian Astrology》1647 体系；相位容许度参考 S. Tompkins《Aspects in Astrology》。黄经精度经 pyephem 校验：太阳 0.007°、月球 0.157°、行星 < 0.13°。上升点须有出生时间与经纬度，缺一不可。</div>
+  </section>
+
+  <!-- ================= 星座 ================= -->
+  <section class="panel" id="panel-today">
+    <div class="todayhead">
+      <h2 id="tTitle">今天</h2>
+      <div class="daycards" id="daycards"></div>
+    </div>
+
+    <div class="periods" id="periods">
+      <button data-p="yesterday">昨日</button>
+      <button data-p="today" class="on">今日</button>
+      <button data-p="tomorrow">明日</button>
+      <button data-p="week">本周</button>
+      <button data-p="month">本月</button>
+      <button data-p="year">今年</button>
+    </div>
+    <div class="hint" id="periodHint"></div>
+
+    <div class="minebox">
+      <div class="picksign" id="picksign"></div>
+      <div id="mineOut"></div>
+    </div>
+
+    <div class="trendbox" id="trendbox" hidden>
+      <div class="thead">
+        <span id="trendTitle">走势</span>
+        <div class="dchips" id="trendChips"></div>
+      </div>
+      <div class="chartscroll" id="chartscroll">
+        <svg id="trend" viewBox="0 0 900 240"></svg>
+      </div>
+      <div class="chartnote" id="chartNote"></div>
+    </div>
+
+    <div class="levelbar" id="levelbar">
+      <span>解读深度</span>
+      <button data-l="brief" class="on">略解</button>
+      <button data-l="full">详解</button>
+    </div>
+
+    <div class="signgrid" id="signgrid"></div>
+
+    <details class="fold" id="foldHist">
+      <summary>回 看 · 你 自 己 的 记 录</summary>
+      <div class="foldbody">
+        <div class="hint" style="margin:0 0 14px">
+          从你第一次打开这个页面开始，每天给你记一条。存在你自己的浏览器里，不上传、我也看不到。
+        </div>
+        <div id="hitStat" class="hitstat"></div>
+        <button id="clearHist" class="clearbtn">清除我的记录</button>
+        <div id="hist" class="hist"></div>
+      </div>
+    </details>
+
+
+    <details class="why">
+      <summary>为什么有时候会觉得不准</summary>
+      <div>
+        <p><b>一、它只看你的太阳星座。</b>十二个星座就是十二种人，这本来就不成立——同一天出生的人，月亮和上升可能完全相反。这里的分数是"所有白羊座今天大概这样"，不是你个人的盘。</p>
+        <p><b>二、星星说的是天气，不是事件。</b>"今天关系阻力小"不等于"她今天会回你"。同一片天气下，有人出门有人不出门。真正决定结果的还是你做了什么。</p>
+        <p><b>三、每天的变化本来就很小。</b>金星一天走不到半度，所以昨日、今日、明日分数接近是正常的。每天在动的是月亮，它两天半换一个宫。</p>
+        <p><b>四、你会记住应验的，忘掉不该验的。</b>这不是玄学，是认知偏差。所有运势产品都靠它活着，包括这个。把它当镜子用，别当天气预报用。</p>
+      </div>
+    </details>
+
+    <div class="notice" style="margin-top:26px" id="todayNote">
+      点开任意一张看细分。太阳星座当第一宫，整宫制，按当期真实行运算——不是编辑写的。但它看不到你的具体命盘，要准去「星盘」页排一次。
+    </div>
+    <div class="cite">星座：太阳星座作第一宫、整宫制；域与宫的对应（爱情 5·7 / 事业 10·6 / 学业 9·3 / 财运 2·8 / 健康 6·1）采 Lilly 体系。周期采样点与行星加权系数为本站自行设定，无传统依据——这一层是「按规则生成」，不是古法。<br><b>星级不是绝对评分</b>：把当日分数放到该星座该领域近一年（抽样 183 天）的分布里定位——最前 5% 为 5 星、其后 20% 为 4 星、中间 50% 为 3 星、后 20% 为 2 星、最后 5% 为 1 星。走势图画的是<b>连续原始分</b>，不是星级。<br>为什么会觉得「一直平着」：一天之内行星几乎不动（金星约 0.3°／天），同星座的日间差异本来就小，真正每天在动的只有月亮（约 13°／天，两天半换一宫）。这不是算法故障，是分辨率问题——所以走势图改为画原始分，两星之间的微小变化才看得见。</div>
+  </section>
+  <!-- ================= 黄历 ================= -->
+  <section class="panel" id="panel-huangli">
+    <div class="hlhead">
+      <h2 id="hlTitle">今天</h2>
+      <div class="hlnav">
+        <button id="hlPrev">← 前一天</button>
+        <button id="hlToday">回到今天</button>
+        <button id="hlNext">后一天 →</button>
+      </div>
+    </div>
+    <div id="hlMain"></div>
+
+    <div class="sec" style="margin-top:44px">
+      <h3>接 下 来 七 天</h3>
+      <div class="hint" style="margin:-6px 0 14px">宜忌取自通行通书体例，只收常用的二十项。不同版本的通书会有出入。</div>
+      <div class="hllist" id="hlList"></div>
+    </div>
+    <div class="cite">黄历：农历、值神、建除、宜忌数据由 cnlunar 开源历法库生成，覆盖 2024-01-01 至 2035-12-31 共 4383 天，并抽样 60 天逐项复核，农历／值神／建除／日柱／宜／忌 六项零差异。宜忌仅收常用二十项，取通行通书体例——不同版本通书互有出入，非唯一标准。干支以 2026-11-07 = 乙酉 为锚点；彭祖百忌、冲煞、节气为固定推算规则。</div>
+  </section>
+  <!-- ================= 易经 ================= -->
+  <section class="panel" id="panel-yijing">
+    <div class="ask" style="max-width:660px;margin-top:14px">
+      <h2>起 卦</h2>
+      <textarea id="yjQ" placeholder="写一句你真正想问的话。占卜不问「我想不想」，问「这件事此刻的势在哪」。"></textarea>
+      <div class="hint">三枚铜钱，掷六次，自下而上成卦。老阳、老阴为动爻，动则生出变卦。</div>
+      <button class="btn" id="yjCast">掷 六 次</button>
+    </div>
+    <div id="yjOut" hidden></div>
+    <div class="cite">易经：卦辞、爻辞为公有领域《周易》原文，取自公开数据集（Johnson-Jia/liuyao-divination，MIT），并与维基文库《周易》交叉核对，修正 3 处抄校错误（损「曷之用」、困「大人吉」、丰「宜日中」）。起卦用三枚铜钱法，老阳老阴为动爻，四象概率 1/8 · 3/8 · 3/8 · 1/8，由钱币本身决定。变爻取用依朱熹《周易本义》。白话大意为本站按通行注本整理，非逐字翻译；爻辞以原文为准。</div>
+  </section>
+  <!-- ================= 合参 ================= -->
+  <section class="panel" id="panel-he">
+    <div class="ask" style="max-width:660px;margin-top:14px">
+      <h2>同 一 件 事 · 三 面</h2>
+      <textarea id="heQ" placeholder="一个你正在犹豫的问题。"></textarea>
+      <div class="hint">三套系统各看一眼：塔罗看此刻你心里的位置，易看这件事的势，天象看今天的天气。</div>
+      <button class="btn" id="heGo">三 面 看</button>
+    </div>
+    <div id="heOut" hidden class="hewrap"></div>
+    <div id="heNote" class="notice" style="margin-top:26px" hidden>
+      三面不必一致。它们答的不是同一个问题——塔罗照的是你的心，易照的是事的势，天象说的是所有人都要过的这一天。
+      真正值得留意的，是三者里唯一你不太想承认的那一条。
+    </div>
+    <div class="cite">合参：三套系统各自的依据见对应页面。它们不共享同一套假设，也不构成互相印证——并排放在一起，是为了让你看见自己更信哪一个，而不是为了得出一个更确定的答案。</div>
+  </section>
+</main>
+
+<footer>全部计算在浏览器本地完成 · 无后端、无接口、无账号 · 结果仅供参照，不构成对任何人的判断</footer>
+
+<script src="js/cards.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/astro.js"></script>
+<script src="js/huangli-data.js"></script>
+<script src="js/huangli.js"></script>
+<script src="js/yijing-data.js"></script>
+<script src="js/yijing-bai.js"></script>
+<script src="js/yijing.js"></script>
+<script src="js/share.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

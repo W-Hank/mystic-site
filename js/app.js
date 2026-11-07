@@ -9,6 +9,8 @@
       b.classList.add('on');
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
       $('#panel-' + b.dataset.tab).classList.add('on');
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     };
   });
 
@@ -40,6 +42,21 @@
   }
 
   $('#q').addEventListener("input", e => { state.q = e.target.value; renderSpreads(); });
+
+  function bindEnter(el, action) {
+    if (!el) return;
+    el.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      if (e.shiftKey) return;                       // Shift+Enter 换行
+      if (e.isComposing || e.keyCode === 229) return; // 输入法候选中
+      e.preventDefault();
+      action();
+    });
+  }
+
+  bindEnter($('#q'), function () { $('#toPick').click(); });
+  bindEnter($('#yjQ'), function () { $('#yjCast').click(); });
+  bindEnter($('#heQ'), function () { $('#heGo').click(); });
   renderSpreads();
 
   function resolveSpread() {
@@ -273,9 +290,7 @@
       ? ch.aspects.map(a => `<span class="asp">${a.a}${a.n}${a.b}　${a.orb.toFixed(1)}°</span>`).join("")
       : `<span class="asp">无主要相位</span>`;
 
-    $('#aread').innerHTML =
-      A.reading(ch).map(x => `<p>${x}</p>`).join("") +
-      `<p>${A.aspectLine(ch.aspects)}</p>`;
+    $('#aread').innerHTML = readingHTML(A.reading(ch), A.aspectLine(ch.aspects));
 
     drawWheel(ch, hasTime && placeOpen);
     saveCard("np", {
@@ -902,6 +917,23 @@
     return '<div class="' + cls + '">' + inner + mark + '</div>';
   }
 
+  function yjSummary(r) {
+    const b = r.ben, v = r.bian, Y = window.MysticYijing;
+    const de = Y.TRI_DE;
+    const bai = (window.YIJING_BAI && window.YIJING_BAI[b.name]) || "";
+    const n = r.changes.length;
+    let move;
+    if (n === 0) move = "六爻都不动，说明这件事眼下是「定」的，不是「变」的——重点在看守，不在行动。";
+    else if (n === 1) move = "只有第 " + (r.changes[0] + 1) + " 爻动，" + Y.POS_MEAN[r.changes[0]] + "整件事的转折就落在这一点上。";
+    else if (n <= 3) move = "有 " + n + " 爻动，局面在换方向、还没定，这时候不宜下重注。";
+    else if (n <= 5) move = "已动 " + n + " 爻，大势偏向变卦那一侧，本卦只剩余温。";
+    else move = "六爻全动，整个局面翻转，几乎等于重新开始。";
+
+    const dir = (n > 0 && v && v.no !== b.no) ? "从「" + b.name + "」走向「" + v.name + "」。" : "";
+    return "这一卦是「" + b.name + "」，上" + b.upper + "（" + de[b.upper] + "）下" + b.lower + "（" + de[b.lower] +
+      "）——外面是" + de[b.upper] + "，里面是" + de[b.lower] + "。" + bai + move + dir;
+  }
+
   function renderYj(r) {
     const Y = window.MysticYijing;
     const q = ($('#yjQ') && $('#yjQ').value.trim()) || "";
@@ -933,6 +965,7 @@
         '</div>' +
         '<div class="yjright">' +
           (q ? '<div class="yjq">' + q + '</div>' : '') +
+          '<div class="yjsum"><div class="sumb">综 合 解 读</div><p>' + yjSummary(r) + '</p></div>' +
           '<div class="yjrule">' + r.rule.text + '</div>' +
           '<div class="yjpart"><div class="lbl">白话大意（本站整理）</div><div class="txt small">' +
             ((window.YIJING_BAI && window.YIJING_BAI[b.name]) || '（暂无）') + '</div></div>' +
@@ -1026,6 +1059,21 @@
     $('#heNote').hidden = false;
     if ($('#heOut').scrollIntoView) $('#heOut').scrollIntoView({ behavior: "smooth", block: "start" });
   });
+
+  function readingHTML(lines, aspectText) {
+    const blocks = lines.map(function (t) {
+      const m = t.match(/^(太阳|月亮|上升)([^：]{0,24})：/);
+      if (m) {
+        const body = t.slice(m[0].length);
+        return '<div class="rblock"><div class="rh"><b>' + m[1] + '</b><span>' +
+          m[2].replace(/[（）]/g, '') + '</span></div><p>' + body + '</p></div>';
+      }
+      return '<div class="rblock plain"><p>' + t + '</p></div>';
+    }).join("");
+    return '<div class="readingwrap">' + blocks +
+      '<div class="rblock aspect"><div class="rh"><b>主要相位</b><span>容许度越小影响越直接</span></div><p>' +
+      aspectText + '</p></div></div>';
+  }
 
   function drawWheel(ch, hasTime) {
     const svg = $('#wheel');

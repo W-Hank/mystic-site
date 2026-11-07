@@ -564,3 +564,20 @@ header nav button.on{
 .modalbtns .myes{background:none;border:1px solid rgba(180,90,90,.55);color:#c98b8b}
 .modalbtns .myes:hover{background:rgba(180,90,90,.14)}
 .modalbtns .mno:focus{outline:2px solid rgba(201,168,106,.5);outline-offset:2px}
+
+/* 星盘解读分块 */
+.readingwrap{display:grid;gap:12px;margin-top:18px}
+.rblock{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:rgba(23,27,41,.45);
+  border-left:2px solid rgba(201,168,106,.32)}
+.rblock .rh{display:flex;align-items:baseline;gap:10px;margin-bottom:9px}
+.rblock .rh b{font-size:15px;color:var(--warm);font-weight:500;letter-spacing:.12em}
+.rblock .rh span{font-size:11.5px;color:#7b7e90;letter-spacing:.04em}
+.rblock p{margin:0;font-size:14px;line-height:1.95;color:#cfcbc2}
+.rblock.plain{border-left-color:rgba(140,180,217,.3)}
+.rblock.aspect{border-left-color:rgba(140,217,176,.32)}
+
+/* 易经综合解读 */
+.yjsum{border:1px solid rgba(201,168,106,.3);border-radius:14px;padding:20px 22px;margin-bottom:22px;
+  background:linear-gradient(135deg,rgba(201,168,106,.08),rgba(23,27,41,.4))}
+.yjsum .sumb{font-size:11px;letter-spacing:.24em;color:var(--gold-dim);margin-bottom:12px}
+.yjsum p{margin:0;font-size:15px;line-height:2.05;color:#e0dcd4}

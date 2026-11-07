@@ -894,11 +894,13 @@
     saveCard("hl", {
       date: y + "/" + m + "/" + dd,
       title: r.lunarText,
-      headline: r.ganzhiDay + " 日 · " + r.god + " · " + r.officer,
+      headline: r.ganzhiDay + " 日 · 值神" + r.god + "（" + r.godKind + "）· 建除" + r.officer,
+      tags: [r.clash, r.sha, r.jieqi ? "节气 " + r.jieqi : "当前节气 " + r.jieqiNow].filter(Boolean),
+      cols: [
+        { label: "宜", items: r.yi.slice(0, 12) },
+        { label: "忌", items: r.ji.slice(0, 12) }
+      ],
       rows: [
-        { label: "宜", text: r.yi.length ? r.yi.join("　") : "无" },
-        { label: "忌", text: r.ji.length ? r.ji.join("　") : "无" },
-        { label: "冲煞", text: r.clash + "　" + r.sha },
         { label: "彭祖百忌", text: r.pengGan + "；" + r.pengZhi }
       ],
       footer: "数据由 cnlunar 生成，宜忌取通行通书体例 · 不同版本互有出入"
@@ -1141,14 +1143,22 @@
     $('#yjOut').hidden = false;
     saveCard("yj", {
       date: todayStr(),
-      title: b.symbol + " " + b.name + "　第 " + b.no + " 卦",
-      headline: b.upper + "上" + b.lower + "下" + (r.changing && v ? "　→　" + v.name : "　六爻皆静"),
+      hex: b.bin,
+      changes: r.changes,
+      title: b.name + " · 第 " + b.no + " 卦",
+      headline: b.upper + "上" + b.lower + "下" + (r.changing && v ? "　变卦：" + v.name : "　六爻皆静"),
+      tags: [
+        r.changes.length
+          ? "动爻 " + r.changes.map(function (i) { return ["初", "二", "三", "四", "五", "上"][i]; }).join("、")
+          : "六爻皆静",
+        q ? "问：" + (q.length > 14 ? q.slice(0, 14) + "…" : q) : ""
+      ].filter(Boolean),
       rows: [
-        { label: "取用", text: r.rule.text },
+        { label: "白话", text: (window.YIJING_BAI && window.YIJING_BAI[b.name]) || "" },
         { label: "原文", text: partsRaw },
-        { label: "白话", text: (window.YIJING_BAI && window.YIJING_BAI[b.name]) || "" }
+        { label: "怎么用", text: r.rule.text }
       ],
-      footer: "经文为公有领域《周易》原文，经双源核对；变爻法依朱熹《周易本义》"
+      footer: "经文为公有领域《周易》原文，经双源核对；白话为本站整理的大意；变爻法依朱熹《周易本义》"
     }, "yijing");
     if ($('#yjOut').scrollIntoView) $('#yjOut').scrollIntoView({ behavior: "smooth", block: "start" });
   }

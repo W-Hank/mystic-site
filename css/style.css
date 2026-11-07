@@ -549,3 +549,18 @@ header nav button.on{
 }
 
 .clearbtn.armed{border-color:rgba(180,90,90,.7);color:#c98b8b;background:rgba(180,90,90,.1)}
+
+.modalov{position:fixed;inset:0;background:rgba(6,8,14,.72);backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;z-index:200;padding:24px}
+.modalbox{background:#141823;border:1px solid var(--line);border-radius:16px;padding:26px 28px 20px;
+  max-width:380px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.55);animation:pop .18s ease}
+@keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.modalbox p{margin:0 0 22px;font-size:15.5px;line-height:1.8;color:#e0dcd4}
+.modalbtns{display:flex;gap:10px;justify-content:flex-end}
+.modalbtns button{font-family:inherit;font-size:13.5px;padding:9px 26px;border-radius:999px;
+  cursor:pointer;transition:.18s;letter-spacing:.1em}
+.modalbtns .mno{background:none;border:1px solid var(--line);color:#c9c5bc}
+.modalbtns .mno:hover{border-color:#4a5168;color:#fff}
+.modalbtns .myes{background:none;border:1px solid rgba(180,90,90,.55);color:#c98b8b}
+.modalbtns .myes:hover{background:rgba(180,90,90,.14)}
+.modalbtns .mno:focus{outline:2px solid rgba(201,168,106,.5);outline-offset:2px}

@@ -174,8 +174,8 @@
   };
 
   /* ================= 星盘 ================= */
-  const CITIES = [
-    ["北京", 39.90, 116.41], ["上海", 31.23, 121.47], ["广州", 23.13, 113.26], ["深圳", 22.54, 114.06],
+  const PLACES = [
+    { country: "中国", cities: [["北京", 39.90, 116.41], ["上海", 31.23, 121.47], ["广州", 23.13, 113.26], ["深圳", 22.54, 114.06],
     ["天津", 39.13, 117.20], ["重庆", 29.56, 106.55], ["成都", 30.57, 104.07], ["杭州", 30.27, 120.15],
     ["南京", 32.06, 118.80], ["武汉", 30.59, 114.31], ["西安", 34.34, 108.94], ["苏州", 31.30, 120.62],
     ["长沙", 28.23, 112.94], ["郑州", 34.75, 113.62], ["青岛", 36.07, 120.38], ["沈阳", 41.80, 123.43],
@@ -201,21 +201,42 @@
     ["大庆", 46.59, 125.10], ["齐齐哈尔", 47.35, 123.92], ["吉林", 43.84, 126.55], ["鞍山", 41.11, 122.99],
     ["锦州", 41.10, 121.13], ["丹东", 40.00, 124.35], ["香港", 22.32, 114.17], ["澳门", 22.20, 113.54],
     ["台北", 25.03, 121.57], ["高雄", 22.63, 120.30], ["台中", 24.15, 120.67], ["新竹", 24.80, 120.97]
+    ] }
   ];
+
+  function pinyinSort(list) {
+    return list.slice().sort(function (x, y) {
+      try { return x[0].localeCompare(y[0], "zh-Hans-CN"); }
+      catch (e) { return x[0] < y[0] ? -1 : 1; }
+    });
+  }
   const sel = $('#bcity');
+  const coordMap = {};
   const emptyOpt = document.createElement("option");
   emptyOpt.value = ""; emptyOpt.textContent = "— 不填 —";
   sel.appendChild(emptyOpt);
-  CITIES.forEach(([n, la, lo], i) => {
-    const o = document.createElement("option");
-    o.value = i; o.textContent = n;
-    sel.appendChild(o);
+
+  let vidx = 0;
+  PLACES.forEach(function (grp) {
+    const og = document.createElement("optgroup");
+    og.label = grp.country;
+    pinyinSort(grp.cities).forEach(function (c) {
+      const o = document.createElement("option");
+      const v = String(vidx++);
+      o.value = v;
+      o.textContent = c[0];
+      coordMap[v] = [c[1], c[2]];
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
   });
   sel.value = "";
+
   sel.onchange = () => {
     if (sel.value === "") { $('#blat').value = ""; $('#blon').value = ""; return; }
-    const c = CITIES[+sel.value];
-    $('#blat').value = c[1]; $('#blon').value = c[2];
+    const c = coordMap[sel.value];
+    if (!c) return;
+    $('#blat').value = c[0]; $('#blon').value = c[1];
   };
 
   $('#calc').onclick = () => {
@@ -697,34 +718,45 @@
     });
   });
 
-  const clearBtn = document.querySelector('#clearHist');
-  if (clearBtn) {
-    let armed = false, timer = null;
-    const reset = function () {
-      armed = false;
-      clearBtn.textContent = "清除我的记录";
-      clearBtn.classList.remove("armed");
-      if (timer) { clearTimeout(timer); timer = null; }
-    };
-    clearBtn.addEventListener('click', function () {
-      if (!armed) {
-        armed = true;
-        clearBtn.textContent = "再点一次确认清除";
-        clearBtn.classList.add("armed");
-        timer = setTimeout(reset, 4000);
-        return;
-      }
-      LS.set("mystic.hist", {});
-      renderHist();
-      reset();
-      toast("记录已清除");
-    });
+  function showConfirm(msg, onYes) {
+    const ov = document.createElement("div");
+    ov.className = "modalov";
+    ov.innerHTML = '<div class="modalbox" role="dialog" aria-modal="true">' +
+      '<p>' + msg + '</p>' +
+      '<div class="modalbtns"><button type="button" class="mno">否</button>' +
+      '<button type="button" class="myes">是</button></div></div>';
+    document.body.appendChild(ov);
+
+    const noBtn = ov.querySelector(".mno");
+    const yesBtn = ov.querySelector(".myes");
+    let done = false;
+
+    function close() {
+      if (done) return;
+      done = true;
+      document.removeEventListener("keydown", onKey, true);
+      ov.remove();
+    }
+    function onKey(e) {
+      if (e.key === "Escape" || e.key === "Enter") { e.preventDefault(); e.stopPropagation(); close(); }
+    }
+    noBtn.addEventListener("click", close);
+    yesBtn.addEventListener("click", function () { close(); onYes(); });
+    ov.addEventListener("click", function (e) { if (e.target === ov) close(); });
+    document.addEventListener("keydown", onKey, true);
+    setTimeout(function () { if (noBtn.focus) noBtn.focus(); }, 30);
   }
 
-  Array.prototype.forEach.call([['#hlShare', 'hl'], ['#sgShare', 'sg'], ['#trShare', 'tr'], ['#yjShare', 'yj'], ['#heShare', 'he']], function (p) {
-    const el = document.querySelector(p[0]);
-    if (el) el.addEventListener('click', function () { makeCard(p[1]); });
+  const clearBtn = document.querySelector('#clearHist');
+  if (clearBtn) clearBtn.addEventListener('click', function () {
+    showConfirm("确定要清除记录吗？", function () {
+      LS.set("mystic.hist", {});
+      renderHist();
+      toast("记录已清除");
+    });
   });
+
+  window.__showConfirm = showConfirm;
 
   /* ================= 首页 ================= */
   function renderHome() {

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mystic · 塔罗与星盘</title>
 <meta name="description" content="免费塔罗占卜与星盘查询：78 张牌、真实牌阵解读、日月升与相位计算。">
-<link rel="stylesheet" href="css/style.css?v=202611072314">
+<link rel="stylesheet" href="css/style.css?v=202611072323">
 </head>
 <body>
 
@@ -67,6 +67,7 @@
       <div class="spread-head">牌 阵</div>
       <div class="spreads" id="spreads"></div>
       <button class="btn" id="toPick">洗 牌</button>
+      <div class="err" id="qErr"></div>
     </div>
 
     <div id="step-pick" hidden>
@@ -251,6 +252,7 @@
       <textarea id="yjQ" placeholder="写一句你真正想问的话。占卜不问「我想不想」，问「这件事此刻的势在哪」。"></textarea>
       <div class="hint">三枚铜钱，掷六次，自下而上成卦。老阳、老阴为动爻，动则生出变卦。</div>
       <button class="btn" id="yjCast">掷 六 次</button>
+      <div class="err" id="yjErr"></div>
     </div>
     <div id="yjOut" hidden></div>
     <div class="cite">易经：卦辞、爻辞为公有领域《周易》原文，取自公开数据集（Johnson-Jia/liuyao-divination，MIT），并与维基文库《周易》交叉核对，修正 3 处抄校错误（损「曷之用」、困「大人吉」、丰「宜日中」）。起卦用三枚铜钱法，老阳老阴为动爻，四象概率 1/8 · 3/8 · 3/8 · 1/8，由钱币本身决定。变爻取用依朱熹《周易本义》。白话大意为本站按通行注本整理，非逐字翻译；爻辞以原文为准。</div>
@@ -262,6 +264,7 @@
       <textarea id="heQ" placeholder="一个你正在犹豫的问题。"></textarea>
       <div class="hint">三套系统各看一眼：塔罗看此刻你心里的位置，易看这件事的势，天象看今天的天气。</div>
       <button class="btn" id="heGo">三 面 看</button>
+      <div class="err" id="heErr"></div>
     </div>
     <div id="heOut" hidden class="hewrap"></div>
     <div id="heNote" class="notice" style="margin-top:26px" hidden>
@@ -274,15 +277,15 @@
 
 <footer>全部计算在浏览器本地完成 · 无后端、无接口、无账号 · 结果仅供参照，不构成对任何人的判断</footer>
 
-<script src="js/cards.js?v=202611072314"></script>
-<script src="js/engine.js?v=202611072314"></script>
-<script src="js/astro.js?v=202611072314"></script>
-<script src="js/huangli-data.js?v=202611072314"></script>
-<script src="js/huangli.js?v=202611072314"></script>
-<script src="js/yijing-data.js?v=202611072314"></script>
-<script src="js/yijing-bai.js?v=202611072314"></script>
-<script src="js/yijing.js?v=202611072314"></script>
-<script src="js/share.js?v=202611072314"></script>
-<script src="js/app.js?v=202611072314"></script>
+<script src="js/cards.js?v=202611072323"></script>
+<script src="js/engine.js?v=202611072323"></script>
+<script src="js/astro.js?v=202611072323"></script>
+<script src="js/huangli-data.js?v=202611072323"></script>
+<script src="js/huangli.js?v=202611072323"></script>
+<script src="js/yijing-data.js?v=202611072323"></script>
+<script src="js/yijing-bai.js?v=202611072323"></script>
+<script src="js/yijing.js?v=202611072323"></script>
+<script src="js/share.js?v=202611072323"></script>
+<script src="js/app.js?v=202611072323"></script>
 </body>
 </html>

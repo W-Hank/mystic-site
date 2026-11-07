@@ -54,6 +54,20 @@
     });
   }
 
+  function needQuestion(inputEl, errEl, msg) {
+    const v = (inputEl && inputEl.value || "").trim();
+    if (v.length >= 2) { if (errEl) errEl.textContent = ""; return v; }
+    if (errEl) errEl.textContent = msg;
+    if (inputEl && inputEl.focus) inputEl.focus();
+    return "";
+  }
+
+  Array.prototype.forEach.call([['#q', '#qErr'], ['#yjQ', '#yjErr'], ['#heQ', '#heErr']], function (p) {
+    const el = document.querySelector(p[0]);
+    const er = document.querySelector(p[1]);
+    if (el && er) el.addEventListener('input', function () { er.textContent = ""; });
+  });
+
   bindEnter($('#q'), function () { $('#toPick').click(); });
   bindEnter($('#yjQ'), function () { $('#yjCast').click(); });
   bindEnter($('#heQ'), function () { $('#heGo').click(); });
@@ -69,7 +83,11 @@
   }
 
   $('#toPick').onclick = () => {
-    if (!state.q.trim()) { $('#q').focus(); $('#q').style.borderColor = "#8a5a5a"; return; }
+    if (!needQuestion($('#q'), $('#qErr'), "先写一句你真正想问的话——牌是照着问题翻的。")) {
+      $('#q').style.borderColor = "#8a5a5a";
+      return;
+    }
+    $('#q').style.borderColor = "";
     const sk = resolveSpread();
     state.resolved = sk;
     state.count = E.spreads[sk].n;
@@ -917,7 +935,7 @@
     return '<div class="' + cls + '">' + inner + mark + '</div>';
   }
 
-  function yjSummary(r) {
+  function yjSummary(r, q) {
     const b = r.ben, v = r.bian, Y = window.MysticYijing;
     const de = Y.TRI_DE;
     const bai = (window.YIJING_BAI && window.YIJING_BAI[b.name]) || "";
@@ -930,13 +948,28 @@
     else move = "六爻全动，整个局面翻转，几乎等于重新开始。";
 
     const dir = (n > 0 && v && v.no !== b.no) ? "从「" + b.name + "」走向「" + v.name + "」。" : "";
-    return "这一卦是「" + b.name + "」，上" + b.upper + "（" + de[b.upper] + "）下" + b.lower + "（" + de[b.lower] +
-      "）——外面是" + de[b.upper] + "，里面是" + de[b.lower] + "。" + bai + move + dir;
+
+    let domLine = "";
+    if (q && window.MysticEngine) {
+      const dk = window.MysticEngine.classify(q).key;
+      domLine = ({
+        love: "放到你问的这件事上：卦说的是此刻的势，不是对方的答案——势顺着，动作还得你自己做。",
+        career: "放到你问的这件事上：卦看的是时机与位置，不替你决定去留，只提醒你哪一步在硬撑。",
+        study: "放到你问的这件事上：卦看的是势头，不是分数——势头对了，剩下的靠时间堆。",
+        money: "放到你问的这件事上：卦不替你算收益，只提示风险在哪一头。",
+        health: "放到你问的这件事上：卦看的是节奏，不是诊断——该休息就别硬扛。",
+        general: "放到你问的这件事上：卦给的是视角，不是结论。"
+      })[dk] || "";
+    }
+
+    const head = q ? "你问的是「" + q + "」。" : "";
+    return head + "这一卦是「" + b.name + "」，上" + b.upper + "（" + de[b.upper] + "）下" + b.lower + "（" + de[b.lower] +
+      "）——外面是" + de[b.upper] + "，里面是" + de[b.lower] + "。" + bai + move + dir + domLine;
   }
 
-  function renderYj(r) {
+  function renderYj(r, q) {
     const Y = window.MysticYijing;
-    const q = ($('#yjQ') && $('#yjQ').value.trim()) || "";
+    q = (q || "").trim();
     const b = r.ben, v = r.bian;
 
     let lines = "";
@@ -995,13 +1028,16 @@
 
   const yjBtn = document.querySelector('#yjCast');
   if (yjBtn) yjBtn.addEventListener('click', function () {
-    renderYj(window.MysticYijing.cast());
+    const q = needQuestion($('#yjQ'), $('#yjErr'), "先写一句你要问的事——空着起卦，得到的是随机数，不是卦。");
+    if (!q) return;
+    renderYj(window.MysticYijing.cast(), q);
   });
 
   /* ================= 合参 ================= */
   const heBtn = document.querySelector('#heGo');
   if (heBtn) heBtn.addEventListener('click', function () {
-    const q = ($('#heQ').value || "").trim();
+    const q = needQuestion($('#heQ'), $('#heErr'), "先写下你要问的事——三面看的是同一个问题，没问题就没法看。");
+    if (!q) return;
     const E2 = window.MysticEngine, Y2 = window.MysticYijing, A2 = window.MysticAstro;
 
     // 塔罗：一张

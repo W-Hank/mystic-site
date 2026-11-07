@@ -935,6 +935,97 @@
     return '<div class="' + cls + '">' + inner + mark + '</div>';
   }
 
+  const TRI_PLAIN = {
+    "乾": "硬、抢先、不肯停",
+    "兑": "用说的、取悦、交换",
+    "离": "显出来、看得清，但要附着在别的东西上",
+    "震": "突然动一下、受惊、发起",
+    "巽": "慢慢渗进去、顺着来、不硬顶",
+    "坎": "有水也有险、反复、容易陷进去",
+    "艮": "停住、卡住、不动",
+    "坤": "承受、顺着、比较被动"
+  };
+
+  const DOMAIN_NOTE = {
+    love: "——这是一个关于关系的问题。",
+    career: "——这是一个关于事情能不能成、要不要做的问题。",
+    study: "——这是一个关于进度和投入的问题。",
+    money: "——这是一个关于钱怎么处置的问题。",
+    health: "——这是一个关于身体和状态的问题。",
+    general: "——这是你把一件说不清的事拿出来问。"
+  };
+
+  const DOMAIN_ACTION = {
+    love: "具体一点：先做一件她不需要费力回应的小事——一条有内容的信息、一个共同话题。别急着要一个说法。",
+    career: "具体一点：把你要推进的那件事写成一句话，找那个能拍板的人说一次，别再在脑子里推演。",
+    study: "具体一点：把最难的那一块单独切出来，今天只做它，别从会做的开始。",
+    money: "具体一点：先把最近一个月的进出记一遍，再决定要不要动这笔钱。",
+    health: "具体一点：先睡够三天、按时吃饭，别的判断都会跟着变准。",
+    general: "具体一点：把这件事里你能控制的部分写下来，只做那一部分。"
+  };
+
+  const MOVE_ADVICE = {
+    0: "六爻都不动：现在不是行动的时候，是看清楚的时候。硬推推不动，推了也不会有回报。",
+    1: "只有一爻在动：转折点很集中，就在上面说的那个位置。其他都是枝节，别被分散注意力。",
+    2: "两爻在动：局面在换，但方向还没定。这时候下重注会后悔。",
+    3: "三爻在动：局面正在整体翻转。你能做的是跟着变，不是把它扳回来。",
+    4: "四爻在动：大势已经偏了，本卦只剩一点余温。",
+    5: "五爻在动：几乎全变了，你看到的是旧局面的尾巴。",
+    6: "六爻全动：这不是转折，是换了一个局面。旧的先放手。"
+  };
+
+  function plainReading(r, q) {
+    const b = r.ben, v = r.bian;
+    const n = r.changes.length;
+    const dom = (window.MysticEngine && q) ? window.MysticEngine.classify(q).key : "general";
+    const out = [];
+
+    out.push({
+      h: "你在问什么",
+      p: (q ? "「" + q + "」" : "（没有写问题）") + (DOMAIN_NOTE[dom] || "")
+    });
+
+    const bai = (window.YIJING_BAI && window.YIJING_BAI[b.name]) || "";
+    out.push({
+      h: "现在的局面",
+      p: "「" + b.name + "」这个卦，外面是" + TRI_PLAIN[b.upper] + "，里面是" + TRI_PLAIN[b.lower] +
+        "。换句话说：" + bai
+    });
+
+    let third;
+    if (n === 0) {
+      third = "没有哪一爻在动——整件事现在是静止的。没有暗流，也没有突变。";
+    } else {
+      const i = r.changes[0];
+      third = "变化发生在第 " + (i + 1) + " 爻。" + window.MysticYijing.POS_MEAN[i] +
+        (n > 1 ? " 另外还有 " + (n - 1) + " 爻在动，说明不止一处松动了。" : "");
+    }
+    out.push({ h: "卡在哪", p: third });
+
+    let fourth;
+    if (v && v.no !== b.no) {
+      const vb = (window.YIJING_BAI && window.YIJING_BAI[v.name]) || "";
+      fourth = "照这个势头走，会走到「" + v.name + "」——" + vb;
+    } else {
+      fourth = "六爻都不动，局面不会自己变。它变成什么样，取决于你接下来做什么。";
+    }
+    out.push({ h: "会往哪走", p: fourth });
+
+    out.push({
+      h: "你现在能做什么",
+      p: (MOVE_ADVICE[n] || MOVE_ADVICE[3]) + " " + (DOMAIN_ACTION[dom] || DOMAIN_ACTION.general)
+    });
+
+    return out;
+  }
+
+  function plainHTML(r, q) {
+    return '<div class="yjsum"><div class="sumb">白 话 解 读</div>' +
+      plainReading(r, q).map(function (s) {
+        return '<div class="psum"><b>' + s.h + '</b><p>' + s.p + '</p></div>';
+      }).join("") + '</div>';
+  }
+
   function yjSummary(r, q) {
     const b = r.ben, v = r.bian, Y = window.MysticYijing;
     const de = Y.TRI_DE;
@@ -998,7 +1089,7 @@
         '</div>' +
         '<div class="yjright">' +
           (q ? '<div class="yjq">' + q + '</div>' : '') +
-          '<div class="yjsum"><div class="sumb">综 合 解 读</div><p>' + yjSummary(r) + '</p></div>' +
+          plainHTML(r, q) +
           '<div class="yjrule">' + r.rule.text + '</div>' +
           '<div class="yjpart"><div class="lbl">白话大意（本站整理）</div><div class="txt small">' +
             ((window.YIJING_BAI && window.YIJING_BAI[b.name]) || '（暂无）') + '</div></div>' +

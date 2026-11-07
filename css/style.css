@@ -581,3 +581,5 @@ header nav button.on{
   background:linear-gradient(135deg,rgba(201,168,106,.08),rgba(23,27,41,.4))}
 .yjsum .sumb{font-size:11px;letter-spacing:.24em;color:var(--gold-dim);margin-bottom:12px}
 .yjsum p{margin:0;font-size:15px;line-height:2.05;color:#e0dcd4}
+
+.err{color:#c98b8b;font-size:12.5px;margin-top:12px;min-height:16px;line-height:1.7}

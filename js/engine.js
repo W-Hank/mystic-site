@@ -188,53 +188,49 @@ window.MysticEngine = (function () {
     return { score, verdict, nm, nr, top, elTone, total: cards.length };
   }
 
-  /* ---------- 建议：由末牌与势推出，不套模板 ---------- */
-  function advice(cards, revs, tn, domain) {
+  /* ---------- 建议：由末牌与势推出，同样含义换多种说法 ---------- */
+  function advice(cards, revs, tn, domain, question) {
+    const V = window.MysticVoice;
     const last = cards[cards.length - 1];
     const lastRev = revs[revs.length - 1];
-    const acts = {
-      wands: "把动作做小、做具体；火系牌给的建议永远是「先动一下」，不是「先想明白」。",
-      cups: "先处理情绪再处理事情；水系牌提醒你，你现在的判断里掺了对回应的渴望。",
-      swords: "把话说清楚，一句就够；风系牌最怕的不是拒绝，是含糊。",
-      pentacles: "给这件事一个可衡量的落点：时间、次数、一件事。土系牌只认具体。"
-    };
+    const base = V ? V.seed([question, last.name, lastRev ? "r" : "u"]) : 0;
     const out = [];
-    const kwNote = `（${last.name}${lastRev ? "逆" : ""}：${(lastRev ? last.rk : last.kw).join("、")}）`;
-    if (last.suit) {
-      out.push(acts[last.suit] + kwNote);
+
+    const kwNote = "（" + last.name + (lastRev ? "逆" : "") + "：" + (lastRev ? last.rk : last.kw).join("、") + "）";
+
+    if (last.suit && V && V.SUIT[last.suit]) {
+      const line = V.pick(V.SUIT[last.suit], base);
+      out.push(line + kwNote);
     } else {
       const txt = lastRev ? last.v : last.u;
-      out.push(`落到「${last.name}」${lastRev ? "逆位" : ""}：${txt}　它不给方法，它给一个必须面对的东西——${lastRev ? last.rk[0] : last.kw[0]}。`);
+      out.push("落到「" + last.name + "" + (lastRev ? "逆位" : "") + "：" + txt + "　它不给方法，它给一个必须面对的东西——" + (lastRev ? last.rk[0] : last.kw[0]) + "。");
     }
-    if (tn.verdict === "否" || tn.verdict === "倾向否")
-      out.push("偏逆，卡住的是「姿态」不是「机会」。把这次动作的重量降下来，比把它做得更好更有效——先做一件不用她回应的事。");
-    else if (tn.verdict === "是" || tn.verdict === "倾向是")
-      out.push("牌面偏顺，问题不在能不能成，在你还在准备第几次。第三次准备之后还不动，通常是在等一个不会来的确定感。");
-    else
-      out.push("一半顺一半卡——这不是「能不能成」的问题，是「什么时候、以什么方式」的问题。别把「悬」读成「不行」。");
-    const dom = {
-      love: "感情里最容易被忽略的一条：对方回不回，测的是她的习惯，不是你的价值。",
-      career: "事业上，先确认你争的是不是同一个位置——很多内耗是目标本身没对齐。",
-      study: "学业上，进度比状态可靠；状态是结果，不是前提。",
-      money: "财务上，先看清楚现金流，再谈机会。",
-      health: "身心上，先把睡眠和吃饭稳住，其余判断都会变准。",
-      general: "别在信息最少的时候做最重的决定。"
-    }[domain];
-    out.push(dom);
+
+    const vKey = (tn.verdict === "否" || tn.verdict === "倾向否") ? "no"
+      : (tn.verdict === "是" || tn.verdict === "倾向是") ? "yes" : "half";
+    if (V) out.push(V.pick(V.VERDICT[vKey], base + 7));
+
+    if (V && V.DOMAIN[domain]) out.push(V.pick(V.DOMAIN[domain], base + 13));
     return out.filter(Boolean);
   }
 
   /* ---------- 时机推断：花色定尺度，数字定远近，逆位顺延 ---------- */
-  function timing(cards, revs) {
+  function timing(cards, revs, question) {
+    const V = window.MysticVoice;
     const last = cards[cards.length - 1];
     const rev = revs[revs.length - 1];
     const scale = last.suit ? D.suits[last.suit].timeScale : "周到月";
     const near = last.arcana === "major"
       ? (last.num <= 7 ? "偏近" : last.num <= 14 ? "中等" : "偏远")
       : (last.rank <= 4 ? "偏近" : last.rank <= 9 ? "中等" : "偏远");
-    let s = `末牌落在${last.name}，按花色推，这件事的量级是「${scale}」；位置${near}。`;
-    s += rev ? "但它逆着——实际会比你预期的晚一档，别按最早的时间点去等。" : "顺着，可以按这个尺度去等回音。";
-    return s;
+
+    if (!V) return "末牌落在" + last.name + "，按花色推，量级是「" + scale + "」。";
+
+    const base = V.seed([question, last.name, rev ? "r" : "u"]);
+    const lead = V.pick(V.TIMING_LEAD, base)
+      .replace("{card}", last.name).replace("{scale}", scale).replace("{near}", near);
+    const tail = V.pick(V.TIMING_TAIL[rev ? "rev" : "up"], base + 5);
+    return lead + tail;
   }
 
   /* ---------- 主入口 ---------- */
@@ -269,8 +265,8 @@ window.MysticEngine = (function () {
 
     return {
       domain: dname, qtype: type, tone: tn, head,
-      perCard, relations: rels, advice: advice(cards, revs, tn, d.key),
-      timing: timing(cards, revs), tension
+      perCard, relations: rels, advice: advice(cards, revs, tn, d.key, question),
+      timing: timing(cards, revs, question), tension
     };
   }
 

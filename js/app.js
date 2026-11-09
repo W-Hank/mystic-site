@@ -69,8 +69,14 @@
   });
 
   bindEnter($('#q'), function () { $('#toPick').click(); });
-  bindEnter($('#yjQ'), function () { $('#yjCast').click(); });
-  bindEnter($('#heQ'), function () { $('#heGo').click(); });
+  bindEnter($('#yjQ'), function () {
+    if (window.__yjLocked) { yjHint(); return; }
+    $('#yjCast').click();
+  });
+  bindEnter($('#heQ'), function () {
+    if (window.__heLocked) { heHint(); return; }
+    $('#heGo').click();
+  });
   renderSpreads();
 
   function resolveSpread() {
@@ -201,12 +207,26 @@
     if (tp && tp.scrollIntoView) tp.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  $('#again').onclick = () => {
+  function tarotBack(clearQ) {
     $('#step-read').hidden = true;
     $('#step-pick').hidden = true;
     $('#step-ask').hidden = false;
     state.picked = []; state.revs = [];
+    if (clearQ) {
+      $('#q').value = '';
+      state.q = '';
+      $('#qErr').textContent = '';
+    }
+    if ($('#q').focus) $('#q').focus();
+  }
+
+  $('#again').onclick = () => {
+    if (!confirm('同一件事只建议抽一次。再抽一次等于重问，结果不作数——确定继续？')) return;
+    tarotBack(false);
   };
+
+  const tb = document.querySelector('#tarotBack');
+  if (tb) tb.onclick = () => tarotBack(true);
 
   /* ================= 星盘 ================= */
   const PLACES = [
@@ -1139,7 +1159,7 @@
               : '六爻都不动，说明这件事眼下是「定」的状态，不是「变」的状态。') +
           '</div>' +
         '</div>' +
-      '</div>';
+      '</div>' + yjActions();
     $('#yjOut').hidden = false;
     saveCard("yj", {
       date: todayStr(),
@@ -1164,30 +1184,117 @@
   }
 
   const yjBtn = document.querySelector('#yjCast');
+
+  const YJ_LOCK_KEY = "mystic_yj_lock";
+
+  function yjLoadLock() {
+    try { return JSON.parse(localStorage.getItem(YJ_LOCK_KEY) || "null"); } catch (e) { return null; }
+  }
+  function yjSaveLock(v) { try { localStorage.setItem(YJ_LOCK_KEY, JSON.stringify(v)); } catch (e) {} }
+  function yjClearLock() { try { localStorage.removeItem(YJ_LOCK_KEY); } catch (e) {} }
+
+  function yjSetLocked(v) {
+    window.__yjLocked = !!v;
+    const inp = $('#yjQ'), btn = $('#yjCast');
+    if (inp) inp.readOnly = !!v;
+    if (btn) {
+      btn.disabled = !!v;
+      btn.textContent = v ? '已 起 卦' : '掷 六 次';
+    }
+  }
+
+  function yjHint() {
+    const err = $('#yjErr');
+    if (!err) return;
+    err.textContent = "这一问已经起过卦了。同一件事不重复占——要换问题请点「返回」，想重摇请点「再算一卦」。";
+    if (err.scrollIntoView) err.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function yjActions() {
+    return '<div class="yjactions">' +
+      '<button class="btn ghost" id="yjBack">返 回</button>' +
+      '<button class="btn ghost" id="yjAgain">再算一卦</button>' +
+      '<span class="yjtip">一事一占：重摇等于把同一件事问第二遍，结果不作数。</span>' +
+      '</div>';
+  }
+
   if (yjBtn) yjBtn.addEventListener('click', function () {
+    if (window.__yjLocked) { yjHint(); return; }
     const q = needQuestion($('#yjQ'), $('#yjErr'), "先写一句你要问的事——空着起卦，得到的是随机数，不是卦。");
     if (!q) return;
-    renderYj(window.MysticYijing.cast(), q);
+    const r = window.MysticYijing.cast();
+    yjSaveLock({ q: q, vals: r.vals, at: Date.now() });
+    yjSetLocked(true);
+    renderYj(r, q);
   });
 
+  document.addEventListener('click', function (e) {
+    if (!e.target || !e.target.id) return;
+    if (e.target.id === 'yjBack') {
+      yjClearLock();
+      yjSetLocked(false);
+      $('#yjOut').hidden = true;
+      $('#yjOut').innerHTML = '';
+      $('#yjErr').textContent = '';
+      $('#yjQ').value = '';
+      $('#yjQ').focus();
+    }
+    if (e.target.id === 'yjAgain') {
+      const q = ($('#yjQ').value || '').trim();
+      if (!q) return;
+      if (!confirm('同一件事只建议占一次。再摇一次等于重问，结果不作数——确定继续？')) return;
+      const r = window.MysticYijing.cast();
+      yjSaveLock({ q: q, vals: r.vals, at: Date.now() });
+      renderYj(r, q);
+    }
+  });
+
+  /* 刷新/重开后仍然锁住，避免换个页面重摇 */
+  (function yjRestore() {
+    const lock = yjLoadLock();
+    if (!lock || !Array.isArray(lock.vals) || lock.vals.length !== 6) return;
+    $('#yjQ').value = lock.q || '';
+    yjSetLocked(true);
+    renderYj(window.MysticYijing.cast(lock.vals), lock.q || '');
+  })();
+
   /* ================= 合参 ================= */
-  const heBtn = document.querySelector('#heGo');
-  if (heBtn) heBtn.addEventListener('click', function () {
-    const q = needQuestion($('#heQ'), $('#heErr'), "先写下你要问的事——三面看的是同一个问题，没问题就没法看。");
-    if (!q) return;
+  const HE_LOCK_KEY = "mystic_he_lock";
+
+  function heLoad() { try { return JSON.parse(localStorage.getItem(HE_LOCK_KEY) || "null"); } catch (e) { return null; } }
+  function heSave(v) { try { localStorage.setItem(HE_LOCK_KEY, JSON.stringify(v)); } catch (e) {} }
+  function heClear() { try { localStorage.removeItem(HE_LOCK_KEY); } catch (e) {} }
+
+  function heSetLocked(v) {
+    window.__heLocked = !!v;
+    const inp = $('#heQ'), btn = $('#heGo');
+    if (inp) inp.readOnly = !!v;
+    if (btn) { btn.disabled = !!v; btn.textContent = v ? '已 起 卦' : '三 面 合 参'; }
+  }
+
+  function heHint() {
+    const err = $('#heErr');
+    if (!err) return;
+    err.textContent = "这一问已经合参过了。同一件事不重复占——要换问题请点「返回」，想重来请点「再算一次」。";
+    if (err.scrollIntoView) err.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function heActions() {
+    return '<div class="yjactions">' +
+      '<button class="btn ghost" id="heBack">返 回</button>' +
+      '<button class="btn ghost" id="heAgain">再算一次</button>' +
+      '<span class="yjtip">一事一占：重算等于把同一件事问第二遍，结果不作数。</span>' +
+      '</div>';
+  }
+
+  function heRender(data) {
     const E2 = window.MysticEngine, Y2 = window.MysticYijing, A2 = window.MysticAstro;
-
-    // 塔罗：一张
     const all = E2.deck();
-    const card = all[Math.floor(Math.random() * all.length)];
-    const rev = Math.random() < 0.35;
+    const card = all[data.cardIdx] || all[0];
+    const rev = !!data.rev;
     const cardTxt = rev ? card.v : card.u;
-
-    // 易：三枚铜钱
-    const yj = Y2.cast();
-
-    // 天象：此刻
-    const jd = A2.nowJD();
+    const yj = Y2.cast(data.vals);
+    const jd = data.jd || A2.nowJD();
     const ms = A2.signOf(A2.bodyLon("moon", jd));
     const ph = A2.moonPhase(jd);
     const retros = ["mercury", "venus", "mars", "jupiter", "saturn"].filter(function (k) { return A2.retro(k, jd); });
@@ -1214,14 +1321,15 @@
       '<div class="hecard"><div class="src">天 象</div>' +
         '<div class="big">' + ph.name + '</div>' +
         '<div class="sub">月亮 ' + ms.sign.cn + ' ' + ms.deg + '°　·　亮面 ' + ph.illum + '%</div>' +
-        '<div class="body">' + heTxt + retroTxt + '<em>说的是所有人都要过的这一天。</em></div></div>';
+        '<div class="body">' + heTxt + retroTxt + '<em>说的是所有人都要过的这一天。</em></div></div>' +
+      heActions();
 
     saveCard("he", {
       date: todayStr(),
       title: "三面 · 同一件事",
       headline: yj.ben.symbol + " " + yj.ben.name + "　+　" + card.name,
       rows: [
-        { label: "问题", text: q || "（未填写）" },
+        { label: "问题", text: data.q || "（未填写）" },
         { label: "塔罗", text: card.name + (rev ? "（逆）" : "") + "：" + cardTxt },
         { label: "易", text: yj.ben.name + "卦：" + (yj.parts[0] ? yj.parts[0].text : yj.ben.gua) },
         { label: "天象", text: ph.name + "，月亮在" + ms.sign.cn + "。" + heTxt + retroTxt }
@@ -1231,7 +1339,66 @@
     $('#heOut').hidden = false;
     $('#heNote').hidden = false;
     if ($('#heOut').scrollIntoView) $('#heOut').scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  const heBtn = document.querySelector('#heGo');
+  if (heBtn) heBtn.addEventListener('click', function () {
+    if (window.__heLocked) { heHint(); return; }
+    const q = needQuestion($('#heQ'), $('#heErr'), "先写下你要问的事——三面看的是同一个问题，没问题就没法看。");
+    if (!q) return;
+    const E2 = window.MysticEngine, Y2 = window.MysticYijing, A2 = window.MysticAstro;
+    const all = E2.deck();
+    const data = {
+      q: q,
+      cardIdx: Math.floor(Math.random() * all.length),
+      rev: Math.random() < 0.35,
+      vals: Y2.cast().vals,
+      jd: A2.nowJD(),
+      at: Date.now()
+    };
+    heSave(data);
+    heSetLocked(true);
+    heRender(data);
   });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target || !e.target.id) return;
+    if (e.target.id === 'heBack') {
+      heClear();
+      heSetLocked(false);
+      $('#heOut').hidden = true;
+      $('#heOut').innerHTML = '';
+      $('#heNote').hidden = true;
+      $('#heErr').textContent = '';
+      $('#heQ').value = '';
+      $('#heQ').focus();
+    }
+    if (e.target.id === 'heAgain') {
+      const q = ($('#heQ').value || '').trim();
+      if (!q) return;
+      if (!confirm('同一件事只建议占一次。再算一次等于重问，结果不作数——确定继续？')) return;
+      const E2 = window.MysticEngine, Y2 = window.MysticYijing, A2 = window.MysticAstro;
+      const all = E2.deck();
+      const data = {
+        q: q,
+        cardIdx: Math.floor(Math.random() * all.length),
+        rev: Math.random() < 0.35,
+        vals: Y2.cast().vals,
+        jd: A2.nowJD(),
+        at: Date.now()
+      };
+      heSave(data);
+      heRender(data);
+    }
+  });
+
+  (function heRestore() {
+    const lock = heLoad();
+    if (!lock || !Array.isArray(lock.vals) || lock.vals.length !== 6) return;
+    $('#heQ').value = lock.q || '';
+    heSetLocked(true);
+    heRender(lock);
+  })();
 
   function readingHTML(lines, aspectText) {
     const blocks = lines.map(function (t) {

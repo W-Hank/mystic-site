@@ -1187,6 +1187,8 @@
     }
 
     const partsRaw = r.parts.map(function (p) { return p.label + "：" + p.text; }).join("　");
+    const Vv = window.MysticVoice;
+    const yjClose = Vv ? Vv.pick(Vv.YJ_CLOSE, Vv.seed([q, b.name])) : "";
     const parts = r.parts.map(function (p) {
       return '<div class="yjpart"><div class="lbl">' + p.label + '</div><div class="txt">' + p.text + '</div></div>';
     }).join("");
@@ -1211,6 +1213,8 @@
           '<div class="yjrule">' + r.rule.text + '</div>' +
           '<div class="yjpart"><div class="lbl">白话大意（本站整理）</div><div class="txt small">' +
             ((window.YIJING_BAI && window.YIJING_BAI[b.name]) || '（暂无）') + '</div></div>' +
+          '<div class="yjpart"><div class="lbl">怎么用这一卦</div><div class="txt small">' +
+            yjClose + '</div></div>' +
           parts +
           bianBlock +
           '<div class="yjstruct">' + Y.readingLine(r) +

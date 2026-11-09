@@ -268,9 +268,35 @@ window.MysticVoice = (function () {
     if (DOMAIN[k]) DOMAIN[k] = DOMAIN[k].concat(DOMAIN_EXTRA[k]);
   });
 
+
+  /* 句首三字：用来判断同一次解读里是不是又用了同一个开头 */
+  function opener(str) {
+    const t = String(str || "").replace(/^[，。、；：\s「」“”"'']+/, "");
+    return t.slice(0, 3);
+  }
+
+  /* 在同一池里挑一句，且句首不与已选重复；实在没得挑就退回普通 pick */
+  function pickDistinct(pool, n, used) {
+    if (!pool || !pool.length) return "";
+    const start = (mix(n | 0) + dayNumber()) % pool.length;
+    for (let i = 0; i < pool.length; i++) {
+      const cand = pool[(start + i) % pool.length];
+      const op = opener(cand);
+      if (!used || !used.has(op)) {
+        if (used) used.add(op);
+        return cand;
+      }
+    }
+    const fallback = pool[start];
+    if (used) used.add(opener(fallback));
+    return fallback;
+  }
+
   return {
     seed: seed,
     pick: pick,
+    pickDistinct: pickDistinct,
+    opener: opener,
     dayKey: dayKey,
     dayNumber: dayNumber,
     SUIT: SUIT,

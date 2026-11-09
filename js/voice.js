@@ -26,11 +26,26 @@ window.MysticVoice = (function () {
     return x >>> 0;
   }
 
+  /* 由种子生成一个固定排列（Fisher–Yates），让每天的取句顺序不可预测 */
+  function orderOf(len, seedNum) {
+    const a = [];
+    for (let i = 0; i < len; i++) a.push(i);
+    let st = mix(seedNum | 0) || 1;
+    for (let i = len - 1; i > 0; i--) {
+      st = mix(st + i);
+      const j = st % (i + 1);
+      const t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
   function pick(arr, n) {
     if (!arr || !arr.length) return "";
-    /* 先用种子打散，再叠加日期序号：同一天稳定，次日必定换下一句 */
-    const idx = (mix(n | 0) + dayNumber()) % arr.length;
-    return arr[idx];
+    const len = arr.length;
+    /* 固定但打乱的顺序：周期内不重复、不连撞，顺序本身不可预测 */
+    const perm = orderOf(len, n | 0);
+    const pos = ((dayNumber() % len) + len) % len;
+    return arr[perm[pos]];
   }
 
   function dayKey() {

@@ -612,13 +612,75 @@ window.MysticAstro = (function () {
     ]
   };
 
-  /* 同一天里，不同星座拿到的具体动作应该不一样；隔天也要换 */
-  function concreteFor(name, signIdx) {
-    const arr = CONCRETE[name] || [];
+  /* 具体动作跟着「当天主导行星」走：同一颗星再次主导时才会重复，通常隔 2–4 周 */
+  const ACTION = {
+    sun: {
+      "爱情": "把你想让对方知道的那件事直接说出来，不用铺垫。",
+      "事业": "把成果整理成一页，发给能看见它的人。",
+      "学业": "把学会的东西讲给一个人听，讲完才算会。",
+      "财运": "把这笔钱的用途写清楚，再决定花不花。",
+      "健康": "今天把状态亮出来，别硬撑。"
+    },
+    moon: {
+      "爱情": "先照顾自己的情绪，再回那条消息。",
+      "事业": "先处理让你不安的那件小事，别拖到下班。",
+      "学业": "状态不好就换个环境，别硬坐着。",
+      "财运": "别在情绪低的时候做消费决定。",
+      "健康": "睡够比任何安排都优先。"
+    },
+    mercury: {
+      "爱情": "把想问的话写成一句具体的，不发问号。",
+      "事业": "把需求写成三行，发出去。",
+      "学业": "把不懂的地方写成问题，去问人。",
+      "财运": "把账目和条款看清楚，再签字。",
+      "健康": "把身体的异常记下来，别靠记忆。"
+    },
+    venus: {
+      "爱情": "做一件让对方轻松的小事，不要求回应。",
+      "事业": "先维护关系，再谈事情。",
+      "学业": "找一个学得舒服的节奏，别硬拼。",
+      "财运": "买之前先看它值不值，不是便不便宜。",
+      "健康": "让自己舒服一点，不是放纵。"
+    },
+    mars: {
+      "爱情": "有火气就先离开十分钟，再说话。",
+      "事业": "今天先动一下，别等方案完美。",
+      "学业": "先做最不想做的那一科，做完就轻松。",
+      "财运": "别在冲动时下单，放一天。",
+      "健康": "把力气用在运动上，不要用在生气上。"
+    },
+    jupiter: {
+      "爱情": "主动约一次，把范围放大一点。",
+      "事业": "试一个你一直想试的方向，小规模。",
+      "学业": "多看一页，多问一句，今天扩一点。",
+      "财运": "可以小仓位试，但别加杠杆。",
+      "健康": "出门走走，换个环境。"
+    },
+    saturn: {
+      "爱情": "把边界说清楚，别用暗示。",
+      "事业": "做减法：砍掉一件不重要的。",
+      "学业": "把计划缩到能完成的程度。",
+      "财运": "把固定支出过一遍，能停的停掉。",
+      "健康": "今天不加练，按作息来。"
+    }
+  };
+
+  const ACTION_PREFIX = ["具体到动作：", "落到动作上：", "今天做这一件："];
+
+  function concreteFor(name, signIdx, planetKey) {
     const V = window.MysticVoice;
+    const seedBase = V ? V.seed(["act", name, planetKey || "", String(signIdx)]) : 0;
+    const prefix = V ? V.pick(ACTION_PREFIX, seedBase) : ACTION_PREFIX[0];
+
+    if (planetKey && ACTION[planetKey] && ACTION[planetKey][name]) {
+      return prefix + ACTION[planetKey][name];
+    }
+
+    const arr = CONCRETE[name] || [];
     if (!V || !arr.length) return arr[0] || "";
-    return V.pick(arr, V.seed(["concrete", name, String(signIdx), SIGNS[signIdx] ? SIGNS[signIdx].cn : ""]));
+    return prefix + V.pick(arr, seedBase + 3).replace(/^具体到动作：/, "");
   }
+
 
   /* 单一职责：只算分数与主导星，供 periodDomain / 走势图 / 分位校准共用 */
   function scoreOf(signIdx, def, jds, W) {
@@ -756,7 +818,7 @@ window.MysticAstro = (function () {
       detail = WW + "你这一域对应的宫位里没有行星停留——没有外力推它，也没有外力拦它。这种情况结果基本由你自己的动作决定，星象在这里几乎不构成变量。";
     } else if (!best.houses.length) {
       detail = WW + P_CN[best.key] + "和你的" + SIGNS[signIdx].cn + "形成" + (best.aspName || "角度") +
-        "，但角度比较松（不在宫位里）。这属于「有一点点影响」的程度，可以当参考，不建议拿它当依据。" + concreteFor(def.name, signIdx);
+        "，但角度比较松（不在宫位里）。这属于「有一点点影响」的程度，可以当参考，不建议拿它当依据。" + concreteFor(def.name, signIdx, best && best.key);
     } else {
       const hs = best.houses;
       const h = hs[0];
@@ -764,7 +826,7 @@ window.MysticAstro = (function () {
         ? "在你第" + h + "宫"
         : "在你第" + hs[0] + "到第" + hs[hs.length - 1] + "宫之间移动";
       detail = WW + P_CN[best.key] + whereTxt + "。第" + h + "宫管的是「" + (HOUSE_MEAN[h] || "这一块") +
-        "」，" + PLANET_MEAN[best.key] + "。所以" + noun + tail + "。" + concreteFor(def.name, signIdx);
+        "」，" + PLANET_MEAN[best.key] + "。所以" + noun + tail + "。" + concreteFor(def.name, signIdx, best && best.key);
     }
 
     return { key: def.name, stars, score, line, detail };

@@ -592,3 +592,78 @@ header nav button.on{
 .yjactions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:18px 0 4px}
 .yjactions .btn{min-width:96px}
 .yjtip{font-size:12px;color:var(--muted);line-height:1.6;letter-spacing:.02em}
+
+/* ===== 手机端排版修复（2026-11-09）：页脚字号 / 存图触控区 / 导航行距 / 首页去重 ===== */
+@media(max-width:760px){
+  /* 1. 页脚：字号提到 12.5px，对比度提亮，行高放宽，两侧留白避免贴边 */
+  footer{
+    font-size:13px;
+    line-height:2;
+    letter-spacing:.03em;
+    color:#9aa0b2;
+    padding:6px 10px 54px;
+    max-width:32em;
+    margin:0 auto;
+  }
+
+  /* 2. 存图按钮：触控高度 >=44px，宽度同步放大 */
+  .sharetop, #globalShare{
+    min-height:44px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 20px;
+    font-size:13px;
+    letter-spacing:.12em;
+    border-radius:999px;
+    flex:none;
+  }
+
+  /* 3. 导航：按钮高度与行距一起放宽，避免挤成一团 */
+  header{gap:12px}
+  header nav{gap:10px;margin-top:8px}
+  header nav button{
+    min-height:44px;
+    padding:11px 6px;
+    font-size:13px;
+    line-height:1.4;
+    letter-spacing:.06em;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  header nav button[data-tab="home"]{letter-spacing:.28em;text-indent:.28em}
+
+  /* 4. 首页「六个入口」与顶部导航重复：手机上默认收起，点标题展开 */
+  .homeentries{margin-top:26px !important}
+  .homeentries > summary{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-height:44px;
+    padding:0 2px;
+    list-style:none;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .homeentries > summary::-webkit-details-marker{display:none}
+  .homeentries > summary h3{flex:1;margin:0}
+  .homeentries > summary .exphint{
+    font-size:0;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .homeentries > summary .exphint::after{content:"展开 ▾";font-size:11.5px;letter-spacing:.1em}
+  .homeentries[open] > summary .exphint::after{content:"收起 ▴"}
+  .homeentries[open] > summary{margin-bottom:12px}
+
+  /* 正文可读性：导语与页脚说明不小于 14px / 细字不小于 12px */
+  .hero .lead{font-size:14px;line-height:1.95}
+  .cite{font-size:12px;line-height:2;color:#6b6e80}
+}
+
+@media(max-width:380px){
+  header nav{gap:8px}
+  header nav button{padding:10px 3px;font-size:12.5px;letter-spacing:.02em}
+  footer{font-size:12.5px;padding:6px 8px 50px}
+}

@@ -904,6 +904,14 @@
     });
   });
 
+  /* 手机端：首页「六个入口」默认收起，避免和顶部导航重复（桌面端保持展开） */
+  (function () {
+    var det = document.querySelector("details.homeentries");
+    if (!det) return;
+    var narrow = window.matchMedia && window.matchMedia("(max-width:760px)").matches;
+    if (narrow) det.open = false;
+  })();
+
   const PANEL_CARD = { tarot: "tr", astro: "np", today: "sg", huangli: "hl", yijing: "yj", he: "he" };
 
   function toast(msg) {

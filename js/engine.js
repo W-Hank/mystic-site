@@ -195,11 +195,12 @@ window.MysticEngine = (function () {
     const lastRev = revs[revs.length - 1];
     const base = V ? V.seed([question, last.name, lastRev ? "r" : "u"]) : 0;
     const out = [];
+    const used = new Set();
 
     const kwNote = "（" + last.name + (lastRev ? "逆" : "") + "：" + (lastRev ? last.rk : last.kw).join("、") + "）";
 
     if (last.suit && V && V.SUIT[last.suit]) {
-      const line = V.pick(V.SUIT[last.suit], base);
+      const line = V.pickDistinct(V.SUIT[last.suit], base, used);
       out.push(line + kwNote);
     } else {
       const txt = lastRev ? last.v : last.u;
@@ -208,9 +209,9 @@ window.MysticEngine = (function () {
 
     const vKey = (tn.verdict === "否" || tn.verdict === "倾向否") ? "no"
       : (tn.verdict === "是" || tn.verdict === "倾向是") ? "yes" : "half";
-    if (V) out.push(V.pick(V.VERDICT[vKey], base + 7));
+    if (V) out.push(V.pickDistinct(V.VERDICT[vKey], base + 7, used));
 
-    if (V && V.DOMAIN[domain]) out.push(V.pick(V.DOMAIN[domain], base + 13));
+    if (V && V.DOMAIN[domain]) out.push(V.pickDistinct(V.DOMAIN[domain], base + 13, used));
     return out.filter(Boolean);
   }
 

@@ -670,11 +670,11 @@ header nav button.on{
 
 /* ===== 浅色主题 ===== */
 html[data-theme="light"]{
-  --ink:#f7f4ee; --ink2:#f2eee4; --card:#ffffff; --line:#e4ddce;
-  --gold:#8a6d3b; --gold-dim:#b09a6d; --text:#2c2a26; --muted:#6b6a63; --warm:#7a5f33;
+  --ink:#f3ecdd; --ink2:#ece4d3; --card:#fffefb; --line:#d9cbb2;
+  --gold:#96702f; --gold-dim:#bb9a63; --text:#211d18; --muted:#5d564a; --warm:#8a5a2b;
 }
 html[data-theme="light"] body{
-  background:radial-gradient(1200px 700px at 20% -10%, #fffdf9 0%, #f7f4ee 55%, #efe9dd 100%);
+  background:radial-gradient(1200px 700px at 20% -10%, #fdf8ec 0%, #f3ecdd 55%, #eae0cc 100%);
   color:var(--text);
 }
 
@@ -682,36 +682,36 @@ html[data-theme="light"] body{
 html[data-theme="light"] :is(
   textarea,.spread,.mini,.dc,.sg,.why,.hrow,.place,.trendbox,
   .hlcard,.yjleft,.hecard,.hf,.fold,.hentry,.back,.verdict,.sec
-){ background:#ffffff; }
+){ background:#fffefb; }
 
 html[data-theme="light"] :is(.field input,.field select){
-  background:#ffffff;border-color:var(--line);color:var(--text);
+  background:#fffefb;border-color:var(--line);color:var(--text);
 }
 html[data-theme="light"] .cite{
-  color:#6f6d66;border-top-color:#e4ddce;
+  color:#6f6d66;border-top-color:#d9cbb2;
 }
-html[data-theme="light"] .back{border-color:#d9d2c2}
-html[data-theme="light"] .back::after{border-color:rgba(138,109,59,.32)}
+html[data-theme="light"] .back{border-color:#d6c8ae}
+html[data-theme="light"] .back::after{border-color:rgba(150,112,47,.32)}
 html[data-theme="light"] header nav button,
 html[data-theme="light"] header nav button.on{
-  background:#ffffff;
+  background:#fffefb;
 }
 html[data-theme="light"] header nav button.on{
-  background:linear-gradient(180deg, rgba(138,109,59,.12), rgba(138,109,59,.03));
+  background:linear-gradient(180deg, rgba(150,112,47,.12), rgba(150,112,47,.03));
 }
 html[data-theme="light"] .hentry{
-  box-shadow:0 1px 2px rgba(90,74,40,.05);
+  box-shadow:0 1px 2px rgba(92,74,42,.05);
 }
 html[data-theme="light"] .hentry:hover{
-  box-shadow:0 4px 14px rgba(90,74,40,.10);
+  box-shadow:0 4px 14px rgba(92,74,42,.10);
 }
 html[data-theme="light"] .btn{
-  background:linear-gradient(180deg,#c9a86a,#a98c50);color:#241a08;
-  box-shadow:0 2px 10px rgba(138,109,59,.22);
+  background:linear-gradient(180deg,#b08a4a,#8d6a2f);color:#fffaf0;
+  box-shadow:0 2px 10px rgba(150,112,47,.22);
 }
-html[data-theme="light"] .verdict{background:#fbf7ee}
-html[data-theme="light"] .sharetop{background:rgba(138,109,59,.10)}
-html[data-theme="light"] .sharetop:hover{background:rgba(138,109,59,.18)}
+html[data-theme="light"] .verdict{background:#faf4e8}
+html[data-theme="light"] .sharetop{background:rgba(150,112,47,.10)}
+html[data-theme="light"] .sharetop:hover{background:rgba(150,112,47,.18)}
 
 /* 主题切换按钮 */
 .themetoggle{
@@ -721,67 +721,67 @@ html[data-theme="light"] .sharetop:hover{background:rgba(138,109,59,.18)}
   transition:.2s;padding:0;margin-right:2px;
 }
 .themetoggle:hover{border-color:var(--gold-dim);color:var(--gold);background:rgba(201,168,106,.08)}
-html[data-theme="light"] .themetoggle{background:#ffffff;color:#6b6a63}
-html[data-theme="light"] .themetoggle:hover{background:#fbf7ee;color:var(--gold)}
+html[data-theme="light"] .themetoggle{background:#fffefb;color:#5d564a}
+html[data-theme="light"] .themetoggle:hover{background:#faf4e8;color:var(--gold)}
 
 @media(max-width:760px){
   .themetoggle{width:44px;height:44px;font-size:16px}
 }
 
 /* ===== 浅色主题 · 逐条色值映射 ===== */
-html[data-theme="light"] .spread:hover{border-color:#d9d2c2}
-html[data-theme="light"] .mini .rev{color:#a85f5f}
-html[data-theme="light"] .mini .up{color:#4f8a63}
-html[data-theme="light"] .cardread p{color:#2c2a26}
-html[data-theme="light"] .rels li{color:#2c2a26}
-html[data-theme="light"] .adv li{color:#2c2a26}
-html[data-theme="light"] .reading p{color:#2c2a26}
-html[data-theme="light"] .notice{color:#6b6a63}
-html[data-theme="light"] .sg p{color:#3a382f}
-html[data-theme="light"] .sg:hover{border-color:#d9d2c2}
-html[data-theme="light"] .sg .quick{color:#6b6a63}
-html[data-theme="light"] .sg .detail p{color:#3a382f}
-html[data-theme="light"] .periods button:hover{border-color:#d9d2c2}
-html[data-theme="light"] .why p{color:#4a4740}
-html[data-theme="light"] .why b{color:#2c2a26}
-html[data-theme="light"] .picksign button:hover{border-color:#d9d2c2}
-html[data-theme="light"] .mine p{color:#35332d}
-html[data-theme="light"] .hrow .hv button.yes.on{color:#4f8a63}
-html[data-theme="light"] .hrow .hv button.no.on{color:#a85f5f}
-html[data-theme="light"] .hrow p{color:#4a4740}
-html[data-theme="light"] .hrow p b{color:#6b6a63}
-html[data-theme="light"] .mine .diff{color:#6b6a63}
-html[data-theme="light"] .err{color:#a85f5f}
-html[data-theme="light"] .legend span{color:#6b6a63}
-html[data-theme="light"] .sg .detail p.dl{color:#55514a}
-html[data-theme="light"] .mine p.dl{color:#4a4740}
-html[data-theme="light"] .hlsub{color:#2c2a26}
-html[data-theme="light"] .hltag.b{color:#a85f5f}
-html[data-theme="light"] .hlpeng{color:#6b6a63}
-html[data-theme="light"] .hlsplit .yih4{color:#4f8a63}
-html[data-theme="light"] .hlsplit .jih4{color:#a85f5f}
-html[data-theme="light"] .chip.ji{color:#a85f5f}
-html[data-theme="light"] .chip.none{color:#6b6a63;border-color:#d9d2c2}
-html[data-theme="light"] .hlrow .d2{color:#2c2a26}
-html[data-theme="light"] .hlrow .d3{color:#6b6a63}
-html[data-theme="light"] .yjlegend{color:#6b6a63}
-html[data-theme="light"] .yjright .yjq{color:#2c2a26}
-html[data-theme="light"] .yjpart .txt{color:#2c2a26}
-html[data-theme="light"] .yjpart .txt.small{color:#3a382f}
-html[data-theme="light"] .yjstruct{color:#55514a}
-html[data-theme="light"] .hecard .body{color:#2c2a26}
-html[data-theme="light"] .hecard .body em{color:#6b6a63}
-html[data-theme="light"] .hecard .body .bai{color:#55514a}
-html[data-theme="light"] .mini2 .mv{color:#2c2a26}
-html[data-theme="light"] .chartnote{color:#6b6a63}
-html[data-theme="light"] .toast{color:#2c2a26}
-html[data-theme="light"] .hf .s{color:#6b6a63}
-html[data-theme="light"] .hentry span{color:#6b6a63}
-html[data-theme="light"] .clearbtn{color:#6b6a63}
-html[data-theme="light"] .clearbtn:hover{color:#a85f5f}
-html[data-theme="light"] .clearbtn.armed{color:#a85f5f}
-html[data-theme="light"] .modalbox p{color:#2c2a26}
-html[data-theme="light"] .modalbtns .myes{color:#a85f5f}
-html[data-theme="light"] .rblock .rh span{color:#6b6a63}
-html[data-theme="light"] .rblock p{color:#35332d}
-html[data-theme="light"] .yjsum p{color:#2c2a26}
+html[data-theme="light"] .spread:hover{border-color:#d6c8ae}
+html[data-theme="light"] .mini .rev{color:#b0432f}
+html[data-theme="light"] .mini .up{color:#3f7a56}
+html[data-theme="light"] .cardread p{color:#211d18}
+html[data-theme="light"] .rels li{color:#211d18}
+html[data-theme="light"] .adv li{color:#211d18}
+html[data-theme="light"] .reading p{color:#211d18}
+html[data-theme="light"] .notice{color:#5d564a}
+html[data-theme="light"] .sg p{color:#3a342c}
+html[data-theme="light"] .sg:hover{border-color:#d6c8ae}
+html[data-theme="light"] .sg .quick{color:#5d564a}
+html[data-theme="light"] .sg .detail p{color:#3a342c}
+html[data-theme="light"] .periods button:hover{border-color:#d6c8ae}
+html[data-theme="light"] .why p{color:#453f36}
+html[data-theme="light"] .why b{color:#211d18}
+html[data-theme="light"] .picksign button:hover{border-color:#d6c8ae}
+html[data-theme="light"] .mine p{color:#2f2a24}
+html[data-theme="light"] .hrow .hv button.yes.on{color:#3f7a56}
+html[data-theme="light"] .hrow .hv button.no.on{color:#b0432f}
+html[data-theme="light"] .hrow p{color:#453f36}
+html[data-theme="light"] .hrow p b{color:#5d564a}
+html[data-theme="light"] .mine .diff{color:#5d564a}
+html[data-theme="light"] .err{color:#b0432f}
+html[data-theme="light"] .legend span{color:#5d564a}
+html[data-theme="light"] .sg .detail p.dl{color:#4f483d}
+html[data-theme="light"] .mine p.dl{color:#453f36}
+html[data-theme="light"] .hlsub{color:#211d18}
+html[data-theme="light"] .hltag.b{color:#b0432f}
+html[data-theme="light"] .hlpeng{color:#5d564a}
+html[data-theme="light"] .hlsplit .yih4{color:#3f7a56}
+html[data-theme="light"] .hlsplit .jih4{color:#b0432f}
+html[data-theme="light"] .chip.ji{color:#b0432f}
+html[data-theme="light"] .chip.none{color:#5d564a;border-color:#d6c8ae}
+html[data-theme="light"] .hlrow .d2{color:#211d18}
+html[data-theme="light"] .hlrow .d3{color:#5d564a}
+html[data-theme="light"] .yjlegend{color:#5d564a}
+html[data-theme="light"] .yjright .yjq{color:#211d18}
+html[data-theme="light"] .yjpart .txt{color:#211d18}
+html[data-theme="light"] .yjpart .txt.small{color:#3a342c}
+html[data-theme="light"] .yjstruct{color:#4f483d}
+html[data-theme="light"] .hecard .body{color:#211d18}
+html[data-theme="light"] .hecard .body em{color:#5d564a}
+html[data-theme="light"] .hecard .body .bai{color:#4f483d}
+html[data-theme="light"] .mini2 .mv{color:#211d18}
+html[data-theme="light"] .chartnote{color:#5d564a}
+html[data-theme="light"] .toast{color:#211d18}
+html[data-theme="light"] .hf .s{color:#5d564a}
+html[data-theme="light"] .hentry span{color:#5d564a}
+html[data-theme="light"] .clearbtn{color:#5d564a}
+html[data-theme="light"] .clearbtn:hover{color:#b0432f}
+html[data-theme="light"] .clearbtn.armed{color:#b0432f}
+html[data-theme="light"] .modalbox p{color:#211d18}
+html[data-theme="light"] .modalbtns .myes{color:#b0432f}
+html[data-theme="light"] .rblock .rh span{color:#5d564a}
+html[data-theme="light"] .rblock p{color:#2f2a24}
+html[data-theme="light"] .yjsum p{color:#211d18}

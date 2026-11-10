@@ -5,6 +5,29 @@ window.MysticShare = (function () {
   const INNER = W - PAD * 2;
   const S = 2;
 
+  let T = null;
+  function palette(){
+    const cs = getComputedStyle(document.documentElement);
+    const V = n => (cs.getPropertyValue('--' + n) || '').trim();
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    return {
+      light: light,
+      bg0: light ? '#fffdf9' : '#12162a',
+      bg1: light ? '#f7f4ee' : '#0b0d14',
+      bg2: light ? '#efe9dd' : '#07080d',
+      gold: V('--gold') || '#c9a86a',
+      goldDim: V('--gold-dim') || '#8d7648',
+      text: V('--text') || '#e8e4dc',
+      muted: V('--muted') || '#8d8fa0',
+      warm: V('--warm') || '#d8b98a',
+      hexSolid: light ? '#3a352c' : '#e6d3ac',
+      up: light ? '#4f8a63' : '#8fbf9a',
+      down: light ? '#a85f5f' : '#c98b8b',
+      overlay: light ? 'rgba(0,0,0,.05)' : 'rgba(255,255,255,.05)'
+    };
+  }
+
+
   function wrap(ctx, text, maxW) {
     const out = [];
     let line = "";
@@ -42,7 +65,7 @@ window.MysticShare = (function () {
       const isYang = bin.charAt(idx) === "1";
       const dong = ch.indexOf(idx) !== -1;
       const y = top + row * gapY;
-      ctx.fillStyle = dong ? "#c9a86a" : "#e6d3ac";
+      ctx.fillStyle = dong ? T.gold : T.hexSolid;
       if (isYang) {
         ctx.fillRect(left, y, barW, barH);
       } else {
@@ -54,6 +77,7 @@ window.MysticShare = (function () {
   }
 
   function build(data) {
+    T = palette();
     const probe = ctx2d(10, 10);
     if (!probe) return null;
     const meas = probe.c;
@@ -103,9 +127,9 @@ window.MysticShare = (function () {
 
     /* ---- 背景 ---- */
     const g = ctx.createLinearGradient(0, 0, W, h);
-    g.addColorStop(0, "#12162a");
-    g.addColorStop(0.55, "#0b0d14");
-    g.addColorStop(1, "#07080d");
+    g.addColorStop(0, T.bg0);
+    g.addColorStop(0.55, T.bg1);
+    g.addColorStop(1, T.bg2);
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, h);
 
@@ -120,11 +144,11 @@ window.MysticShare = (function () {
     let y = PAD + 8;
 
     /* 品牌 + 日期 */
-    ctx.fillStyle = "#c9a86a";
+    ctx.fillStyle = T.gold;
     ctx.font = "600 24px 'Noto Serif SC', serif";
     ctx.textAlign = "left";
     ctx.fillText("MYSTIC", PAD, y);
-    ctx.fillStyle = "#6f7286";
+    ctx.fillStyle = T.muted;
     ctx.font = "22px 'Noto Serif SC', serif";
     ctx.textAlign = "right";
     ctx.fillText(data.date || "", W - PAD, y);
@@ -139,7 +163,7 @@ window.MysticShare = (function () {
     }
 
     /* 标题 */
-    ctx.fillStyle = "#e8e4dc";
+    ctx.fillStyle = T.text;
     ctx.font = "600 46px 'Noto Serif SC', serif";
     ctx.textAlign = hasSymbol ? "center" : "left";
     ctx.fillText(data.title || "", hasSymbol ? W / 2 : PAD, y);
@@ -147,7 +171,7 @@ window.MysticShare = (function () {
 
     /* 副标 */
     if (data.headline) {
-      ctx.fillStyle = "#a99a7e";
+      ctx.fillStyle = T.warm;
       ctx.font = "24px 'Noto Serif SC', serif";
       ctx.textAlign = hasSymbol ? "center" : "left";
       ctx.fillText(data.headline, hasSymbol ? W / 2 : PAD, y);
@@ -174,7 +198,7 @@ window.MysticShare = (function () {
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
-        ctx.fillStyle = "#c9a86a";
+        ctx.fillStyle = T.gold;
         ctx.fillText(t, tx + 17, ty + 8);
         tx += tw + 10;
       });
@@ -186,7 +210,7 @@ window.MysticShare = (function () {
       const cw = (INNER - 24) / 2;
       cols.forEach(function (col, ci) {
         const cx = PAD + ci * (cw + 24);
-        ctx.fillStyle = ci === 0 ? "#8fbf9a" : "#c98b8b";
+        ctx.fillStyle = ci === 0 ? T.up : T.down;
         ctx.font = "600 22px 'Noto Serif SC', serif";
         ctx.fillText(col.label, cx, y);
         let iy = y + 44;
@@ -194,9 +218,9 @@ window.MysticShare = (function () {
         (col.items || []).forEach(function (it) {
           const tw = ctx.measureText(it).width + 26;
           if (ix + tw > cx + cw) { ix = cx; iy += 46; }
-          ctx.fillStyle = "rgba(255,255,255,.05)";
+          ctx.fillStyle = T.overlay;
           ctx.fillRect(ix, iy - 2, tw, 38);
-          ctx.fillStyle = "#cfcbc2";
+          ctx.fillStyle = T.text;
           ctx.font = "22px 'Noto Serif SC', serif";
           ctx.fillText(it, ix + 13, iy + 6);
           ix += tw + 8;
@@ -207,12 +231,12 @@ window.MysticShare = (function () {
 
     /* 内容行 */
     rows.forEach(function (r) {
-      ctx.fillStyle = "#8d7648";
+      ctx.fillStyle = T.goldDim;
       ctx.font = "600 22px 'Noto Serif SC', serif";
       ctx.fillText(r.label, PAD, y);
       y += 40;
 
-      ctx.fillStyle = "#cfcbc2";
+      ctx.fillStyle = T.text;
       ctx.font = "27px 'Noto Serif SC', serif";
       wrap(ctx, r.text, INNER).forEach(function (ln) {
         ctx.fillText(ln, PAD, y);
@@ -230,7 +254,7 @@ window.MysticShare = (function () {
     ctx.stroke();
     y += 26;
 
-    ctx.fillStyle = "#6d7085";
+    ctx.fillStyle = T.muted;
     ctx.font = "20px 'Noto Serif SC', serif";
     wrap(ctx, data.footer || "mystic · 塔罗 / 星盘 / 黄历 / 易经", INNER).forEach(function (ln) {
       ctx.fillText(ln, PAD, y);

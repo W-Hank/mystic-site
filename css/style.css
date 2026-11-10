@@ -850,3 +850,126 @@ html[data-theme="light"] :is(textarea,input,select,.fold,.why,.place,.hentry,.hr
 html[data-theme="light"] .fold summary,
 html[data-theme="light"] .why summary,
 html[data-theme="light"] .place summary{background:transparent}
+
+/* ===== 浅色 · 整页同色（去掉白方块） ===== */
+/* 纸面统一：整页一个底色，卡片不再填白，靠留白和细线分块 */
+html[data-theme="light"] body{
+  background:#f2ebdc;
+  background-image:none;
+  color:#241f19;
+}
+
+html[data-theme="light"] :is(
+  textarea,.spread,.mini,.mini2,.dc,.sg,.why,.hrow,.hlrow,.place,.trendbox,
+  .hlcard,.yjleft,.hecard,.hf,.fold,.hentry,.back,.verdict,.sec,.yjpart,.rblock,.cardread,.hlsplit
+){
+  background:transparent;
+  border-color:transparent;
+  box-shadow:none;
+}
+
+/* 去掉卡片内边距后重新给足呼吸（原来 13–16px，现在 18–22px） */
+html[data-theme="light"] .hlcard{padding:22px 20px}
+html[data-theme="light"] .yjleft{padding:22px 20px}
+html[data-theme="light"] .hecard{padding:20px 20px}
+html[data-theme="light"] .trendbox{padding:18px 20px 8px}
+html[data-theme="light"] .sg{padding:16px 18px}
+html[data-theme="light"] .dc{padding:16px 18px}
+html[data-theme="light"] .mini{padding:16px 16px}
+html[data-theme="light"] .spread{padding:16px 18px}
+html[data-theme="light"] .rblock{padding:18px 20px}
+
+/* 列表类：不用框，用极淡的横向分隔线 */
+html[data-theme="light"] .hlrow{
+  border:0;
+  border-bottom:1px solid rgba(150,128,92,.16);
+  border-radius:0;
+  padding:13px 2px;
+}
+html[data-theme="light"] .hlrow:last-child{border-bottom:0}
+html[data-theme="light"] .hentry{
+  border:0;
+  border-bottom:1px solid rgba(150,128,92,.16);
+  border-radius:0;
+  padding:15px 2px;
+  box-shadow:none;
+}
+html[data-theme="light"] .hentry:last-child{border-bottom:0}
+html[data-theme="light"] .hentry:hover{background:rgba(150,112,47,.05);transform:none}
+
+/* 折叠区：只留一条上边线 */
+html[data-theme="light"] :is(.fold,.why,.place){
+  border:0;
+  border-top:1px solid rgba(150,128,92,.18);
+  border-radius:0;
+}
+html[data-theme="light"] :is(.fold,.why,.place) summary{padding:14px 2px}
+
+/* 文字：纸面上重新校准深浅 */
+html[data-theme="light"] :is(.hlsub,.hlbig b,.sg .nm,.dc .v,.yjpart .txt,.yjright .yjq,.hecard .body,.mini .nm){
+  color:#241f19;
+}
+html[data-theme="light"] :is(.sg p,.dc .s,.mini .el,.hlrow .d2,.hecard .body .bai,.why p,.hlsub){
+  color:#4a4338;
+}
+html[data-theme="light"] :is(.dc .k,.mini .pos,.hlrow .d1,.hlrow .d3,.legend span,.cite,.chartnote){
+  color:#6f675a;
+}
+
+/* 需要一点层次的元素保留极淡底：宜忌胶囊、选中态、按钮 */
+html[data-theme="light"] .chip{background:rgba(63,122,86,.08);border-color:rgba(63,122,86,.22);color:#37694c}
+html[data-theme="light"] .chip.ji{background:rgba(176,67,47,.07);border-color:rgba(176,67,47,.22);color:#99402e}
+html[data-theme="light"] .chip.none{background:transparent;border-color:rgba(150,128,92,.28);color:#7b7264}
+html[data-theme="light"] .spread.on{background:rgba(150,112,47,.06)}
+html[data-theme="light"] .sg.top{background:rgba(150,112,47,.05)}
+
+@media(max-width:760px){
+  html[data-theme="light"] .hlcard{padding:18px 16px}
+  html[data-theme="light"] .yjleft,
+  html[data-theme="light"] .hecard{padding:16px 15px}
+  html[data-theme="light"] .trendbox{padding:14px 15px 6px}
+  html[data-theme="light"] .sg,
+  html[data-theme="light"] .dc,
+  html[data-theme="light"] .mini,
+  html[data-theme="light"] .spread{padding:14px 15px}
+}
+
+/* ===== 浅色 · 导航与细节收尾 ===== */
+/* 导航按钮：别再做白卡，改成描边胶囊；选中态用一点茶金 */
+html[data-theme="light"] header nav button,
+html[data-theme="light"] header nav button.on,
+html[data-theme="light"] #nav{
+  background:transparent;
+  border:1px solid rgba(150,128,92,.26);
+  box-shadow:none;
+  color:#4a4338;
+}
+html[data-theme="light"] header nav button.on{
+  background:rgba(150,112,47,.10);
+  border-color:rgba(150,112,47,.45);
+  color:#7d5c22;
+}
+html[data-theme="light"] #nav{border-color:rgba(150,128,92,.30)}
+html[data-theme="light"] .themetoggle{
+  background:transparent;
+  border:1px solid rgba(150,128,92,.26);
+  color:#5d564a;
+}
+html[data-theme="light"] .themetoggle:hover{background:rgba(150,112,47,.08);color:#7d5c22}
+
+/* 宜/忌两栏：没有内容时不要撑出大空洞 */
+html[data-theme="light"] .hlsplit{gap:16px}
+html[data-theme="light"] .hlsplit h4{margin:0 0 8px}
+html[data-theme="light"] .chips{gap:6px}
+
+/* 底部说明：行距松一点，别贴着底 */
+html[data-theme="light"] footer{
+  line-height:1.95;
+  padding-bottom:56px;
+}
+
+/* ===== 浅色 · 纸张边距 ===== */
+html[data-theme="light"] main{padding-left:36px;padding-right:36px}
+@media(max-width:760px){
+  html[data-theme="light"] main{padding-left:20px;padding-right:20px;padding-bottom:64px}
+}

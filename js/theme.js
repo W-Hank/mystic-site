@@ -8,7 +8,17 @@
   var ICON = { auto: '◐', light: '☀', dark: '☾' };
   var NEXT = { auto: 'light', light: 'dark', dark: 'auto' };
 
+  /* 支持 ?theme=light / ?theme=dark 临时覆盖，方便分享与截图，不写 localStorage */
+  function urlMode() {
+    try {
+      var p = new URLSearchParams(location.search).get('theme');
+      return (p === 'light' || p === 'dark') ? p : null;
+    } catch (e) { return null; }
+  }
+
   function saved() {
+    var u = urlMode();
+    if (u) return u;
     try {
       var v = localStorage.getItem(KEY);
       return (v === 'light' || v === 'dark') ? v : 'auto';

@@ -821,3 +821,32 @@ html[data-theme="light"] .hentry{padding:18px 26px}
   html[data-theme="light"] .hecard{padding:18px 16px}
   html[data-theme="light"] .hentry{padding:14px 16px}
 }
+
+/* ===== 浅色 · 残留深色块修正 ===== */
+/* 「接下来七天」的横条：深色下是 rgba(23,27,41,.4)，浅色必须翻成白 */
+html[data-theme="light"] .hlrow{
+  background:#fffefb;
+  border-color:rgba(210,195,168,.55);
+  box-shadow:0 1px 2px rgba(120,96,60,.04);
+}
+html[data-theme="light"] .hlrow .d2{color:#211d18}
+html[data-theme="light"] .hlrow .d3{color:#5d564a}
+html[data-theme="light"] .hlrow:hover{border-color:rgba(150,112,47,.40)}
+
+/* 彭祖百忌：深色下是深灰竖线，浅色换成米金细线 */
+html[data-theme="light"] .hlpeng{
+  color:#5d564a;
+  border-left-color:#d9cbb2;
+}
+
+/* 其余可能带残色的面，统一压成白底 */
+html[data-theme="light"] :is(.yjbian,.hlsub,.hltags,.hlsplit,.chips,.hlbig){background:transparent}
+html[data-theme="light"] .yjbian{background:#fffefb;border-color:rgba(210,195,168,.55)}
+
+/* 输入框、折叠区、条目：浅色下不要留深底 */
+html[data-theme="light"] :is(textarea,input,select,.fold,.why,.place,.hentry,.hrow,.rblock,.yjpart){
+  background:#fffefb;
+}
+html[data-theme="light"] .fold summary,
+html[data-theme="light"] .why summary,
+html[data-theme="light"] .place summary{background:transparent}

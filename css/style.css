@@ -785,3 +785,39 @@ html[data-theme="light"] .modalbtns .myes{color:#b0432f}
 html[data-theme="light"] .rblock .rh span{color:#5d564a}
 html[data-theme="light"] .rblock p{color:#2f2a24}
 html[data-theme="light"] .yjsum p{color:#211d18}
+
+/* ===== 浅色 · 面与边（深色里看不出来的框，浅色里要收掉） ===== */
+html[data-theme="light"] :is(
+  .spread,.dc,.sg,.mini,.mini2,.hlcard,.yjleft,.hecard,.trendbox,
+  .hentry,.place,.why,.fold,.hf,.hrow,.sec,.rblock,.yjpart
+){
+  border-color:rgba(210,195,168,.55);
+  box-shadow:0 1px 2px rgba(120,96,60,.045);
+}
+/* 悬停时才把边显出来，平时靠阴影分层 */
+html[data-theme="light"] :is(.spread,.sg,.hentry,.place,.why):hover{
+  border-color:rgba(150,112,47,.45);
+  box-shadow:0 3px 12px rgba(120,96,60,.10);
+}
+/* 内边距偏紧的几个，浅色下加一点呼吸 */
+html[data-theme="light"] .sg{padding:16px 18px}
+html[data-theme="light"] .dc{padding:16px 18px}
+html[data-theme="light"] .mini{padding:16px}
+html[data-theme="light"] .spread{padding:16px 18px}
+html[data-theme="light"] .trendbox{padding:18px 20px 12px}
+html[data-theme="light"] .hlcard{padding:26px 28px}
+html[data-theme="light"] .yjleft{padding:24px}
+html[data-theme="light"] .hecard{padding:22px}
+html[data-theme="light"] .hentry{padding:18px 26px}
+
+@media(max-width:760px){
+  html[data-theme="light"] .sg,
+  html[data-theme="light"] .dc,
+  html[data-theme="light"] .mini,
+  html[data-theme="light"] .spread{padding:14px 15px}
+  html[data-theme="light"] .trendbox{padding:14px 14px 8px}
+  html[data-theme="light"] .hlcard{padding:20px 18px}
+  html[data-theme="light"] .yjleft,
+  html[data-theme="light"] .hecard{padding:18px 16px}
+  html[data-theme="light"] .hentry{padding:14px 16px}
+}

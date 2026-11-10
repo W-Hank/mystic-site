@@ -162,7 +162,7 @@
     $('#rverdict').innerHTML =
       `<div style="margin-bottom:8px">${r.head}</div>
        <div style="color:#b9b5ac;font-size:14.5px">${r.tone.elTone}</div>`
-      + (r.tension ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(60,66,88,.6);color:#d8b98a;font-size:14.5px">${r.tension}</div>` : "");
+      + (r.tension ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid (window.MysticTheme?window.MysticTheme.v("line","rgba(60,66,88,.6)"):"rgba(60,66,88,.6)");color:#d8b98a;font-size:14.5px">${r.tension}</div>` : "");
 
     // 牌阵图
     $('#rcards').innerHTML = cards.map((c, i) => `
@@ -700,14 +700,14 @@
     for (let v = lo; v <= hi + 1e-9; v += step) {
       const y = Y(v);
       s += '<line x1="' + L + '" y1="' + y.toFixed(1) + '" x2="' + (W - R) + '" y2="' + y.toFixed(1) +
-        '" stroke="' + (Math.abs(v) < 1e-9 ? "#3c4358" : "#20263a") + '"' + (Math.abs(v) < 1e-9 ? ' stroke-dasharray="3 3"' : '') + '/>';
+        '" stroke="' + (Math.abs(v) < 1e-9 ? (window.MysticTheme?window.MysticTheme.v("line","#3c4358"):"#3c4358") : (window.MysticTheme?window.MysticTheme.v("line","#20263a"):"#20263a")) + '"' + (Math.abs(v) < 1e-9 ? ' stroke-dasharray="3 3"' : '') + '/>';
       const label = (Math.abs(v) < 1e-9 ? "0" : v.toFixed(step < 0.1 ? 2 : 1).replace(/\.0$/, ""));
-      s += '<text x="' + (L - 10) + '" y="' + (y + 4).toFixed(1) + '" fill="#7b7e90" font-size="11" text-anchor="end">' + label + '</text>';
+      s += '<text x="' + (L - 10) + '" y="' + (y + 4).toFixed(1) + '" fill=(window.MysticTheme?window.MysticTheme.v("muted","#7b7e90"):"#7b7e90") font-size="11" text-anchor="end">' + label + '</text>';
     }
     // 纵轴
-    s += '<line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) + '" stroke="#2b3147"/>';
+    s += '<line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) + '" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147")/>';
     // 横轴
-    s += '<line x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '" stroke="#2b3147"/>';
+    s += '<line x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147")/>';
 
     // 今天竖线
     s += '<line x1="' + X(7).toFixed(1) + '" y1="' + T + '" x2="' + X(7).toFixed(1) + '" y2="' + (H - B) +
@@ -1547,8 +1547,8 @@
 
     const pt = (r, ph) => [cx + r * Math.cos(ph * Math.PI / 180), cy - r * Math.sin(ph * Math.PI / 180)];
 
-    s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#2b3147" stroke-width="1"/>`;
-    s += `<circle cx="${cx}" cy="${cy}" r="${R1}" fill="none" stroke="#2b3147" stroke-width="1"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147") stroke-width="1"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="${R1}" fill="none" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147") stroke-width="1"/>`;
     s += `<circle cx="${cx}" cy="${cy}" r="${R2}" fill="none" stroke="#232838" stroke-width="1"/>`;
 
     for (let i = 0; i < 12; i++) {
@@ -1584,7 +1584,7 @@
     });
 
     // 中心
-    s += `<circle cx="${cx}" cy="${cy}" r="42" fill="none" stroke="#2b3147" opacity=".6"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="42" fill="none" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147") opacity=".6"/>`;
     s += `<text x="${cx}" y="${cy - 6}" fill="#8d7648" font-size="10" text-anchor="middle" letter-spacing="3">NATAL</text>`;
     s += `<text x="${cx}" y="${cy + 14}" fill="#4d5062" font-size="9" text-anchor="middle">${ch.bodies[0].sign.cn}日 / ${ch.bodies[1].sign.cn}月</text>`;
 

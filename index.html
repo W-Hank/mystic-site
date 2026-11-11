@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <script>
-/* 主题：在 CSS 解析前定好，避免闪白/闪黑 */
+/* 主题：在 CSS 解析前定好，避免闪白/闪黑。默认深色，只有手动选过浅色才用浅色 */
 (function(){
   try{
+    var p = new URLSearchParams(location.search).get('theme');
+    if (p === 'light' || p === 'dark') { document.documentElement.setAttribute('data-theme', p); return; }
     var s = localStorage.getItem('mystic-theme');
-    var m = window.matchMedia('(prefers-color-scheme: light)').matches;
-    var t = (s === 'light' || s === 'dark') ? s : (m ? 'light' : 'dark');
-    document.documentElement.setAttribute('data-theme', t);
+    document.documentElement.setAttribute('data-theme', s === 'light' ? 'light' : 'dark');
   }catch(e){ document.documentElement.setAttribute('data-theme','dark'); }
 })();
 </script>
@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=20261111i">
+<link rel="stylesheet" href="css/style.css?v=20261111j">
 </head>
 <body>
 
@@ -310,7 +310,7 @@
 <script src="js/yijing-yao-bai2.js"></script>
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
-<script src="js/app.js?v=20261111i"></script>
-<script src="js/theme.js?v=20261111i"></script>
+<script src="js/app.js?v=20261111j"></script>
+<script src="js/theme.js?v=20261111j"></script>
 </body>
 </html>

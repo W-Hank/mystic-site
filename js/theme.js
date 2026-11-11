@@ -5,8 +5,8 @@
   var root = document.documentElement;
   var mq = window.matchMedia('(prefers-color-scheme: light)');
   var btn = document.getElementById('themeToggle');
-  var ICON = { auto: '◐', light: '☀', dark: '☾' };
-  var NEXT = { auto: 'light', light: 'dark', dark: 'auto' };
+  var ICON = { light: '☀', dark: '☾' };
+  var NEXT = { light: 'dark', dark: 'light' };
 
   /* 支持 ?theme=light / ?theme=dark 临时覆盖，方便分享与截图，不写 localStorage */
   function urlMode() {
@@ -22,13 +22,11 @@
     try {
       var v = localStorage.getItem(KEY);
       /* 默认深色：没存过选择就按深色走，不再跟随系统 */
-      return (v === 'light' || v === 'dark' || v === 'auto') ? v : 'dark';
+      return v === 'light' ? 'light' : 'dark';
     } catch (e) { return 'dark'; }
   }
 
-  function resolve(mode) {
-    return mode === 'auto' ? (mq.matches ? 'light' : 'dark') : mode;
-  }
+  function resolve(mode) { return mode === 'light' ? 'light' : 'dark'; }
 
   function apply(mode) {
     var t = resolve(mode);

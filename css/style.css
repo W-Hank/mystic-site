@@ -1034,3 +1034,40 @@ html[data-theme="light"] /* 易经综合解读 */ .yjsum{
 html[data-theme="light"] .err{
   color:#a8473a;
 }
+
+/* ===== 浅色 · 纯色底 + 高对比字 ===== */
+/* 背景：去掉渐变，整页一个纯色 */
+html[data-theme="light"] body{
+  background:#f4eee1;
+  background-image:none;
+  color:#1e1a14;
+}
+
+/* 卡片底和页面同色，只靠一条细线分块 —— 不再有白块和色差 */
+html[data-theme="light"] :is(
+  .spread,.mini,.mini2,.dc,.sg,.why,.hrow,.place,.trendbox,.hlcard,.yjleft,
+  .hecard,.hf,.fold,.hentry,.verdict,.sec,.yjpart,.cardread,.mine,.hlrow,
+  .notice,.rblock,.yjrule,.sg .detail p.dl,.mine p.dl,.hjcard,.hcard,.fcard
+){
+  background:#f4eee1;
+  box-shadow:none;
+  border-color:rgba(140,118,84,.30);
+}
+
+/* 文字：正文提到接近纯黑，次要信息保持可读 */
+html[data-theme="light"] :is(.sg p,.mine p,.sg .detail p.dl,.mine p.dl,.hecard .body,
+  .hlrow .d2,.why p,.rels li,.adv li,.reading p,.cardread p,.notice,.cite){
+  color:#221d16;
+}
+html[data-theme="light"] :is(.dc .v,.mini .nm,.sg .nm,.hlbig b,.hlsub,.yjname b,.dc .s){
+  color:#1b1710;
+}
+html[data-theme="light"] :is(.dc .k,.mini .pos,.hlrow .d1,.hlrow .d3,.legend span,.chartnote){
+  color:#5b5344;
+}
+html[data-theme="light"] footer{color:#4f4838}
+
+/* 选中/强调态：只加很轻的底色，避免大色块 */
+html[data-theme="light"] .sg.top{background:#efe7d5}
+html[data-theme="light"] .spread.on{background:#efe7d5}
+html[data-theme="light"] .verdict{background:#efe7d5}

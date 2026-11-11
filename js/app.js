@@ -168,6 +168,9 @@
     // 牌阵图
     $('#rcards').innerHTML = cards.map((c, i) => `
       <div class="mini">
+        ${c.arcana === "major" && typeof c.no === "number"
+          ? `<img class="cardface" src="img/cards/major/${c.no}.jpg" alt="${c.name}" loading="lazy">`
+          : ""}
         <span class="${revs[i] ? "rev" : "up"}">${revs[i] ? "逆" : "正"}</span>
         <div class="pos">${spread.pos[i]}</div>
         <div class="nm">${c.name}</div>

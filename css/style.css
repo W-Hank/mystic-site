@@ -1165,3 +1165,9 @@ html[data-theme="light"] .back.taken::before{color:#a8402c}
 html[data-theme="light"] #rtime{color:#221d16}
 html[data-theme="light"] #rtime b{color:#1b1710}
 html[data-theme="dark"] #rtime{color:var(--text)}
+
+/* ===== 牌面图 ===== */
+.cardface{display:block;width:100%;aspect-ratio:3/5;object-fit:cover;border-radius:8px;
+  margin-bottom:9px;border:1px solid var(--line);background:#f7f1e2}
+html[data-theme="light"] .cardface{border-color:rgba(140,118,84,.35);box-shadow:0 1px 3px rgba(120,96,60,.10)}
+html[data-theme="dark"] .cardface{box-shadow:0 2px 10px rgba(0,0,0,.35)}

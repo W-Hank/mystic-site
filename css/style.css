@@ -1140,3 +1140,28 @@ html[data-theme="light"] form{
   border-radius:14px;
   padding:16px 18px;
 }
+
+/* ===== 浅色牌背 + 时机字色 ===== */
+/* 牌背：深色是「深底 + 金线」，浅色改成「纸底 + 墨线 + 朱砂星」
+   之前只换了边框，底色那行 linear-gradient 还是 #1b2136，所以看着仍是黑的 */
+html[data-theme="light"] .back{
+  border:1px solid rgba(140,118,84,.45);
+  background:
+    repeating-linear-gradient(45deg, rgba(150,112,47,.07) 0 2px, transparent 2px 8px),
+    linear-gradient(160deg,#fbf6ea 0%,#efe6d3 100%);
+}
+html[data-theme="light"] .back::after{border-color:rgba(150,112,47,.30)}
+html[data-theme="light"] .back::before{color:rgba(168,64,44,.42)}
+html[data-theme="light"] .back:hover{border-color:rgba(150,112,47,.75)}
+html[data-theme="light"] .back.taken{
+  border-color:rgba(150,112,47,.85);
+  background:
+    repeating-linear-gradient(45deg, rgba(150,112,47,.09) 0 2px, transparent 2px 8px),
+    linear-gradient(160deg,#f8eed8 0%,#eadfc4 100%);
+}
+html[data-theme="light"] .back.taken::before{color:#a8402c}
+
+/* 「时机」那行：之前用的是 .timing 类，实际元素是 #rtime，所以没生效 */
+html[data-theme="light"] #rtime{color:#221d16}
+html[data-theme="light"] #rtime b{color:#1b1710}
+html[data-theme="dark"] #rtime{color:var(--text)}

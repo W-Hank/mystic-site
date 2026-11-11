@@ -1036,3 +1036,60 @@ html[data-theme="light"] .hlrow{
 /* ===== SVG 线色跟随主题 ===== */
 /* app.js 里有些 stroke 属性值无法在字符串里插值，统一写成哨兵值，交给 CSS 上色 */
 [stroke="__LINE__"]{stroke:var(--line)}
+
+/* ===== 浅色 · 框与字（第四轮） ===== */
+/* 1) 说明区：不要白底，只留一条上边线，字加深 */
+html[data-theme="light"] .cite{
+  background:transparent;
+  border:0;
+  border-top:1px solid rgba(150,128,92,.30);
+  color:#4a4438;
+  font-size:11.5px;
+  line-height:1.95;
+}
+html[data-theme="light"] footer{
+  background:transparent;
+  color:#544c3e;
+}
+
+/* 2) 原本有框的小块：浅色下把圆角框补回来（左侧保留金色强调） */
+html[data-theme="light"] :is(.notice,.sg .detail p.dl,.mine p.dl,.yjrule,.rblock){
+  background:#fbf7ee;
+  border:1px solid rgba(150,128,92,.32);
+  border-left:3px solid rgba(150,112,47,.55);
+  border-radius:10px;
+  padding:12px 14px;
+  color:#2e2820;
+}
+html[data-theme="light"] .rblock.plain{border-left-color:rgba(90,130,170,.45)}
+html[data-theme="light"] .rblock.aspect{border-left-color:rgba(70,140,110,.45)}
+
+/* 3) 所有卡片统一：有框、有底、留白足（含之前被我拍平的） */
+html[data-theme="light"] :is(
+  .spread,.mini,.mini2,.dc,.sg,.why,.hrow,.place,.trendbox,.hlcard,.yjleft,
+  .hecard,.hf,.fold,.hentry,.verdict,.sec,.yjpart,.cardread,.mine,.hlrow
+){
+  background:#fbf7ee;
+  border:1px solid rgba(150,128,92,.30);
+  box-shadow:0 1px 2px rgba(120,96,60,.05);
+}
+html[data-theme="light"] .verdict{
+  background:linear-gradient(90deg,rgba(150,112,47,.07),rgba(150,112,47,.02));
+  border-left:3px solid rgba(150,112,47,.55);
+  border-radius:0 12px 12px 0;
+}
+html[data-theme="light"] .sg.top{background:rgba(150,112,47,.06);border-color:rgba(150,112,47,.35)}
+
+/* 4) 字：正文加深加粗，小标签提亮一档 */
+html[data-theme="light"] :is(.sg p,.mine p,.sg .detail p.dl,.mine p.dl,.hecard .body,
+  .hlrow .d2,.why p,.rels li,.adv li,.reading p,.cardread p){color:#2b251d;font-weight:500}
+html[data-theme="light"] :is(.dc .v,.mini .nm,.sg .nm,.hlbig b,.hlsub,.yjname b){color:#21423b;font-weight:600}
+html[data-theme="light"] :is(.dc .k,.mini .pos,.hlrow .d1,.hlrow .d3,.legend span,.chartnote,
+  .periods button,.notice,.cite){color:#5b5345;font-weight:500}
+html[data-theme="light"] .hlrow .d3{color:#4c453a}
+html[data-theme="light"] :is(.hltag,.chip){font-weight:500}
+html[data-theme="light"] .hltag{background:rgba(150,112,47,.07);border-color:rgba(150,112,47,.28);color:#7a5b26}
+
+/* 5) 左侧强调线统一成金棕，不要黑 */
+html[data-theme="light"] .notice{border-left-color:rgba(150,112,47,.5)}
+html[data-theme="light"] .hlpeng{border-left-color:#c9b48a;color:#4a4438}

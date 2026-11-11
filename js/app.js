@@ -161,8 +161,8 @@
 
     $('#rverdict').innerHTML =
       `<div style="margin-bottom:8px">${r.head}</div>
-       <div style="color:#b9b5ac;font-size:14.5px">${r.tone.elTone}</div>`
-      + (r.tension ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid (window.MysticTheme?window.MysticTheme.v("line","rgba(60,66,88,.6)"):"rgba(60,66,88,.6)");color:#d8b98a;font-size:14.5px">${r.tension}</div>` : "");
+       <div style="color:var(--muted);font-size:14.5px">${r.tone.elTone}</div>`
+      + (r.tension ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid (window.MysticTheme?window.MysticTheme.v("line","rgba(60,66,88,.6)"):"rgba(60,66,88,.6)");color:var(--gold);font-size:14.5px">${r.tension}</div>` : "");
 
     // 牌阵图
     $('#rcards').innerHTML = cards.map((c, i) => `

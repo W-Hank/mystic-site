@@ -668,564 +668,369 @@ header nav button.on{
   footer{font-size:12.5px;padding:6px 8px 50px}
 }
 
-/* ===== 浅色主题 ===== */
+
+/* ===== 浅色主题（颜色单独覆盖，尺寸沿用深色，切换不位移） ===== */
 html[data-theme="light"]{
-  --ink:#f3ecdd; --ink2:#ece4d3; --card:#fffefb; --line:#d9cbb2;
-  --gold:#96702f; --gold-dim:#bb9a63; --text:#211d18; --muted:#5d564a; --warm:#8a5a2b;
+  --ink:#f3ecdd; --ink2:#ece4d3; --card:#fdf9f0; --line:#e2d6bd;
+  --gold:#8a6428; --gold-dim:#a98a55; --text:#241f19; --muted:#5f5849; --warm:#8a5a2b;
 }
 html[data-theme="light"] body{
-  background:radial-gradient(1200px 700px at 20% -10%, #fdf8ec 0%, #f3ecdd 55%, #eae0cc 100%);
-  color:var(--text);
+  background:#f3ecdd;
+  color:#241f19;
 }
-
-/* 深色半透明面 → 白面 */
-html[data-theme="light"] :is(
-  textarea,.spread,.mini,.dc,.sg,.why,.hrow,.place,.trendbox,
-  .hlcard,.yjleft,.hecard,.hf,.fold,.hentry,.back,.verdict,.sec
-){ background:#fffefb; }
-
-html[data-theme="light"] :is(.field input,.field select){
-  background:#fffefb;border-color:var(--line);color:var(--text);
+html[data-theme="light"] body{
+  background:radial-gradient(1200px 700px at 20% -10%, #1a2036 0%, #f3ecdd 55%, #07080d 100%);
+}
+html[data-theme="light"] nav button.on{
+  background:rgba(150,112,47,.07);
+}
+html[data-theme="light"] textarea{
+  background:rgba(255,252,244,.72);
+}
+html[data-theme="light"] textarea:focus{
+  box-shadow:0 0 0 4px rgba(150,112,47,.07);
+}
+html[data-theme="light"] .spread{
+  background:rgba(255,252,244,.5);
+}
+html[data-theme="light"] .spread:hover{
+  border-color:#cdbb98;
+}
+html[data-theme="light"] .spread.on{
+  background:rgba(150,112,47,.08);
+}
+html[data-theme="light"] .btn{
+  background:linear-gradient(180deg,#d3b47a,#8a6428);
+}
+html[data-theme="light"] .back{
+  border:1px solid #ddcfb2;
+  background:repeating-linear-gradient(45deg,rgba(150,112,47,.05) 0 2px,transparent 2px 7px),
+    linear-gradient(160deg,#1b2136,#12151f);
+}
+html[data-theme="light"] .verdict{
+  background:linear-gradient(90deg,rgba(150,112,47,.07),transparent);
+}
+html[data-theme="light"] .mini{
+  background:rgba(255,252,244,.6);
+}
+html[data-theme="light"] .mini .rev{
+  background:rgba(176,67,47,.16);
+  color:#a8473a;
+}
+html[data-theme="light"] .mini .up{
+  background:rgba(63,122,86,.14);
+  color:#3f7a56;
+}
+html[data-theme="light"] .cardread{
+  border-bottom:1px solid rgba(150,128,92,.7);
+}
+html[data-theme="light"] .cardread p{
+  color:#2b251d;
+}
+html[data-theme="light"] .rels li,
+html[data-theme="light"] .adv li{
+  color:#2b251d;
+}
+html[data-theme="light"] .field input,
+html[data-theme="light"] .field select{
+  background:rgba(255,252,244,.8);
+}
+html[data-theme="light"] .bod{
+  background:rgba(255,252,244,.45);
+}
+html[data-theme="light"] .reading p{
+  color:#2b251d;
+}
+html[data-theme="light"] .notice{
+  color:#615a4c;
+  border-left:2px solid #d8c9ab;
+  background:linear-gradient(90deg,rgba(240,232,216,.35),transparent);
+}
+html[data-theme="light"] .dc{
+  background:rgba(255,252,244,.55);
+}
+html[data-theme="light"] .sg{
+  background:rgba(255,252,244,.45);
+}
+html[data-theme="light"] .sg.top{
+  border-color:rgba(150,112,47,.55);
+  background:rgba(150,112,47,.06);
+}
+html[data-theme="light"] .sg.bottom{
+  border-color:rgba(176,67,47,.4);
+}
+html[data-theme="light"] .sg p{
+  color:#332d24;
+}
+html[data-theme="light"] .sg:hover{
+  border-color:#cdbb98;
+}
+html[data-theme="light"] .sg .quick{
+  color:#5f5849;
+}
+html[data-theme="light"] .sg .detail{
+  border-top:1px solid rgba(150,128,92,.6);
+}
+html[data-theme="light"] .sg .detail p{
+  color:#332d24;
+}
+html[data-theme="light"] .periods button:hover{
+  border-color:#cdbb98;
+}
+html[data-theme="light"] .periods button.on{
+  background:rgba(150,112,47,.08);
+}
+html[data-theme="light"] .why{
+  background:rgba(255,252,244,.4);
+}
+html[data-theme="light"] .why p{
+  color:#3a332a;
+}
+html[data-theme="light"] .why b{
+  color:#2b251d;
+}
+html[data-theme="light"] .picksign button:hover{
+  border-color:#cdbb98;
+}
+html[data-theme="light"] .picksign button.on{
+  background:rgba(150,112,47,.1);
+}
+html[data-theme="light"] .mine{
+  border:1px solid rgba(150,112,47,.35);
+  background:linear-gradient(135deg,rgba(150,112,47,.07),rgba(255,252,244,.5));
+}
+html[data-theme="light"] .sg.sel{
+  box-shadow:0 0 0 1px rgba(150,112,47,.25);
+}
+html[data-theme="light"] .hrow{
+  background:rgba(255,252,244,.45);
+}
+html[data-theme="light"] .hrow .hv button.yes.on{
+  border-color:rgba(63,122,86,.7);
+  color:#3f7a56;
+  background:rgba(63,122,86,.1);
+}
+html[data-theme="light"] .hrow .hv button.no.on{
+  border-color:rgba(176,67,47,.6);
+  color:#a8473a;
+  background:rgba(176,67,47,.1);
+}
+html[data-theme="light"] .hrow p{
+  color:#3a332a;
+}
+html[data-theme="light"] .hrow p b{
+  color:#5f5849;
+}
+html[data-theme="light"] .mine .diff{
+  border-top:1px solid rgba(150,112,47,.22);
+  color:#5f5849;
+}
+html[data-theme="light"] .place{
+  background:rgba(255,252,244,.4);
+}
+html[data-theme="light"] .err{
+  color:#a8473a;
+}
+html[data-theme="light"] .trendbox{
+  background:rgba(255,252,244,.45);
+}
+html[data-theme="light"] .legend span{
+  color:#5f5849;
+}
+html[data-theme="light"] .levelbar button.on{
+  background:rgba(150,112,47,.08);
+}
+html[data-theme="light"] .sg .detail p.dl{
+  border-left:2px solid rgba(150,112,47,.35);
+  background:rgba(150,112,47,.04);
+  color:#453d31;
+}
+html[data-theme="light"] .mine p.dl{
+  border-left:2px solid rgba(150,112,47,.4);
+  background:rgba(150,112,47,.05);
+  color:#3a332a;
+}
+html[data-theme="light"] .hlcard{
+  background:rgba(255,252,244,.5);
+}
+html[data-theme="light"] .hlsub{
+  color:#2b251d;
+}
+html[data-theme="light"] .hltag.y{
+  background:rgba(150,112,47,.07);
+}
+html[data-theme="light"] .hltag.b{
+  color:#a8473a;
+}
+html[data-theme="light"] .hlpeng{
+  color:#615a4c;
+  border-left:2px solid #d8c9ab;
+}
+html[data-theme="light"] .hlsplit .yih4{
+  color:#3f7a56;
+}
+html[data-theme="light"] .hlsplit .jih4{
+  color:#a8473a;
+}
+html[data-theme="light"] .chip{
+  background:rgba(63,122,86,.1);
+  color:#37694c;
+  border:1px solid rgba(63,122,86,.2);
+}
+html[data-theme="light"] .chip.ji{
+  background:rgba(176,67,47,.1);
+  color:#a8473a;
+  border-color:rgba(176,67,47,.2);
+}
+html[data-theme="light"] .chip.none{
+  color:#7a7364;
+  border-color:#ddcfb2;
+}
+html[data-theme="light"] .hlrow{
+  background:rgba(255,252,244,.4);
+}
+html[data-theme="light"] .hlrow .d2{
+  color:#2b251d;
+}
+html[data-theme="light"] .hlrow .d3{
+  color:#5f5849;
+}
+html[data-theme="light"] .yjleft{
+  background:rgba(255,252,244,.5);
+}
+html[data-theme="light"] .yline span{
+  background:#5f5849;
+}
+html[data-theme="light"] .yline.yin span{
+  background:#615a4c;
+}
+html[data-theme="light"] .yline.dong span{
+  box-shadow:0 0 6px rgba(150,112,47,.5);
+}
+html[data-theme="light"] .yjlegend{
+  color:#7a7364;
+}
+html[data-theme="light"] .yjright .yjq{
+  color:#2b251d;
+}
+html[data-theme="light"] .yjrule{
+  background:rgba(150,112,47,.06);
+}
+html[data-theme="light"] .yjpart .txt{
+  color:#241f19;
+}
+html[data-theme="light"] .yjpart .txt.small{
+  color:#332d24;
+}
+html[data-theme="light"] .yjbian{
+  background:rgba(255,252,244,.4);
+}
+html[data-theme="light"] .yjstruct{
+  color:#453d31;
+  border-top:1px solid rgba(150,128,92,.6);
+}
+html[data-theme="light"] .hecard{
+  background:rgba(255,252,244,.5);
+}
+html[data-theme="light"] .hecard .body{
+  color:#2b251d;
+}
+html[data-theme="light"] .hecard .body em{
+  color:#5f5849;
 }
 html[data-theme="light"] .cite{
-  color:#6f6d66;border-top-color:#d9cbb2;
+  border-top:1px solid #e6d9bf;
+  color:#5a5244;
 }
-html[data-theme="light"] .back{border-color:#d6c8ae}
-html[data-theme="light"] .back::after{border-color:rgba(150,112,47,.32)}
-html[data-theme="light"] header nav button,
-html[data-theme="light"] header nav button.on{
-  background:#fffefb;
+html[data-theme="light"] .hecard .body .bai{
+  border-top:1px solid rgba(150,128,92,.5);
+  color:#453d31;
 }
-html[data-theme="light"] header nav button.on{
-  background:linear-gradient(180deg, rgba(150,112,47,.12), rgba(150,112,47,.03));
+html[data-theme="light"] .mini2 .mv{
+  color:#2b251d;
+}
+html[data-theme="light"] .sharetop{
+  background:rgba(150,112,47,.08);
+}
+html[data-theme="light"] .sharetop:hover{
+  background:rgba(150,112,47,.16);
+}
+html[data-theme="light"] .dchips button.on{
+  background:rgba(150,112,47,.09);
+}
+html[data-theme="light"] .chartnote{
+  color:#7a7364;
+}
+html[data-theme="light"] .toast{
+  color:#2b251d;
+}
+html[data-theme="light"] .hf{
+  background:rgba(255,252,244,.5);
+}
+html[data-theme="light"] .hf .s{
+  color:#5f5849;
 }
 html[data-theme="light"] .hentry{
-  box-shadow:0 1px 2px rgba(92,74,42,.05);
+  background:rgba(255,252,244,.45);
 }
 html[data-theme="light"] .hentry:hover{
-  box-shadow:0 4px 14px rgba(92,74,42,.10);
+  background:rgba(150,112,47,.06);
 }
-html[data-theme="light"] .btn{
-  background:linear-gradient(180deg,#b08a4a,#8d6a2f);color:#fffaf0;
-  box-shadow:0 2px 10px rgba(150,112,47,.22);
+html[data-theme="light"] .hentry span{
+  color:#5f5849;
 }
-html[data-theme="light"] .verdict{background:#faf4e8}
-html[data-theme="light"] .sharetop{background:rgba(150,112,47,.10)}
-html[data-theme="light"] .sharetop:hover{background:rgba(150,112,47,.18)}
-
-/* 主题切换按钮 */
-.themetoggle{
-  background:rgba(23,27,41,.5);border:1px solid var(--line);color:var(--muted);
-  width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:15px;
-  font-family:inherit;line-height:1;display:flex;align-items:center;justify-content:center;
-  transition:.2s;padding:0;margin-right:2px;
+html[data-theme="light"] .fold{
+  background:rgba(255,252,244,.35);
 }
-.themetoggle:hover{border-color:var(--gold-dim);color:var(--gold);background:rgba(201,168,106,.08)}
-html[data-theme="light"] .themetoggle{background:#fffefb;color:#5d564a}
-html[data-theme="light"] .themetoggle:hover{background:#faf4e8;color:var(--gold)}
-
-@media(max-width:760px){
-  .themetoggle{width:44px;height:44px;font-size:16px}
+html[data-theme="light"] .clearbtn{
+  color:#5f5849;
 }
-
-/* ===== 浅色主题 · 逐条色值映射 ===== */
-html[data-theme="light"] .spread:hover{border-color:#d6c8ae}
-html[data-theme="light"] .mini .rev{color:#b0432f}
-html[data-theme="light"] .mini .up{color:#3f7a56}
-html[data-theme="light"] .cardread p{color:#211d18}
-html[data-theme="light"] .rels li{color:#211d18}
-html[data-theme="light"] .adv li{color:#211d18}
-html[data-theme="light"] .reading p{color:#211d18}
-html[data-theme="light"] .notice{color:#5d564a}
-html[data-theme="light"] .sg p{color:#3a342c}
-html[data-theme="light"] .sg:hover{border-color:#d6c8ae}
-html[data-theme="light"] .sg .quick{color:#5d564a}
-html[data-theme="light"] .sg .detail p{color:#3a342c}
-html[data-theme="light"] .periods button:hover{border-color:#d6c8ae}
-html[data-theme="light"] .why p{color:#453f36}
-html[data-theme="light"] .why b{color:#211d18}
-html[data-theme="light"] .picksign button:hover{border-color:#d6c8ae}
-html[data-theme="light"] .mine p{color:#2f2a24}
-html[data-theme="light"] .hrow .hv button.yes.on{color:#3f7a56}
-html[data-theme="light"] .hrow .hv button.no.on{color:#b0432f}
-html[data-theme="light"] .hrow p{color:#453f36}
-html[data-theme="light"] .hrow p b{color:#5d564a}
-html[data-theme="light"] .mine .diff{color:#5d564a}
-html[data-theme="light"] .err{color:#b0432f}
-html[data-theme="light"] .legend span{color:#5d564a}
-html[data-theme="light"] .sg .detail p.dl{color:#4f483d}
-html[data-theme="light"] .mine p.dl{color:#453f36}
-html[data-theme="light"] .hlsub{color:#211d18}
-html[data-theme="light"] .hltag.b{color:#b0432f}
-html[data-theme="light"] .hlpeng{color:#5d564a}
-html[data-theme="light"] .hlsplit .yih4{color:#3f7a56}
-html[data-theme="light"] .hlsplit .jih4{color:#b0432f}
-html[data-theme="light"] .chip.ji{color:#b0432f}
-html[data-theme="light"] .chip.none{color:#5d564a;border-color:#d6c8ae}
-html[data-theme="light"] .hlrow .d2{color:#211d18}
-html[data-theme="light"] .hlrow .d3{color:#5d564a}
-html[data-theme="light"] .yjlegend{color:#5d564a}
-html[data-theme="light"] .yjright .yjq{color:#211d18}
-html[data-theme="light"] .yjpart .txt{color:#211d18}
-html[data-theme="light"] .yjpart .txt.small{color:#3a342c}
-html[data-theme="light"] .yjstruct{color:#4f483d}
-html[data-theme="light"] .hecard .body{color:#211d18}
-html[data-theme="light"] .hecard .body em{color:#5d564a}
-html[data-theme="light"] .hecard .body .bai{color:#4f483d}
-html[data-theme="light"] .mini2 .mv{color:#211d18}
-html[data-theme="light"] .chartnote{color:#5d564a}
-html[data-theme="light"] .toast{color:#211d18}
-html[data-theme="light"] .hf .s{color:#5d564a}
-html[data-theme="light"] .hentry span{color:#5d564a}
-html[data-theme="light"] .clearbtn{color:#5d564a}
-html[data-theme="light"] .clearbtn:hover{color:#b0432f}
-html[data-theme="light"] .clearbtn.armed{color:#b0432f}
-html[data-theme="light"] .modalbox p{color:#211d18}
-html[data-theme="light"] .modalbtns .myes{color:#b0432f}
-html[data-theme="light"] .rblock .rh span{color:#5d564a}
-html[data-theme="light"] .rblock p{color:#2f2a24}
-html[data-theme="light"] .yjsum p{color:#211d18}
-
-/* ===== 浅色 · 面与边（深色里看不出来的框，浅色里要收掉） ===== */
-html[data-theme="light"] :is(
-  .spread,.dc,.sg,.mini,.mini2,.hlcard,.yjleft,.hecard,.trendbox,
-  .hentry,.place,.why,.fold,.hf,.hrow,.sec,.rblock,.yjpart
-){
-  border-color:rgba(210,195,168,.55);
-  box-shadow:0 1px 2px rgba(120,96,60,.045);
+html[data-theme="light"] .clearbtn:hover{
+  border-color:rgba(176,67,47,.6);
+  color:#a8473a;
 }
-/* 悬停时才把边显出来，平时靠阴影分层 */
-html[data-theme="light"] :is(.spread,.sg,.hentry,.place,.why):hover{
-  border-color:rgba(150,112,47,.45);
-  box-shadow:0 3px 12px rgba(120,96,60,.10);
+html[data-theme="light"] /* 2. 导航按钮统一加框美化（含六个功能项与首页） */ header nav button{
+  background:rgba(255,252,244,.5);
 }
-/* 内边距偏紧的几个，浅色下加一点呼吸 */
-html[data-theme="light"] .sg{padding:16px 18px}
-html[data-theme="light"] .dc{padding:16px 18px}
-html[data-theme="light"] .mini{padding:16px}
-html[data-theme="light"] .spread{padding:16px 18px}
-html[data-theme="light"] .trendbox{padding:18px 20px 12px}
-html[data-theme="light"] .hlcard{padding:26px 28px}
-html[data-theme="light"] .yjleft{padding:24px}
-html[data-theme="light"] .hecard{padding:22px}
-html[data-theme="light"] .hentry{padding:18px 26px}
-
-@media(max-width:760px){
-  html[data-theme="light"] .sg,
-  html[data-theme="light"] .dc,
-  html[data-theme="light"] .mini,
-  html[data-theme="light"] .spread{padding:14px 15px}
-  html[data-theme="light"] .trendbox{padding:14px 14px 8px}
-  html[data-theme="light"] .hlcard{padding:20px 18px}
-  html[data-theme="light"] .yjleft,
-  html[data-theme="light"] .hecard{padding:18px 16px}
-  html[data-theme="light"] .hentry{padding:14px 16px}
-}
-
-/* ===== 浅色 · 残留深色块修正 ===== */
-/* 「接下来七天」的横条：深色下是 rgba(23,27,41,.4)，浅色必须翻成白 */
-html[data-theme="light"] .hlrow{
-  background:#fffefb;
-  border-color:rgba(210,195,168,.55);
-  box-shadow:0 1px 2px rgba(120,96,60,.04);
-}
-html[data-theme="light"] .hlrow .d2{color:#211d18}
-html[data-theme="light"] .hlrow .d3{color:#5d564a}
-html[data-theme="light"] .hlrow:hover{border-color:rgba(150,112,47,.40)}
-
-/* 彭祖百忌：深色下是深灰竖线，浅色换成米金细线 */
-html[data-theme="light"] .hlpeng{
-  color:#5d564a;
-  border-left-color:#d9cbb2;
-}
-
-/* 其余可能带残色的面，统一压成白底 */
-html[data-theme="light"] :is(.yjbian,.hlsub,.hltags,.hlsplit,.chips,.hlbig){background:transparent}
-html[data-theme="light"] .yjbian{background:#fffefb;border-color:rgba(210,195,168,.55)}
-
-/* 输入框、折叠区、条目：浅色下不要留深底 */
-html[data-theme="light"] :is(textarea,input,select,.fold,.why,.place,.hentry,.hrow,.rblock,.yjpart){
-  background:#fffefb;
-}
-html[data-theme="light"] .fold summary,
-html[data-theme="light"] .why summary,
-html[data-theme="light"] .place summary{background:transparent}
-
-/* ===== 浅色 · 整页同色（去掉白方块） ===== */
-/* 纸面统一：整页一个底色，卡片不再填白，靠留白和细线分块 */
-html[data-theme="light"] body{
-  background:#f2ebdc;
-  background-image:none;
-  color:#241f19;
-}
-
-html[data-theme="light"] :is(
-  textarea,.spread,.mini,.mini2,.dc,.sg,.why,.hrow,.hlrow,.place,.trendbox,
-  .hlcard,.yjleft,.hecard,.hf,.fold,.hentry,.back,.verdict,.sec,.yjpart,.rblock,.cardread,.hlsplit
-){
-  background:transparent;
-  border-color:transparent;
-  box-shadow:none;
-}
-
-/* 去掉卡片内边距后重新给足呼吸（原来 13–16px，现在 18–22px） */
-html[data-theme="light"] .hlcard{padding:22px 20px}
-html[data-theme="light"] .yjleft{padding:22px 20px}
-html[data-theme="light"] .hecard{padding:20px 20px}
-html[data-theme="light"] .trendbox{padding:18px 20px 8px}
-html[data-theme="light"] .sg{padding:16px 18px}
-html[data-theme="light"] .dc{padding:16px 18px}
-html[data-theme="light"] .mini{padding:16px 16px}
-html[data-theme="light"] .spread{padding:16px 18px}
-html[data-theme="light"] .rblock{padding:18px 20px}
-
-/* 列表类：不用框，用极淡的横向分隔线 */
-html[data-theme="light"] .hlrow{
-  border:0;
-  border-bottom:1px solid rgba(150,128,92,.16);
-  border-radius:0;
-  padding:13px 2px;
-}
-html[data-theme="light"] .hlrow:last-child{border-bottom:0}
-html[data-theme="light"] .hentry{
-  border:0;
-  border-bottom:1px solid rgba(150,128,92,.16);
-  border-radius:0;
-  padding:15px 2px;
-  box-shadow:none;
-}
-html[data-theme="light"] .hentry:last-child{border-bottom:0}
-html[data-theme="light"] .hentry:hover{background:rgba(150,112,47,.05);transform:none}
-
-/* 折叠区：只留一条上边线 */
-html[data-theme="light"] :is(.fold,.why,.place){
-  border:0;
-  border-top:1px solid rgba(150,128,92,.18);
-  border-radius:0;
-}
-html[data-theme="light"] :is(.fold,.why,.place) summary{padding:14px 2px}
-
-/* 文字：纸面上重新校准深浅 */
-html[data-theme="light"] :is(.hlsub,.hlbig b,.sg .nm,.dc .v,.yjpart .txt,.yjright .yjq,.hecard .body,.mini .nm){
-  color:#241f19;
-}
-html[data-theme="light"] :is(.sg p,.dc .s,.mini .el,.hlrow .d2,.hecard .body .bai,.why p,.hlsub){
-  color:#4a4338;
-}
-html[data-theme="light"] :is(.dc .k,.mini .pos,.hlrow .d1,.hlrow .d3,.legend span,.cite,.chartnote){
-  color:#6f675a;
-}
-
-/* 需要一点层次的元素保留极淡底：宜忌胶囊、选中态、按钮 */
-html[data-theme="light"] .chip{background:rgba(63,122,86,.08);border-color:rgba(63,122,86,.22);color:#37694c}
-html[data-theme="light"] .chip.ji{background:rgba(176,67,47,.07);border-color:rgba(176,67,47,.22);color:#99402e}
-html[data-theme="light"] .chip.none{background:transparent;border-color:rgba(150,128,92,.28);color:#7b7264}
-html[data-theme="light"] .spread.on{background:rgba(150,112,47,.06)}
-html[data-theme="light"] .sg.top{background:rgba(150,112,47,.05)}
-
-@media(max-width:760px){
-  html[data-theme="light"] .hlcard{padding:18px 16px}
-  html[data-theme="light"] .yjleft,
-  html[data-theme="light"] .hecard{padding:16px 15px}
-  html[data-theme="light"] .trendbox{padding:14px 15px 6px}
-  html[data-theme="light"] .sg,
-  html[data-theme="light"] .dc,
-  html[data-theme="light"] .mini,
-  html[data-theme="light"] .spread{padding:14px 15px}
-}
-
-/* ===== 浅色 · 导航与细节收尾 ===== */
-/* 导航按钮：别再做白卡，改成描边胶囊；选中态用一点茶金 */
-html[data-theme="light"] header nav button,
-html[data-theme="light"] header nav button.on,
-html[data-theme="light"] #nav{
-  background:transparent;
-  border:1px solid rgba(150,128,92,.26);
-  box-shadow:none;
-  color:#4a4338;
+html[data-theme="light"] header nav button:hover{
+  background:rgba(150,112,47,.07);
 }
 html[data-theme="light"] header nav button.on{
-  background:rgba(150,112,47,.10);
-  border-color:rgba(150,112,47,.45);
-  color:#7d5c22;
+  background:linear-gradient(180deg, rgba(150,112,47,.18), rgba(150,112,47,.05));
+  box-shadow:0 0 0 1px rgba(150,112,47,.12), 0 3px 12px rgba(150,112,47,.10);
 }
-html[data-theme="light"] #nav{border-color:rgba(150,128,92,.30)}
-html[data-theme="light"] .themetoggle{
-  background:transparent;
-  border:1px solid rgba(150,128,92,.26);
-  color:#5d564a;
+html[data-theme="light"] header nav button{
+  background:rgba(255,252,244,.55);
 }
-html[data-theme="light"] .themetoggle:hover{background:rgba(150,112,47,.08);color:#7d5c22}
-
-/* 宜/忌两栏：没有内容时不要撑出大空洞 */
-html[data-theme="light"] .hlsplit{gap:16px}
-html[data-theme="light"] .hlsplit h4{margin:0 0 8px}
-html[data-theme="light"] .chips{gap:6px}
-
-/* 底部说明：行距松一点，别贴着底 */
-html[data-theme="light"] footer{
-  line-height:1.95;
-  padding-bottom:56px;
+html[data-theme="light"] header nav button[data-tab="home"]{
+  background:rgba(150,112,47,.05);
 }
-
-/* ===== 浅色 · 纸张边距 ===== */
-html[data-theme="light"] main{padding-left:36px;padding-right:36px}
-@media(max-width:760px){
-  html[data-theme="light"] main{padding-left:20px;padding-right:20px;padding-bottom:64px}
+html[data-theme="light"] header nav button[data-tab="home"].on{
+  background:linear-gradient(180deg, rgba(150,112,47,.20), rgba(150,112,47,.06));
 }
-
-/* ===== 浅色 · 全站深底统一（自动生成） ===== */
-/* 机制：把基础样式里所有深色背景/深色边，逐条翻成纸面卡片 */
-html[data-theme="light"] .notice{
-  background:#fbf6ea;
-  border-color:rgba(150,128,92,.28);
+html[data-theme="light"] .clearbtn.armed{
+  border-color:rgba(176,67,47,.7);
+  color:#a8473a;
+  background:rgba(176,67,47,.1);
 }
-html[data-theme="light"] .hlpeng{
-  background:#fbf6ea;
-  border-color:rgba(150,128,92,.28);
+html[data-theme="light"] .modalbtns .myes{
+  border:1px solid rgba(176,67,47,.55);
+  color:#a8473a;
 }
-html[data-theme="light"] .cite{
-  background:#fbf6ea;
-  border-color:rgba(150,128,92,.28);
+html[data-theme="light"] .modalbtns .myes:hover{
+  background:rgba(176,67,47,.14);
 }
-html[data-theme="light"] .modalbox{
-  background:#fbf6ea;
-  border-color:rgba(150,128,92,.28);
+html[data-theme="light"] .rblock{
+  background:rgba(255,252,244,.45);
+  border-left:2px solid rgba(150,112,47,.32);
 }
-
-/* ===== 浅色 · 卡片语言：有框、留白足 ===== */
-html[data-theme="light"] body{background:#f3ecdd;background-image:none}
-html[data-theme="light"] :is(
-  .hlcard,.yjleft,.hecard,.trendbox,.sg,.dc,.mini,.mini2,.spread,
-  .hentry,.rblock,.yjpart,.cardread,.fold,.why,.place
-){
-  background:#fbf6ea;
-  border:1px solid rgba(150,128,92,.28);
-  box-shadow:0 1px 2px rgba(120,96,60,.05);
+html[data-theme="light"] .rblock .rh span{
+  color:#615a4c;
 }
-html[data-theme="light"] .hlcard{padding:24px 24px}
-html[data-theme="light"] .yjleft{padding:24px 22px}
-html[data-theme="light"] .hecard{padding:22px 22px}
-html[data-theme="light"] .trendbox{padding:20px 22px 10px}
-html[data-theme="light"] .sg{padding:16px 18px}
-html[data-theme="light"] .dc{padding:16px 18px}
-html[data-theme="light"] .mini{padding:16px}
-html[data-theme="light"] .spread{padding:16px 18px}
-html[data-theme="light"] .hentry{padding:16px 22px;border-radius:14px}
-html[data-theme="light"] .rblock{padding:18px 20px}
-html[data-theme="light"] :is(.fold,.why,.place){border-radius:12px}
-html[data-theme="light"] :is(.fold,.why,.place) summary{padding:14px 18px}
-html[data-theme="light"] .hlrow{
-  background:#fbf6ea;
-  border:1px solid rgba(150,128,92,.22);
-  border-radius:11px;
-  padding:13px 16px;
+html[data-theme="light"] /* 易经综合解读 */ .yjsum{
+  border:1px solid rgba(150,112,47,.3);
+  background:linear-gradient(135deg,rgba(150,112,47,.08),rgba(255,252,244,.4));
 }
-@media (max-width:760px){
-  html[data-theme="light"] .hlcard{padding:18px 16px}
-  html[data-theme="light"] .yjleft,
-  html[data-theme="light"] .hecard{padding:18px 16px}
-  html[data-theme="light"] .trendbox{padding:16px 16px 8px}
-  html[data-theme="light"] .sg,
-  html[data-theme="light"] .dc,
-  html[data-theme="light"] .mini,
-  html[data-theme="light"] .spread{padding:15px 16px}
-  html[data-theme="light"] .hentry{padding:14px 16px}
-}
-
-/* ===== SVG 线色跟随主题 ===== */
-/* app.js 里有些 stroke 属性值无法在字符串里插值，统一写成哨兵值，交给 CSS 上色 */
-[stroke="__LINE__"]{stroke:var(--line)}
-
-/* ===== 浅色 · 框与字（第四轮） ===== */
-/* 1) 说明区：不要白底，只留一条上边线，字加深 */
-html[data-theme="light"] .cite{
-  background:transparent;
-  border:0;
-  border-top:1px solid rgba(150,128,92,.30);
-  color:#4a4438;
-  font-size:11.5px;
-  line-height:1.95;
-}
-html[data-theme="light"] footer{
-  background:transparent;
-  color:#544c3e;
-}
-
-/* 2) 原本有框的小块：浅色下把圆角框补回来（左侧保留金色强调） */
-html[data-theme="light"] :is(.notice,.sg .detail p.dl,.mine p.dl,.yjrule,.rblock){
-  background:#fbf7ee;
-  border:1px solid rgba(150,128,92,.32);
-  border-left:3px solid rgba(150,112,47,.55);
-  border-radius:10px;
-  padding:12px 14px;
-  color:#2e2820;
-}
-html[data-theme="light"] .rblock.plain{border-left-color:rgba(90,130,170,.45)}
-html[data-theme="light"] .rblock.aspect{border-left-color:rgba(70,140,110,.45)}
-
-/* 3) 所有卡片统一：有框、有底、留白足（含之前被我拍平的） */
-html[data-theme="light"] :is(
-  .spread,.mini,.mini2,.dc,.sg,.why,.hrow,.place,.trendbox,.hlcard,.yjleft,
-  .hecard,.hf,.fold,.hentry,.verdict,.sec,.yjpart,.cardread,.mine,.hlrow
-){
-  background:#fbf7ee;
-  border:1px solid rgba(150,128,92,.30);
-  box-shadow:0 1px 2px rgba(120,96,60,.05);
-}
-html[data-theme="light"] .verdict{
-  background:linear-gradient(90deg,rgba(150,112,47,.07),rgba(150,112,47,.02));
-  border-left:3px solid rgba(150,112,47,.55);
-  border-radius:0 12px 12px 0;
-}
-html[data-theme="light"] .sg.top{background:rgba(150,112,47,.06);border-color:rgba(150,112,47,.35)}
-
-/* 4) 字：正文加深加粗，小标签提亮一档 */
-html[data-theme="light"] :is(.sg p,.mine p,.sg .detail p.dl,.mine p.dl,.hecard .body,
-  .hlrow .d2,.why p,.rels li,.adv li,.reading p,.cardread p){color:#2b251d;font-weight:500}
-html[data-theme="light"] :is(.dc .v,.mini .nm,.sg .nm,.hlbig b,.hlsub,.yjname b){color:#21423b;font-weight:600}
-html[data-theme="light"] :is(.dc .k,.mini .pos,.hlrow .d1,.hlrow .d3,.legend span,.chartnote,
-  .periods button,.notice,.cite){color:#5b5345;font-weight:500}
-html[data-theme="light"] .hlrow .d3{color:#4c453a}
-html[data-theme="light"] :is(.hltag,.chip){font-weight:500}
-html[data-theme="light"] .hltag{background:rgba(150,112,47,.07);border-color:rgba(150,112,47,.28);color:#7a5b26}
-
-/* 5) 左侧强调线统一成金棕，不要黑 */
-html[data-theme="light"] .notice{border-left-color:rgba(150,112,47,.5)}
-html[data-theme="light"] .hlpeng{border-left-color:#c9b48a;color:#4a4438}
-
-/* ===== 浅色 · 贴近深色的面感（第五轮） ===== */
-/* 卡片不再用近白，改成只比纸底亮一点点的同族色，看起来像压出来的一层，不是贴上去的白纸 */
-html[data-theme="light"] :is(
-  .spread,.mini,.mini2,.dc,.sg,.why,.hrow,.place,.trendbox,.hlcard,.yjleft,
-  .hecard,.hf,.fold,.hentry,.verdict,.sec,.yjpart,.cardread,.mine,.hlrow,
-  .notice,.rblock,.yjrule,.sg .detail p.dl,.mine p.dl
-){
-  background:#f6efe0;
-  border:1px solid rgba(150,128,92,.26);
-  box-shadow:none;
-}
-html[data-theme="light"] .sg.top{background:#f3ead7;border-color:rgba(150,112,47,.34)}
-html[data-theme="light"] .verdict{
-  background:linear-gradient(90deg,rgba(150,112,47,.10),rgba(150,112,47,.03));
-  border:1px solid rgba(150,128,92,.26);
-  border-left:3px solid rgba(150,112,47,.55);
-}
-
-/* 提问框：塔罗 #q / 易经 #yjQ / 合参 #heQ，以及星盘生日输入，统一成圆角底 */
-html[data-theme="light"] :is(textarea,.field input,.field select){
-  background:#faf4e6;
-  border:1px solid rgba(150,128,92,.32);
-  border-radius:12px;
-  padding:12px 14px;
-  color:#2b251d;
-  font-weight:500;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-}
-html[data-theme="light"] textarea{line-height:1.75;min-height:74px}
-html[data-theme="light"] :is(textarea,.field input,.field select)::placeholder{color:#8a7f6b}
-html[data-theme="light"] :is(textarea,.field input,.field select):focus{
-  border-color:rgba(150,112,47,.55);
-  box-shadow:0 0 0 3px rgba(150,112,47,.10);
-  outline:none;
-}
-
-/* ===== 浅色 · 无框排版（第六轮） ===== */
-/* 浅色不要方框：所有卡片回到纸面，靠留白、字号和细线分区 */
-html[data-theme="light"] :is(
-  .spread,.mini,.mini2,.dc,.sg,.why,.hrow,.place,.trendbox,.hlcard,.yjleft,
-  .hecard,.hf,.fold,.hentry,.verdict,.sec,.yjpart,.cardread,.mine,.hlrow,
-  .notice,.rblock,.yjrule,.sg .detail p.dl,.mine p.dl,.mini .rev,.mini .up
-){
-  background:transparent;
-  border:0;
-  box-shadow:none;
-  border-radius:0;
-}
-
-/* 分区靠细线与留白，不靠框 */
-html[data-theme="light"] :is(.hlcard,.yjleft,.hecard,.trendbox,.yjpart,.cardread){
-  padding:20px 0 22px;
-  border-bottom:1px solid rgba(150,128,92,.20);
-}
-html[data-theme="light"] .hlcard{padding-top:6px}
-html[data-theme="light"] :is(.sg,.dc,.mini,.spread,.mine,.rblock){
-  padding:14px 0;
-}
-html[data-theme="light"] .hentry{padding:15px 0;border-bottom:1px solid rgba(150,128,92,.20);border-radius:0}
-html[data-theme="light"] .hentry:hover{background:transparent}
-html[data-theme="light"] .hentry:last-child{border-bottom:0}
-html[data-theme="light"] .hlrow{padding:12px 0;border-bottom:1px solid rgba(150,128,92,.16)}
-html[data-theme="light"] .hlrow:last-child{border-bottom:0}
-html[data-theme="light"] :is(.notice,.yjrule,.sg .detail p.dl,.mine p.dl){
-  padding:10px 0 10px 14px;
-  border-left:2px solid rgba(150,112,47,.45);
-}
-html[data-theme="light"] .verdict{
-  padding:14px 0 14px 16px;
-  border-left:2px solid rgba(150,112,47,.55);
-  background:transparent;
-}
-
-/* 排版：把清晰度交给字号、字重、字距，而不是底色 */
-html[data-theme="light"] body{color:#221e18;font-size:15.5px;line-height:1.78}
-html[data-theme="light"] :is(.sg p,.mine p,.sg .detail p.dl,.mine p.dl,.hecard .body,
-  .hlrow .d2,.why p,.rels li,.adv li,.reading p,.cardread p){
-  color:#221e18;font-weight:450;font-size:14px;line-height:1.78;
-}
-html[data-theme="light"] :is(.dc .v,.mini .nm,.sg .nm,.hlbig b,.hlsub,.yjname b){
-  color:#1a1712;font-weight:600;letter-spacing:.01em;
-}
-html[data-theme="light"] :is(.dc .k,.mini .pos,.hlrow .d1,.hlrow .d3,.legend span,.chartnote){
-  color:#6b6355;font-weight:500;letter-spacing:.10em;
-}
-html[data-theme="light"] :is(.hltag,.chip){
-  background:transparent;border:0;padding:0 2px;font-weight:500;letter-spacing:.04em;
-}
-html[data-theme="light"] .hltag{color:#7a5b26}
-html[data-theme="light"] .chip{color:#37694c}
-html[data-theme="light"] .chip.ji{color:#99402e}
-html[data-theme="light"] .chip.none{color:#8a8172}
-html[data-theme="light"] .chip + .chip{margin-left:10px}
-html[data-theme="light"] .chip + .chip::before{content:"·";margin-right:10px;color:#c0b39a}
-
-/* 标题层级：字距拉开，重量加重 */
-html[data-theme="light"] :is(.sec h3,.spread-head,.hlsplit h4,.hlbig span,.hecard .src){
-  color:#7a7263;
-  letter-spacing:.20em;
-  font-weight:600;
-  font-size:11.5px;
-}
-html[data-theme="light"] .hlbig b{font-size:27px;letter-spacing:.04em;font-weight:600}
-
-/* 输入框保留可点的边界（不是装饰框，是功能边界），其余一律去框 */
-html[data-theme="light"] :is(textarea,.field input,.field select){
-  background:transparent;
-  border:0;
-  border-bottom:1px solid rgba(150,128,92,.45);
-  border-radius:0;
-  padding:10px 2px;
-  color:#221e18;
-  font-weight:450;
-  box-shadow:none;
-}
-html[data-theme="light"] :is(textarea,.field input,.field select):focus{
-  border-bottom-color:rgba(150,112,47,.85);
-  box-shadow:0 1px 0 rgba(150,112,47,.35);
-}
-html[data-theme="light"] :is(textarea,.field input,.field select)::placeholder{color:#9b9181}
-
-/* 按钮：深色下是金渐变，浅色下改成描边，别抢画面 */
-html[data-theme="light"] .btn{
-  background:transparent;
-  color:#7a5b26;
-  border:1px solid rgba(150,112,47,.55);
-  box-shadow:none;
-}
-html[data-theme="light"] .btn:hover{background:rgba(150,112,47,.07)}
-
-/* 说明区：只留一条极细上边线 */
-html[data-theme="light"] .cite{
-  background:transparent;border:0;border-top:1px solid rgba(150,128,92,.22);
-  color:#5a5244;font-size:11.5px;line-height:1.95;
+html[data-theme="light"] .err{
+  color:#a8473a;
 }

@@ -21,8 +21,9 @@
     if (u) return u;
     try {
       var v = localStorage.getItem(KEY);
-      return (v === 'light' || v === 'dark') ? v : 'auto';
-    } catch (e) { return 'auto'; }
+      /* 默认深色：没存过选择就按深色走，不再跟随系统 */
+      return (v === 'light' || v === 'dark' || v === 'auto') ? v : 'dark';
+    } catch (e) { return 'dark'; }
   }
 
   function resolve(mode) {

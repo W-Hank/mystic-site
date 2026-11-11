@@ -1129,3 +1129,103 @@ html[data-theme="light"] :is(textarea,.field input,.field select):focus{
   box-shadow:0 0 0 3px rgba(150,112,47,.10);
   outline:none;
 }
+
+/* ===== 浅色 · 无框排版（第六轮） ===== */
+/* 浅色不要方框：所有卡片回到纸面，靠留白、字号和细线分区 */
+html[data-theme="light"] :is(
+  .spread,.mini,.mini2,.dc,.sg,.why,.hrow,.place,.trendbox,.hlcard,.yjleft,
+  .hecard,.hf,.fold,.hentry,.verdict,.sec,.yjpart,.cardread,.mine,.hlrow,
+  .notice,.rblock,.yjrule,.sg .detail p.dl,.mine p.dl,.mini .rev,.mini .up
+){
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  border-radius:0;
+}
+
+/* 分区靠细线与留白，不靠框 */
+html[data-theme="light"] :is(.hlcard,.yjleft,.hecard,.trendbox,.yjpart,.cardread){
+  padding:20px 0 22px;
+  border-bottom:1px solid rgba(150,128,92,.20);
+}
+html[data-theme="light"] .hlcard{padding-top:6px}
+html[data-theme="light"] :is(.sg,.dc,.mini,.spread,.mine,.rblock){
+  padding:14px 0;
+}
+html[data-theme="light"] .hentry{padding:15px 0;border-bottom:1px solid rgba(150,128,92,.20);border-radius:0}
+html[data-theme="light"] .hentry:hover{background:transparent}
+html[data-theme="light"] .hentry:last-child{border-bottom:0}
+html[data-theme="light"] .hlrow{padding:12px 0;border-bottom:1px solid rgba(150,128,92,.16)}
+html[data-theme="light"] .hlrow:last-child{border-bottom:0}
+html[data-theme="light"] :is(.notice,.yjrule,.sg .detail p.dl,.mine p.dl){
+  padding:10px 0 10px 14px;
+  border-left:2px solid rgba(150,112,47,.45);
+}
+html[data-theme="light"] .verdict{
+  padding:14px 0 14px 16px;
+  border-left:2px solid rgba(150,112,47,.55);
+  background:transparent;
+}
+
+/* 排版：把清晰度交给字号、字重、字距，而不是底色 */
+html[data-theme="light"] body{color:#221e18;font-size:15.5px;line-height:1.78}
+html[data-theme="light"] :is(.sg p,.mine p,.sg .detail p.dl,.mine p.dl,.hecard .body,
+  .hlrow .d2,.why p,.rels li,.adv li,.reading p,.cardread p){
+  color:#221e18;font-weight:450;font-size:14px;line-height:1.78;
+}
+html[data-theme="light"] :is(.dc .v,.mini .nm,.sg .nm,.hlbig b,.hlsub,.yjname b){
+  color:#1a1712;font-weight:600;letter-spacing:.01em;
+}
+html[data-theme="light"] :is(.dc .k,.mini .pos,.hlrow .d1,.hlrow .d3,.legend span,.chartnote){
+  color:#6b6355;font-weight:500;letter-spacing:.10em;
+}
+html[data-theme="light"] :is(.hltag,.chip){
+  background:transparent;border:0;padding:0 2px;font-weight:500;letter-spacing:.04em;
+}
+html[data-theme="light"] .hltag{color:#7a5b26}
+html[data-theme="light"] .chip{color:#37694c}
+html[data-theme="light"] .chip.ji{color:#99402e}
+html[data-theme="light"] .chip.none{color:#8a8172}
+html[data-theme="light"] .chip + .chip{margin-left:10px}
+html[data-theme="light"] .chip + .chip::before{content:"·";margin-right:10px;color:#c0b39a}
+
+/* 标题层级：字距拉开，重量加重 */
+html[data-theme="light"] :is(.sec h3,.spread-head,.hlsplit h4,.hlbig span,.hecard .src){
+  color:#7a7263;
+  letter-spacing:.20em;
+  font-weight:600;
+  font-size:11.5px;
+}
+html[data-theme="light"] .hlbig b{font-size:27px;letter-spacing:.04em;font-weight:600}
+
+/* 输入框保留可点的边界（不是装饰框，是功能边界），其余一律去框 */
+html[data-theme="light"] :is(textarea,.field input,.field select){
+  background:transparent;
+  border:0;
+  border-bottom:1px solid rgba(150,128,92,.45);
+  border-radius:0;
+  padding:10px 2px;
+  color:#221e18;
+  font-weight:450;
+  box-shadow:none;
+}
+html[data-theme="light"] :is(textarea,.field input,.field select):focus{
+  border-bottom-color:rgba(150,112,47,.85);
+  box-shadow:0 1px 0 rgba(150,112,47,.35);
+}
+html[data-theme="light"] :is(textarea,.field input,.field select)::placeholder{color:#9b9181}
+
+/* 按钮：深色下是金渐变，浅色下改成描边，别抢画面 */
+html[data-theme="light"] .btn{
+  background:transparent;
+  color:#7a5b26;
+  border:1px solid rgba(150,112,47,.55);
+  box-shadow:none;
+}
+html[data-theme="light"] .btn:hover{background:rgba(150,112,47,.07)}
+
+/* 说明区：只留一条极细上边线 */
+html[data-theme="light"] .cite{
+  background:transparent;border:0;border-top:1px solid rgba(150,128,92,.22);
+  color:#5a5244;font-size:11.5px;line-height:1.95;
+}

@@ -973,3 +973,66 @@ html[data-theme="light"] main{padding-left:36px;padding-right:36px}
 @media(max-width:760px){
   html[data-theme="light"] main{padding-left:20px;padding-right:20px;padding-bottom:64px}
 }
+
+/* ===== 浅色 · 全站深底统一（自动生成） ===== */
+/* 机制：把基础样式里所有深色背景/深色边，逐条翻成纸面卡片 */
+html[data-theme="light"] .notice{
+  background:#fbf6ea;
+  border-color:rgba(150,128,92,.28);
+}
+html[data-theme="light"] .hlpeng{
+  background:#fbf6ea;
+  border-color:rgba(150,128,92,.28);
+}
+html[data-theme="light"] .cite{
+  background:#fbf6ea;
+  border-color:rgba(150,128,92,.28);
+}
+html[data-theme="light"] .modalbox{
+  background:#fbf6ea;
+  border-color:rgba(150,128,92,.28);
+}
+
+/* ===== 浅色 · 卡片语言：有框、留白足 ===== */
+html[data-theme="light"] body{background:#f3ecdd;background-image:none}
+html[data-theme="light"] :is(
+  .hlcard,.yjleft,.hecard,.trendbox,.sg,.dc,.mini,.mini2,.spread,
+  .hentry,.rblock,.yjpart,.cardread,.fold,.why,.place
+){
+  background:#fbf6ea;
+  border:1px solid rgba(150,128,92,.28);
+  box-shadow:0 1px 2px rgba(120,96,60,.05);
+}
+html[data-theme="light"] .hlcard{padding:24px 24px}
+html[data-theme="light"] .yjleft{padding:24px 22px}
+html[data-theme="light"] .hecard{padding:22px 22px}
+html[data-theme="light"] .trendbox{padding:20px 22px 10px}
+html[data-theme="light"] .sg{padding:16px 18px}
+html[data-theme="light"] .dc{padding:16px 18px}
+html[data-theme="light"] .mini{padding:16px}
+html[data-theme="light"] .spread{padding:16px 18px}
+html[data-theme="light"] .hentry{padding:16px 22px;border-radius:14px}
+html[data-theme="light"] .rblock{padding:18px 20px}
+html[data-theme="light"] :is(.fold,.why,.place){border-radius:12px}
+html[data-theme="light"] :is(.fold,.why,.place) summary{padding:14px 18px}
+html[data-theme="light"] .hlrow{
+  background:#fbf6ea;
+  border:1px solid rgba(150,128,92,.22);
+  border-radius:11px;
+  padding:13px 16px;
+}
+@media (max-width:760px){
+  html[data-theme="light"] .hlcard{padding:18px 16px}
+  html[data-theme="light"] .yjleft,
+  html[data-theme="light"] .hecard{padding:18px 16px}
+  html[data-theme="light"] .trendbox{padding:16px 16px 8px}
+  html[data-theme="light"] .sg,
+  html[data-theme="light"] .dc,
+  html[data-theme="light"] .mini,
+  html[data-theme="light"] .spread{padding:15px 16px}
+  html[data-theme="light"] .hentry{padding:14px 16px}
+}
+
+/* ===== SVG 线色跟随主题 ===== */
+/* app.js 里有些 stroke 属性值无法在字符串里插值，统一写成哨兵值，交给 CSS 上色 */
+[stroke="__LINE__"]{stroke:var(--line)}

@@ -705,9 +705,9 @@
       s += '<text x="' + (L - 10) + '" y="' + (y + 4).toFixed(1) + '" fill=(window.MysticTheme?window.MysticTheme.v("muted","#7b7e90"):"#7b7e90") font-size="11" text-anchor="end">' + label + '</text>';
     }
     // 纵轴
-    s += '<line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) + '" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147")/>';
+    s += '<line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) + '" stroke="__LINE__"/>';
     // 横轴
-    s += '<line x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147")/>';
+    s += '<line x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '" stroke="__LINE__"/>';
 
     // 今天竖线
     s += '<line x1="' + X(7).toFixed(1) + '" y1="' + T + '" x2="' + X(7).toFixed(1) + '" y2="' + (H - B) +
@@ -1547,15 +1547,15 @@
 
     const pt = (r, ph) => [cx + r * Math.cos(ph * Math.PI / 180), cy - r * Math.sin(ph * Math.PI / 180)];
 
-    s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147") stroke-width="1"/>`;
-    s += `<circle cx="${cx}" cy="${cy}" r="${R1}" fill="none" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147") stroke-width="1"/>`;
-    s += `<circle cx="${cx}" cy="${cy}" r="${R2}" fill="none" stroke="#232838" stroke-width="1"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="__LINE__" stroke-width="1"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="${R1}" fill="none" stroke="__LINE__" stroke-width="1"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="${R2}" fill="none" stroke="__LINE__" stroke-width="1"/>`;
 
     for (let i = 0; i < 12; i++) {
       const L = i * 30;
       const [x1, y1] = pt(R2, phi(L));
       const [x2, y2] = pt(R, phi(L));
-      s += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#232838"/>`;
+      s += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="__LINE__"/>`;
       const [lx, ly] = pt((R1 + R) / 2, phi(L + 15));
       s += `<text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" fill="#8d7648" font-size="13" text-anchor="middle" font-family="serif">${A.SIGNS[i].cn}</text>`;
     }
@@ -1584,7 +1584,7 @@
     });
 
     // 中心
-    s += `<circle cx="${cx}" cy="${cy}" r="42" fill="none" stroke=(window.MysticTheme?window.MysticTheme.v("line","#2b3147"):"#2b3147") opacity=".6"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="42" fill="none" stroke="__LINE__" opacity=".6"/>`;
     s += `<text x="${cx}" y="${cy - 6}" fill="#8d7648" font-size="10" text-anchor="middle" letter-spacing="3">NATAL</text>`;
     s += `<text x="${cx}" y="${cy + 14}" fill="#4d5062" font-size="9" text-anchor="middle">${ch.bodies[0].sign.cn}日 / ${ch.bodies[1].sign.cn}月</text>`;
 

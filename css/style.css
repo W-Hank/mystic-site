@@ -1071,3 +1071,72 @@ html[data-theme="light"] footer{color:#4f4838}
 html[data-theme="light"] .sg.top{background:#efe7d5}
 html[data-theme="light"] .spread.on{background:#efe7d5}
 html[data-theme="light"] .verdict{background:#efe7d5}
+
+/* ===== UI 修正：圆按钮 / 选中态 / 卡片点缀 / SVG 字色 ===== */
+/* SVG 文字/线条跟主题 */
+[fill="__TEXT__"]{fill:var(--text)}
+[fill="__MUTED__"]{fill:var(--muted)}
+[fill="__GOLD__"]{fill:var(--gold)}
+[stroke="__LINE__"]{stroke:var(--line)}
+
+/* 主题切换按钮：恢复圆形 */
+.themetoggle{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--line);color:var(--muted);
+  font-size:15px;line-height:1;padding:0;margin-right:2px;cursor:pointer;
+  transition:.2s;font-family:inherit;
+}
+.themetoggle:hover{border-color:var(--gold-dim);color:var(--gold);background:rgba(201,168,106,.08)}
+html[data-theme="light"] .themetoggle{border-color:rgba(140,118,84,.35);color:#5b5344}
+html[data-theme="light"] .themetoggle:hover{color:#8a6428;background:rgba(150,112,47,.08)}
+@media(max-width:760px){.themetoggle{width:44px;height:44px;font-size:16px}}
+
+/* 抽牌方式：选中态明确区分 */
+.spread.on{
+  border-color:var(--gold);
+  background:rgba(201,168,106,.10);
+  box-shadow:inset 0 0 0 1px rgba(201,168,106,.35);
+}
+.spread.on b{color:var(--gold)}
+.spread.on::after{content:"✓";float:right;color:var(--gold);font-size:13px}
+
+/* 圆角框加点颜色，不要一律同色 */
+html[data-theme="light"] .hlcard{border-left:3px solid rgba(150,112,47,.45)}
+html[data-theme="light"] .yjleft{border-left:3px solid rgba(63,122,86,.40)}
+html[data-theme="light"] .hecard{border-left:3px solid rgba(58,107,147,.40)}
+html[data-theme="light"] .trendbox{border-left:3px solid rgba(150,112,47,.35)}
+html[data-theme="light"] .sg.top{border-left:3px solid rgba(63,122,86,.45)}
+html[data-theme="light"] .sg.bottom{border-left:3px solid rgba(176,67,47,.45)}
+html[data-theme="light"] .mini{border-left:3px solid rgba(150,112,47,.30)}
+html[data-theme="light"] :is(.dc,.hf,.rblock){border-left:3px solid rgba(140,118,84,.28)}
+html[data-theme="light"] .verdict{border-left:3px solid rgba(150,112,47,.55)}
+html[data-theme="light"] .notice{border-left:3px solid rgba(58,107,147,.45)}
+html[data-theme="light"] .mine{border-left:3px solid rgba(63,122,86,.35)}
+
+html[data-theme="dark"] .hlcard{border-left:3px solid rgba(201,168,106,.45)}
+html[data-theme="dark"] .yjleft{border-left:3px solid rgba(143,191,154,.40)}
+html[data-theme="dark"] .hecard{border-left:3px solid rgba(143,180,217,.40)}
+html[data-theme="dark"] .notice{border-left:3px solid rgba(143,180,217,.45)}
+
+/* 塔罗「时机」文字与解读正文同色 */
+html[data-theme="light"] :is(.timing,.when,.timingbox,.timingbox p,.yjtiming){color:#221d16}
+html[data-theme="dark"] :is(.timing,.when,.timingbox,.timingbox p,.yjtiming){color:var(--text)}
+
+/* ===== 浅色 · 说明文字对比度 ===== */
+/* 表单说明、页脚方法说明、免责声明：之前偏灰绿，全部压深 */
+html[data-theme="light"] :is(.notice,.hint,.cite,.chartnote,.legend span,.formnote,.hint2){
+  color:#4a4336;
+}
+html[data-theme="light"] footer{color:#48412f}
+html[data-theme="light"] :is(.notice,.hint){border-left-color:rgba(58,107,147,.45)}
+html[data-theme="light"] .cite{color:#4a4336}
+html[data-theme="light"] :is(.field label,.check,.field .unit){color:#544c3d}
+
+/* 表单区块也加一点描边，别散在纸面上 */
+html[data-theme="light"] .panel .form,
+html[data-theme="light"] form{
+  border:1px solid rgba(140,118,84,.28);
+  border-radius:14px;
+  padding:16px 18px;
+}

@@ -702,7 +702,7 @@
       s += '<line x1="' + L + '" y1="' + y.toFixed(1) + '" x2="' + (W - R) + '" y2="' + y.toFixed(1) +
         '" stroke="' + (Math.abs(v) < 1e-9 ? (window.MysticTheme?window.MysticTheme.v("line","#3c4358"):"#3c4358") : (window.MysticTheme?window.MysticTheme.v("line","#20263a"):"#20263a")) + '"' + (Math.abs(v) < 1e-9 ? ' stroke-dasharray="3 3"' : '') + '/>';
       const label = (Math.abs(v) < 1e-9 ? "0" : v.toFixed(step < 0.1 ? 2 : 1).replace(/\.0$/, ""));
-      s += '<text x="' + (L - 10) + '" y="' + (y + 4).toFixed(1) + '" fill=(window.MysticTheme?window.MysticTheme.v("muted","#7b7e90"):"#7b7e90") font-size="11" text-anchor="end">' + label + '</text>';
+      s += '<text x="' + (L - 10) + '" y="' + (y + 4).toFixed(1) + '" fill="__MUTED__" font-size="11" text-anchor="end">' + label + '</text>';
     }
     // 纵轴
     s += '<line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (H - B) + '" stroke="__LINE__"/>';
@@ -712,7 +712,7 @@
     // 今天竖线
     s += '<line x1="' + X(7).toFixed(1) + '" y1="' + T + '" x2="' + X(7).toFixed(1) + '" y2="' + (H - B) +
       '" stroke="#c9a86a" stroke-dasharray="3 3" opacity=".45"/>';
-    s += '<text x="' + X(7).toFixed(1) + '" y="' + (T - 4) + '" fill="#c9a86a" font-size="10" text-anchor="middle">今天</text>';
+    s += '<text x="' + X(7).toFixed(1) + '" y="' + (T - 4) + '" fill="__GOLD__" font-size="10" text-anchor="middle">今天</text>';
 
     // 折线
     const col = TREND_COLOR[trendKey];
@@ -1557,13 +1557,13 @@
       const [x2, y2] = pt(R, phi(L));
       s += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="__LINE__"/>`;
       const [lx, ly] = pt((R1 + R) / 2, phi(L + 15));
-      s += `<text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" fill="#8d7648" font-size="13" text-anchor="middle" font-family="serif">${A.SIGNS[i].cn}</text>`;
+      s += `<text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" fill="__GOLD__" font-size="13" text-anchor="middle" font-family="serif">${A.SIGNS[i].cn}</text>`;
     }
 
     // 上升线（无出生时间时不画，避免给出假的上升）
     if (hasTime) {
       s += `<line x1="${cx}" y1="${cy}" x2="${(cx - R).toFixed(1)}" y2="${cy}" stroke="#c9a86a" stroke-width="1" stroke-dasharray="4 4" opacity=".7"/>`;
-      s += `<text x="${cx - R - 2}" y="${cy - 8}" fill="#c9a86a" font-size="10" text-anchor="start">ASC</text>`;
+      s += `<text x="${cx - R - 2}" y="${cy - 8}" fill="__GOLD__" font-size="10" text-anchor="start">ASC</text>`;
     }
 
     // 行星
@@ -1580,13 +1580,13 @@
       const [sx, sy] = pt(R2 - 6, ph);
       s += `<line x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${(cx + (RP + 14) * Math.cos(ph * Math.PI / 180)).toFixed(1)}" y2="${(cy - (RP + 14) * Math.sin(ph * Math.PI / 180)).toFixed(1)}" stroke="#3a4159"/>`;
       s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#d8b98a"/>`;
-      s += `<text x="${x.toFixed(1)}" y="${(y - 9).toFixed(1)}" fill="#e8e4dc" font-size="11" text-anchor="middle" font-family="serif">${b.cn}</text>`;
+      s += `<text x="${x.toFixed(1)}" y="${(y - 9).toFixed(1)}" fill="__TEXT__" font-size="11" text-anchor="middle" font-family="serif">${b.cn}</text>`;
     });
 
     // 中心
     s += `<circle cx="${cx}" cy="${cy}" r="42" fill="none" stroke="__LINE__" opacity=".6"/>`;
-    s += `<text x="${cx}" y="${cy - 6}" fill="#8d7648" font-size="10" text-anchor="middle" letter-spacing="3">NATAL</text>`;
-    s += `<text x="${cx}" y="${cy + 14}" fill="#4d5062" font-size="9" text-anchor="middle">${ch.bodies[0].sign.cn}日 / ${ch.bodies[1].sign.cn}月</text>`;
+    s += `<text x="${cx}" y="${cy - 6}" fill="__GOLD__" font-size="10" text-anchor="middle" letter-spacing="3">NATAL</text>`;
+    s += `<text x="${cx}" y="${cy + 14}" fill="__MUTED__" font-size="10" text-anchor="middle">${ch.bodies[0].sign.cn}日 / ${ch.bodies[1].sign.cn}月</text>`;
 
     svg.innerHTML = s;
   }

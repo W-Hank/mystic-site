@@ -1093,3 +1093,39 @@ html[data-theme="light"] .hltag{background:rgba(150,112,47,.07);border-color:rgb
 /* 5) 左侧强调线统一成金棕，不要黑 */
 html[data-theme="light"] .notice{border-left-color:rgba(150,112,47,.5)}
 html[data-theme="light"] .hlpeng{border-left-color:#c9b48a;color:#4a4438}
+
+/* ===== 浅色 · 贴近深色的面感（第五轮） ===== */
+/* 卡片不再用近白，改成只比纸底亮一点点的同族色，看起来像压出来的一层，不是贴上去的白纸 */
+html[data-theme="light"] :is(
+  .spread,.mini,.mini2,.dc,.sg,.why,.hrow,.place,.trendbox,.hlcard,.yjleft,
+  .hecard,.hf,.fold,.hentry,.verdict,.sec,.yjpart,.cardread,.mine,.hlrow,
+  .notice,.rblock,.yjrule,.sg .detail p.dl,.mine p.dl
+){
+  background:#f6efe0;
+  border:1px solid rgba(150,128,92,.26);
+  box-shadow:none;
+}
+html[data-theme="light"] .sg.top{background:#f3ead7;border-color:rgba(150,112,47,.34)}
+html[data-theme="light"] .verdict{
+  background:linear-gradient(90deg,rgba(150,112,47,.10),rgba(150,112,47,.03));
+  border:1px solid rgba(150,128,92,.26);
+  border-left:3px solid rgba(150,112,47,.55);
+}
+
+/* 提问框：塔罗 #q / 易经 #yjQ / 合参 #heQ，以及星盘生日输入，统一成圆角底 */
+html[data-theme="light"] :is(textarea,.field input,.field select){
+  background:#faf4e6;
+  border:1px solid rgba(150,128,92,.32);
+  border-radius:12px;
+  padding:12px 14px;
+  color:#2b251d;
+  font-weight:500;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+}
+html[data-theme="light"] textarea{line-height:1.75;min-height:74px}
+html[data-theme="light"] :is(textarea,.field input,.field select)::placeholder{color:#8a7f6b}
+html[data-theme="light"] :is(textarea,.field input,.field select):focus{
+  border-color:rgba(150,112,47,.55);
+  box-shadow:0 0 0 3px rgba(150,112,47,.10);
+  outline:none;
+}

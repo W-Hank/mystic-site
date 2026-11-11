@@ -141,7 +141,8 @@
 
   function reveal() {
     const cards = state.picked.map(i => state.deck[i]);
-    const revs = cards.map(() => Math.random() < 0.32);
+    /* 按用户要求：牌不倒置，全部正位（不再随机 32% 逆位） */
+    const revs = cards.map(() => false);
     state.revs = revs;
 
     const sk = state.resolved;

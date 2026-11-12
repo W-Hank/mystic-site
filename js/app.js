@@ -170,7 +170,9 @@
       <div class="mini">
         ${c.arcana === "major" && typeof c.no === "number"
           ? `<img class="cardface" src="img/cards/major/${c.no}.jpg" alt="${c.name}" loading="lazy">`
-          : ""}
+          : (c.arcana === "minor" && c.suit && c.rank
+            ? `<img class="cardface" src="img/cards/minor/${c.suit}/${c.rank}.jpg" alt="${c.name}" loading="lazy">`
+            : "")}
         <span class="${revs[i] ? "rev" : "up"}">${revs[i] ? "逆" : "正"}</span>
         <div class="pos">${spread.pos[i]}</div>
         <div class="nm">${c.name}</div>

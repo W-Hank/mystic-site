@@ -1234,3 +1234,20 @@ html[data-theme="light"] .histwrap{border-top-color:rgba(138,100,40,.22)}
 html[data-theme="light"] .histrow{border-bottom-color:rgba(138,100,40,.18)}
 html[data-theme="light"] .histq{color:#241f19}
 html[data-theme="light"] .histcards{color:#57503f}
+
+/* 结果里的组合提示 */
+.sec.combo .comboitem{padding:12px 0;border-bottom:1px dashed rgba(35,42,56,.5)}
+.sec.combo .comboitem:last-child{border-bottom:0}
+.sec.combo .comboitem b{display:block;font-size:13.5px;color:var(--gold-dim);
+  letter-spacing:.04em;margin-bottom:5px;font-weight:600}
+.sec.combo .comboitem p{margin:0;font-size:14.5px;line-height:2;color:var(--text)}
+html[data-theme="light"] .sec.combo .comboitem{border-bottom-color:rgba(138,100,40,.18)}
+html[data-theme="light"] .sec.combo .comboitem b{color:#8a6428}
+html[data-theme="light"] .sec.combo .comboitem p{color:#241f19}
+
+/* 历史：单条删除按钮 */
+.histdel{appearance:none;background:none;border:0;color:var(--dim2);font:inherit;
+  font-size:11.5px;cursor:pointer;margin-left:auto;padding:2px 4px;letter-spacing:.04em;
+  border-bottom:1px dotted rgba(125,139,166,.4)}
+.histdel:hover{color:#b4564a;border-bottom-color:#b4564a}
+.histmeta{display:flex;gap:12px;align-items:baseline}

@@ -208,6 +208,28 @@
       </div>`;
     }).join("");
 
+    /* ---- 已收录的双牌组合：抽到就补一句 ---- */
+    (function () {
+      const box = $('#rcombo');
+      if (!box) return;
+      const C = window.TAROT_COMBOS || {};
+      const names = cards.map(function (c) { return c.name; });
+      const hits = [];
+      for (let i = 0; i < names.length; i++) {
+        for (let j = i + 1; j < names.length; j++) {
+          const k1 = names[i] + "|" + names[j];
+          const k2 = names[j] + "|" + names[i];
+          const txt = C[k1] || C[k2];
+          if (txt) hits.push({ a: names[i], b: names[j], txt: txt });
+        }
+      }
+      if (!hits.length) { box.hidden = true; box.innerHTML = ""; return; }
+      box.hidden = false;
+      box.innerHTML = hits.map(function (h) {
+        return '<div class="comboitem"><b>' + h.a + ' ＋ ' + h.b + '</b><p>' + h.txt + '</p></div>';
+      }).join("");
+    })();
+
     $('#rrels').innerHTML = r.relations.length
       ? r.relations.map(x => `<li>${x}</li>`).join("")
       : `<li>这几张牌之间没有明显的对冲或呼应，各自独立——说明事情此刻还是分开的几块，还没有连成一条线。</li>`;
@@ -1652,13 +1674,29 @@
     try { arr = JSON.parse(localStorage.getItem('mystic.readings') || '[]'); } catch (e) {}
     if (!arr.length) { wrap.hidden = true; return; }
     wrap.hidden = false;
-    box.innerHTML = arr.slice(0, 5).map(function (r) {
+    box.innerHTML = arr.slice(0, 5).map(function (r, i) {
       const q = (r.q || "").slice(0, 26);
       return '<div class="histrow"><div class="histmeta"><span class="histwhen">' + fmtAgo(r.t) +
-        '</span><span class="histsp">' + (r.spread || '') + '</span></div>' +
+        '</span><span class="histsp">' + (r.spread || '') + '</span>' +
+        '<button class="histdel" data-i="' + i + '" title="删除这条">删除</button></div>' +
         '<div class="histq">' + (q ? '「' + q + '」' : '未填问题') + '</div>' +
         '<div class="histcards">' + (r.cards || '') + '</div></div>';
     }).join('');
+
+    Array.prototype.forEach.call(box.querySelectorAll('.histdel'), function (btn) {
+      btn.onclick = function () {
+        const i = Number(btn.dataset.i);
+        let list = [];
+        try { list = JSON.parse(localStorage.getItem('mystic.readings') || '[]'); } catch (e) {}
+        const rec = list[i];
+        if (!rec) return;
+        const label = (rec.q || '').slice(0, 20);
+        if (!confirm('删除这条记录？\n\n' + (label ? '「' + label + '」' : '未填问题') + '\n' + (rec.cards || ''))) return;
+        list.splice(i, 1);
+        try { localStorage.setItem('mystic.readings', JSON.stringify(list)); } catch (e) {}
+        renderHist();
+      };
+    });
   }
 
   const histClear = document.getElementById('rhistClear');

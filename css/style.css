@@ -1194,3 +1194,17 @@ html,body{scrollbar-width:thin;scrollbar-color:transparent transparent}
 ::-webkit-scrollbar-thumb{background:transparent;border-radius:4px;transition:background .25s}
 .scrolling::-webkit-scrollbar-thumb{background:rgba(201,168,106,.38)}
 ::-webkit-scrollbar-thumb:hover{background:rgba(201,168,106,.55)}
+
+/* 解读分层：一句结论 + 折叠细节 */
+.cardread .leadline{margin:0 0 4px;font-size:15.5px;line-height:1.95;color:var(--text)}
+.cardread details.fold{margin-top:8px}
+.cardread details.fold summary{
+  list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;
+  font-size:12.5px;color:var(--gold-dim);padding:5px 0;letter-spacing:.04em;
+  border-bottom:1px dashed rgba(201,168,106,.25)}
+.cardread details.fold summary::-webkit-details-marker{display:none}
+.cardread details.fold summary::before{content:"＋";font-size:11px;opacity:.8}
+.cardread details.fold[open] summary::before{content:"－"}
+.cardread details.fold summary:hover{color:var(--gold)}
+.cardread details.fold p{margin:12px 0 0;font-size:14.5px;line-height:2.05;color:var(--dim)}
+.cardread details.fold em{display:block;margin-top:8px;font-style:normal;font-size:13px;color:var(--dim2)}

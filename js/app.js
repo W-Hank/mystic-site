@@ -190,16 +190,23 @@
       </div>`).join("");
 
     // 逐位
-    $('#rper').innerHTML = r.perCard.map((p, i) => `
+    /* 分层：先给一句结论，细节折叠 */
+    $('#rper').innerHTML = r.perCard.map((p, i) => {
+      const sc = (window.TAROT_SCENE && window.TAROT_SCENE[p.card.name]) || "";
+      return `
       <div class="cardread">
         <div class="top">
           <b>${p.card.name}</b>
           <i>${spread.pos[i]}　·　${p.rev ? "逆位" : "正位"}　·　${p.card.kw.join(" / ")}</i>
         </div>
-        <p>${p.lead}${p.txt}<em>${p.elNote}</em></p>
-        ${(window.TAROT_SCENE && window.TAROT_SCENE[p.card.name])
-          ? `<p class="scene">${window.TAROT_SCENE[p.card.name]}</p>` : ""}
-      </div>`).join("");
+        <p class="leadline">${p.lead}</p>
+        <details class="fold">
+          <summary>再往下看</summary>
+          <p>${p.txt}<em>${p.elNote}</em></p>
+          ${sc ? `<p class="scene">${sc}</p>` : ""}
+        </details>
+      </div>`;
+    }).join("");
 
     $('#rrels').innerHTML = r.relations.length
       ? r.relations.map(x => `<li>${x}</li>`).join("")

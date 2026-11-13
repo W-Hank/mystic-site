@@ -14,6 +14,16 @@
     };
   });
 
+  /* 支持 ?tab=tarot 这类直达链接（牌义页的「回到塔罗」用） */
+  (function () {
+    try {
+      const t = new URLSearchParams(location.search).get('tab');
+      if (!t) return;
+      const btn = document.querySelector('nav button[data-tab="' + t + '"]');
+      if (btn) btn.click();
+    } catch (e) {}
+  })();
+
   /* ================= 塔罗 ================= */
   const OPTIONS = [
     { k: "auto", name: "自动匹配", desc: "按你的问题自动选题数与牌阵" },

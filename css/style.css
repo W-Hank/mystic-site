@@ -1175,3 +1175,8 @@ html[data-theme="dark"] .cardface{box-shadow:0 2px 10px rgba(0,0,0,.35)}
 /* 牌面场景注解 */
 .cardread .scene{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(35,42,56,.5);
   font-size:13px;line-height:1.9;color:var(--dim);font-style:italic;letter-spacing:.01em}
+
+/* 世界观入口 */
+.footlink{margin-top:14px;font-size:12px}
+.footlink a{color:var(--gold-dim);text-decoration:none;border-bottom:1px solid rgba(201,168,106,.3);padding-bottom:2px}
+.footlink a:hover{color:var(--gold)}

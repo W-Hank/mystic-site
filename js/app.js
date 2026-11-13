@@ -214,6 +214,23 @@
 
     $('#radv').innerHTML = r.advice.map(x => `<li>${x}</li>`).join("");
     $('#rtime').textContent = r.timing;
+
+    /* ---- 历史记录：存最近 30 次 ---- */
+    try {
+      const rec = {
+        t: Date.now(),
+        q: state.q || "",
+        spread: spread.name,
+        cards: cards.map(function (c, i) { return spread.pos[i] + "：" + c.name; }).join("；"),
+        verdict: ($('#rverdict') && $('#rverdict').textContent || "").slice(0, 90)
+      };
+      const KEY = 'mystic.readings';
+      const old = JSON.parse(localStorage.getItem(KEY) || '[]');
+      old.unshift(rec);
+      localStorage.setItem(KEY, JSON.stringify(old.slice(0, 30)));
+      renderHist();
+    } catch (e) {}
+
     saveCard("tr", {
       date: todayStr(),
       title: "塔罗 · " + spread.name,
@@ -1618,4 +1635,37 @@
 
   if (window.MysticHuangli) renderHuangli();
   renderHome();
+  /* ---- 历史渲染 ---- */
+  function fmtAgo(ts) {
+    const d = Math.floor((Date.now() - ts) / 86400000);
+    if (d <= 0) return "今天";
+    if (d === 1) return "昨天";
+    if (d < 30) return d + " 天前";
+    return Math.floor(d / 30) + " 个月前";
+  }
+
+  function renderHist() {
+    const wrap = document.getElementById('rhistwrap');
+    const box = document.getElementById('rhist');
+    if (!wrap || !box) return;
+    let arr = [];
+    try { arr = JSON.parse(localStorage.getItem('mystic.readings') || '[]'); } catch (e) {}
+    if (!arr.length) { wrap.hidden = true; return; }
+    wrap.hidden = false;
+    box.innerHTML = arr.slice(0, 5).map(function (r) {
+      const q = (r.q || "").slice(0, 26);
+      return '<div class="histrow"><div class="histmeta"><span class="histwhen">' + fmtAgo(r.t) +
+        '</span><span class="histsp">' + (r.spread || '') + '</span></div>' +
+        '<div class="histq">' + (q ? '「' + q + '」' : '未填问题') + '</div>' +
+        '<div class="histcards">' + (r.cards || '') + '</div></div>';
+    }).join('');
+  }
+
+  const histClear = document.getElementById('rhistClear');
+  if (histClear) histClear.onclick = function () {
+    try { localStorage.removeItem('mystic.readings'); } catch (e) {}
+    renderHist();
+  };
+  renderHist();
+
 })();

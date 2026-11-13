@@ -1215,3 +1215,22 @@ html[data-theme="light"]{--dim:#57503f;--dim2:#6f6756}
 /* 中文正文字重偏细，两个主题统一加一点厚度 */
 body{-webkit-text-stroke:.16px currentColor}
 h1,h2,h3,.leadline{-webkit-text-stroke:.1px currentColor;font-weight:600}
+
+/* ===== 抽牌历史 ===== */
+.histwrap{margin-top:44px;padding-top:26px;border-top:1px solid rgba(35,42,56,.7)}
+.histtitle{font-size:13px;letter-spacing:.14em;color:var(--gold-dim);margin:0 0 16px;font-weight:600}
+.histrow{padding:12px 0;border-bottom:1px dashed rgba(35,42,56,.5)}
+.histrow:last-child{border-bottom:0}
+.histmeta{display:flex;gap:12px;align-items:baseline;margin-bottom:4px}
+.histwhen{font-size:11.5px;color:var(--dim2);letter-spacing:.06em}
+.histsp{font-size:11.5px;color:var(--gold-dim)}
+.histq{font-size:13.5px;color:var(--text);line-height:1.8;margin-bottom:3px}
+.histcards{font-size:12.5px;color:var(--dim);line-height:1.9}
+.histclear{appearance:none;background:none;border:0;color:var(--dim2);font:inherit;
+  font-size:11.5px;cursor:pointer;padding:10px 0 0;letter-spacing:.04em}
+.histclear:hover{color:var(--gold-dim)}
+
+html[data-theme="light"] .histwrap{border-top-color:rgba(138,100,40,.22)}
+html[data-theme="light"] .histrow{border-bottom-color:rgba(138,100,40,.18)}
+html[data-theme="light"] .histq{color:#241f19}
+html[data-theme="light"] .histcards{color:#57503f}

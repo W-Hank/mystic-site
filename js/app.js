@@ -1701,6 +1701,10 @@
 
   const histClear = document.getElementById('rhistClear');
   if (histClear) histClear.onclick = function () {
+    let n = 0;
+    try { n = JSON.parse(localStorage.getItem('mystic.readings') || '[]').length; } catch (e) {}
+    if (!n) { renderHist(); return; }
+    if (!confirm('清空全部 ' + n + ' 条记录？这个操作不能撤销。')) return;
     try { localStorage.removeItem('mystic.readings'); } catch (e) {}
     renderHist();
   };

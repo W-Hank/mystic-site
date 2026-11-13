@@ -187,6 +187,8 @@
           <i>${spread.pos[i]}　·　${p.rev ? "逆位" : "正位"}　·　${p.card.kw.join(" / ")}</i>
         </div>
         <p>${p.lead}${p.txt}<em>${p.elNote}</em></p>
+        ${(window.TAROT_SCENE && window.TAROT_SCENE[p.card.name])
+          ? `<p class="scene">${window.TAROT_SCENE[p.card.name]}</p>` : ""}
       </div>`).join("");
 
     $('#rrels').innerHTML = r.relations.length

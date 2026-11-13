@@ -244,7 +244,10 @@
         q: state.q || "",
         spread: spread.name,
         cards: cards.map(function (c, i) { return spread.pos[i] + "：" + c.name; }).join("；"),
-        verdict: ($('#rverdict') && $('#rverdict').textContent || "").slice(0, 90)
+        verdict: ($('#rverdict') && $('#rverdict').textContent || "").slice(0, 120),
+        detail: r.perCard.map(function (p, i) {
+          return { pos: spread.pos[i], name: p.card.name, rev: !!p.rev, lead: p.lead || "" };
+        })
       };
       const KEY = 'mystic.readings';
       const old = JSON.parse(localStorage.getItem(KEY) || '[]');
@@ -1002,6 +1005,13 @@
     toast("已生成图片");
   });
 
+  const rshare = document.getElementById('rshare');
+  if (rshare) rshare.onclick = function () {
+    if (!window.CARD || !CARD.tr) { toast("先抽一次再存图"); return; }
+    makeCard('tr');
+    toast("已生成图片，长按或右键保存");
+  };
+
   const todayBtn = document.querySelector('nav button[data-tab="today"]');
   if (todayBtn) todayBtn.addEventListener('click', renderToday);
 
@@ -1676,12 +1686,32 @@
     wrap.hidden = false;
     box.innerHTML = arr.slice(0, 5).map(function (r, i) {
       const q = (r.q || "").slice(0, 26);
-      return '<div class="histrow"><div class="histmeta"><span class="histwhen">' + fmtAgo(r.t) +
-        '</span><span class="histsp">' + (r.spread || '') + '</span>' +
+      const det = (r.detail || []).map(function (d) {
+        return '<div class="hdrow"><span class="hdpos">' + d.pos + '</span>' +
+          '<b>' + d.name + (d.rev ? '（逆）' : '') + '</b>' +
+          '<span class="hdlead">' + (d.lead || '') + '</span></div>';
+      }).join('');
+      return '<div class="histrow" data-i="' + i + '">' +
+        '<div class="histtop"><div class="histmeta"><span class="histwhen">' + fmtAgo(r.t) +
+        '</span><span class="histsp">' + (r.spread || '') + '</span></div>' +
         '<button class="histdel" data-i="' + i + '" title="删除这条">删除</button></div>' +
         '<div class="histq">' + (q ? '「' + q + '」' : '未填问题') + '</div>' +
-        '<div class="histcards">' + (r.cards || '') + '</div></div>';
+        '<div class="histcards">' + (r.cards || '') + '</div>' +
+        (det ? '<div class="histdetail" hidden>' + det +
+          (r.verdict ? '<div class="hdverdict">' + r.verdict + '</div>' : '') + '</div>' : '') +
+        (det ? '<button class="histopen" data-i="' + i + '">展开当时的结果</button>' : '') +
+        '</div>';
     }).join('');
+
+    Array.prototype.forEach.call(box.querySelectorAll('.histopen'), function (btn) {
+      btn.onclick = function () {
+        const row = btn.closest('.histrow');
+        const det = row && row.querySelector('.histdetail');
+        if (!det) return;
+        det.hidden = !det.hidden;
+        btn.textContent = det.hidden ? '展开当时的结果' : '收起';
+      };
+    });
 
     Array.prototype.forEach.call(box.querySelectorAll('.histdel'), function (btn) {
       btn.onclick = function () {

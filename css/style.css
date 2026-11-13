@@ -1251,3 +1251,27 @@ html[data-theme="light"] .sec.combo .comboitem p{color:#241f19}
   border-bottom:1px dotted rgba(125,139,166,.4)}
 .histdel:hover{color:#b4564a;border-bottom-color:#b4564a}
 .histmeta{display:flex;gap:12px;align-items:baseline}
+
+/* 历史：条目展开 */
+.histtop{display:flex;align-items:baseline;gap:10px}
+.histtop .histdel{margin-left:auto}
+.histopen{appearance:none;background:none;border:0;color:var(--gold-dim);font:inherit;
+  font-size:11.5px;cursor:pointer;padding:8px 0 0;letter-spacing:.06em}
+.histopen:hover{color:var(--gold)}
+.histdetail{padding:10px 0 2px}
+.hdrow{display:flex;gap:8px;align-items:baseline;padding:4px 0;font-size:12.5px;line-height:1.9}
+.hdpos{flex:none;color:var(--dim2);min-width:34px}
+.hdrow b{flex:none;color:var(--text);font-weight:600}
+.hdlead{color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hdverdict{margin-top:8px;padding-top:8px;border-top:1px dotted rgba(35,42,56,.4);
+  font-size:12.5px;line-height:1.9;color:var(--dim)}
+
+/* 分享按钮（主按钮） */
+.btn#rshare{border-color:rgba(201,168,106,.45);color:var(--gold)}
+.btn#rshare:hover{background:rgba(201,168,106,.1)}
+
+html[data-theme="light"] .hdrow b{color:#241f19}
+html[data-theme="light"] .hdlead{color:#57503f}
+html[data-theme="light"] .hdverdict{color:#57503f;border-top-color:rgba(138,100,40,.25)}
+html[data-theme="light"] .histopen{color:#8a6428}
+html[data-theme="light"] .btn#rshare{color:#8a6428;border-color:rgba(138,100,40,.45)}

@@ -1208,3 +1208,10 @@ html,body{scrollbar-width:thin;scrollbar-color:transparent transparent}
 .cardread details.fold summary:hover{color:var(--gold)}
 .cardread details.fold p{margin:12px 0 0;font-size:14.5px;line-height:2.05;color:var(--dim)}
 .cardread details.fold em{display:block;margin-top:8px;font-style:normal;font-size:13px;color:var(--dim2)}
+
+/* 浅色主题下补齐 --dim 系变量（新页面用到） */
+html[data-theme="light"]{--dim:#57503f;--dim2:#6f6756}
+
+/* 中文正文字重偏细，两个主题统一加一点厚度 */
+body{-webkit-text-stroke:.16px currentColor}
+h1,h2,h3,.leadline{-webkit-text-stroke:.1px currentColor;font-weight:600}

@@ -78,3 +78,16 @@ window.MysticTheme = {
     } catch (e) { return fallback; }
   }
 };
+
+/* 滚动时给 html 加 .scrolling，让滚动条只在滚动时出现 */
+(function () {
+  var t = null;
+  function onScroll() {
+    document.documentElement.classList.add('scrolling');
+    clearTimeout(t);
+    t = setTimeout(function () {
+      document.documentElement.classList.remove('scrolling');
+    }, 900);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();

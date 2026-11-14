@@ -532,39 +532,76 @@
       box.hidden = false;
     })();
 
-    /* ---------- 今天的天空：行运对本命盘的相位 ---------- */
+    /* ---------- 今天的天空：行运对本命盘的相位（用已导出的原语自算） ---------- */
     (function () {
       const box = document.getElementById('natTransit');
       if (!box) return;
-      let d;
-      try { d = A.dailyForChart(ch, A.nowJD()); } catch (e) { box.innerHTML = ""; return; }
 
       const PT = {
         "\u592a\u9633": "焦点与方向", "\u6708\u4eae": "情绪与日常", "\u6c34\u661f": "沟通与判断",
         "\u91d1\u661f": "关系与取舍", "\u706b\u661f": "行动与冲突", "\u6728\u661f": "扩张与机会",
-        "\u571f\u661f": "压力与责任"
+        "\u571f\u661f": "压力与责任", "\u4e0a\u5347": "你在外面的样子"
       };
       const AT = {
         "\u5408": "被放大，容易黏在一起", "\u51b2": "拉扯，需要找平衡",
         "\u4e09\u5206": "顺，可以借力", "\u56db\u5206": "摩擦，得调整",
         "\u516d\u5206": "轻微助力"
       };
+      const PCN = {
+        sun: "\u592a\u9633", moon: "\u6708\u4eae", mercury: "\u6c34\u661f", venus: "\u91d1\u661f",
+        mars: "\u706b\u661f", jupiter: "\u6728\u661f", saturn: "\u571f\u661f"
+      };
 
-      let html = '<p class="nthead">' + d.phase.name + '　月亮在' + d.moonSign.sign.cn +
-        (d.house ? '　·　你的第 ' + d.house + ' 宫' : '') +
-        (d.retros && d.retros.length ? '　·　逆行：' + d.retros.join('、') : '') + '</p>';
+      let html = "";
+      try {
+        const jd = A.nowJD();
+        const ph = A.moonPhase(jd);
+        const ms = A.signOf(A.moonLon(jd));
+        const retros = ["mercury", "venus", "mars", "jupiter", "saturn"].filter(function (k) { return A.retro(k, jd); });
+        const ascB = (ch.bodies || []).filter(function (b) { return b.key === "asc"; })[0];
 
-      if (!d.hits || !d.hits.length) {
-        html += '<p class="ntempty">今天没有紧的行运相位（容许度 5° 内），说明不是转折日，按自己的节奏走就行。</p>';
-      } else {
-        html += '<ul class="ntlist">' + d.hits.slice(0, 3).map(function (h) {
-          const tone = AT[h.kind] || h.kind;
-          return '<li><b>今天的' + h.t + ' ' + h.kind + ' 你的' + h.to + '</b>' +
-            '<span>容许度 ' + h.orb.toFixed(1) + '°</span>' +
-            '<p>' + (PT[h.t] || '') + ' 撞上 ' + (PT[h.to] || '你的这块') + '：' + tone + '。</p></li>';
-        }).join('') + '</ul>';
+        const natalPts = (ch.bodies || []).map(function (b) { return { key: b.key, cn: b.cn, lon: b.lon }; });
+        const hits = [];
+        const seen = {};
+        ["moon", "sun", "mercury", "venus", "mars", "jupiter", "saturn"].forEach(function (tk) {
+          const tl = A.bodyLon(tk, jd);
+          natalPts.forEach(function (np) {
+            if (np.key === tk) return;
+            const pk = [tk, np.key].sort().join("-");
+            if (seen[pk]) return;
+            const r = A.aspectBetween(tl, np.lon);
+            if (r && r.orb <= 5) {
+              seen[pk] = 1;
+              hits.push({ t: PCN[tk], to: np.cn, kind: r.asp.kind, n: r.asp.n, orb: r.orb });
+            }
+          });
+        });
+        hits.sort(function (x, y) { return x.orb - y.orb; });
+
+        let houseTxt = "";
+        if (ascB && ms && ms.i != null && ascB.signIdx != null) {
+          const h = ((ms.i - ascB.signIdx) + 12) % 12 + 1;
+          houseTxt = "　·　月亮落你的第 " + h + " 宫（以上升为第一宫）";
+        }
+
+        html += '<p class="nthead">' + (ph && ph.name ? ph.name : "") +
+          "　月亮在" + (ms && ms.sign ? ms.sign.cn : "?") + houseTxt +
+          (retros.length ? "　·　逆行：" + retros.map(function (k) { return PCN[k]; }).join("、") : "　·　全部顺行") +
+          "</p>";
+
+        if (!hits.length) {
+          html += '<p class="ntempty">今天没有紧的行运相位（容许度 5° 内），不是转折日，按自己的节奏走就行。</p>';
+        } else {
+          html += '<ul class="ntlist">' + hits.slice(0, 3).map(function (h) {
+            return '<li><b>今天的' + h.t + " " + h.kind + " 你的" + h.to + "</b>" +
+              '<span>容许度 ' + h.orb.toFixed(1) + "°</span>" +
+              "<p>" + (PT[h.t] || "行运") + " 撞上 " + (PT[h.to] || "你的这块") + "：" + (AT[h.kind] || h.kind) + "。</p></li>";
+          }).join("") + "</ul>";
+        }
+        html += '<p class="ntfoot">按此刻行星位置与你的出生位置实时计算；相位越紧，影响越明显。容许度 5° 内才列出。</p>';
+      } catch (e) {
+        html = '<p class="ntempty">行运计算失败：' + e.message + "</p>";
       }
-      html += '<p class="ntfoot">按此刻的行星位置与你出生时的位置实时算，相位越紧影响越明显。</p>';
       box.innerHTML = html;
     })();
 

@@ -1473,3 +1473,29 @@ html[data-theme="light"] .ntlist p,html[data-theme="light"] .nthead{color:#57503
 .yhClear{background:none;border:0;padding:0;font-size:12px;color:var(--dim2);cursor:pointer;
   text-decoration:underline;text-underline-offset:3px;letter-spacing:.1em}
 .yhClear:hover{color:var(--gold)}
+
+/* ===== 纸感：细颗粒 + 边缘压暗（纯 CSS，无图片文件） ===== */
+html::after{
+  content:"";position:fixed;inset:0;z-index:2147483646;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+  opacity:.022;
+  mix-blend-mode:overlay;
+}
+html::before{
+  content:"";position:fixed;inset:0;z-index:2147483645;pointer-events:none;
+  background:radial-gradient(130% 110% at 50% 40%,rgba(0,0,0,0) 62%,rgba(0,0,0,.26) 100%);
+}
+html[data-theme="light"]::after{
+  opacity:.075;mix-blend-mode:multiply;
+}
+html[data-theme="light"]::before{
+  background:radial-gradient(125% 105% at 50% 38%,rgba(0,0,0,0) 56%,rgba(146,124,88,.13) 100%);
+}
+@media print{
+  html::after,html::before{display:none}
+}
+
+/* 页脚提亮：暗角会压到最底一行 */
+footer{color:#868ba1;font-size:11.5px}
+html[data-theme="light"] footer{color:#4a4433;font-size:11.5px}

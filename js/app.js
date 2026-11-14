@@ -55,19 +55,6 @@
   const $ = s => document.querySelector(s);
   const E = window.MysticEngine, A = window.MysticAstro;
 
-  /* 首页引导：点「先抽一张牌」直达 */
-  (function () {
-    const link = document.getElementById('homeTryTarot');
-    if (!link) return;
-    link.onclick = function (e) {
-      e.preventDefault();
-      const t = document.querySelector('nav button[data-tab="tarot"]');
-      if (t) t.click();
-      const g = document.getElementById('draw') || document.querySelector('.drawbtn');
-      if (g) g.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    };
-  })();
-
   /* ================= Tab ================= */
   document.querySelectorAll('nav button').forEach(b => {
     b.onclick = () => {

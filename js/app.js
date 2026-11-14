@@ -476,6 +476,98 @@
 
     $('#aread').innerHTML = readingHTML(A.reading(ch), A.aspectLine(ch.aspects));
 
+    /* ---------- 三者合起来：确定性推导，不做随机文案 ---------- */
+    (function () {
+      const sun = pick('sun'), moon = pick('moon'), asc = pick('asc');
+      const box = document.getElementById('natSummary');
+      if (!box || !sun || !moon) return;
+
+      const SHORT = {
+        "\u767d\u7f8a": "要快", "\u91d1\u725b": "要实在", "\u53cc\u5b50": "要新鲜",
+        "\u5de8\u87f9": "要安全", "\u72ee\u5b50": "要被看见", "\u5904\u5973": "要清楚",
+        "\u5929\u79e4": "要平衡", "\u5929\u874e": "要深", "\u5c04\u624b": "要远",
+        "\u6469\u7faf": "要结果", "\u6c34\u74f6": "要空间", "\u53cc\u9c7c": "要融进去"
+      };
+      const shortOf = (b) => SHORT[b.sign.cn] || b.sign.kw[0] || b.sign.cn;
+
+      const pairLine = (e1, e2) => {
+        const key = [e1, e2].sort().join("");
+        const T = {
+          "\u706b\u706b": "两边都在往前冲，你很少内耗，但也容易把自己烧空。",
+          "\u571f\u571f": "两边都要稳，你决定得慢，可一旦定了就不动摇。",
+          "\u98ce\u98ce": "两边都在想，你脑子转得快，但落地常要别人推一把。",
+          "\u6c34\u6c34": "两边都在感受，你共情很强，也容易被别人的情绪泡住。",
+          "\u706b\u98ce": "一个点火一个送风，你想做的事通常推得动。",
+          "\u571f\u6c34": "一个给形状一个给滋润，你既有感觉也做得成事。",
+          "\u706b\u6c34": "一边想冲一边想退，你常在「现在就要」和「再等等」之间来回。",
+          "\u571f\u98ce": "一边要落地一边要飞，你想法很多，但落到日常会磨。",
+          "\u706b\u571f": "一个急一个慢，你做事有力气，但耐心要自己攒。",
+          "\u98ce\u6c34": "一个讲道理一个讲感受，你有时说不过自己。"
+        };
+        return T[key] || "两边的节奏不太一样，需要自己调。";
+      };
+
+      const visLine = (sunEl, ascEl) => {
+        if (sunEl === ascEl) return "你表现出来的样子和内在基本一致，别人不太会误会你。";
+        const k = [sunEl, ascEl].sort().join("");
+        if (k === "\u706b\u98ce" || k === "\u571f\u6c34") {
+          return "别人看到的你，比你以为的更放松一些，其实内在是同一套逻辑。";
+        }
+        return "别人先看到的你和真实的你有落差，容易被误读——这不是你的问题，是表达顺序的问题。";
+      };
+
+      let html = '<div class="nsumcard">';
+      html += '<p class="nsumline"><b>太阳' + sun.sign.cn + '</b>（' + shortOf(sun) + '）＋ <b>月亮' +
+        moon.sign.cn + '</b>（' + shortOf(moon) + '）：' + pairLine(sun.sign.el, moon.sign.el) + '</p>';
+      if (asc) {
+        html += '<p class="nsumline"><b>上升' + asc.sign.cn + '</b>（' + asc.sign.el + '象）：' +
+          visLine(sun.sign.el, asc.sign.el) + '</p>';
+      }
+      html += '<div class="nsummeta">依据：太阳 ' + sun.sign.cn + ' ' + sun.deg + '°' + String(sun.min).padStart(2, '0') +
+        '′ · 月亮 ' + moon.sign.cn + ' ' + moon.deg + '°' + String(moon.min).padStart(2, '0') + '′' +
+        (asc ? ' · 上升 ' + asc.sign.cn + ' ' + asc.deg + '°' + String(asc.min).padStart(2, '0') + '′' : '') +
+        '　元素组合按火/土/风/水推导，不随机。</div>';
+      html += '</div>';
+      box.innerHTML = html;
+      box.hidden = false;
+    })();
+
+    /* ---------- 今天的天空：行运对本命盘的相位 ---------- */
+    (function () {
+      const box = document.getElementById('natTransit');
+      if (!box) return;
+      let d;
+      try { d = A.dailyForChart(ch, A.nowJD()); } catch (e) { box.innerHTML = ""; return; }
+
+      const PT = {
+        "\u592a\u9633": "焦点与方向", "\u6708\u4eae": "情绪与日常", "\u6c34\u661f": "沟通与判断",
+        "\u91d1\u661f": "关系与取舍", "\u706b\u661f": "行动与冲突", "\u6728\u661f": "扩张与机会",
+        "\u571f\u661f": "压力与责任"
+      };
+      const AT = {
+        "\u5408": "被放大，容易黏在一起", "\u51b2": "拉扯，需要找平衡",
+        "\u4e09\u5206": "顺，可以借力", "\u56db\u5206": "摩擦，得调整",
+        "\u516d\u5206": "轻微助力"
+      };
+
+      let html = '<p class="nthead">' + d.phase.name + '　月亮在' + d.moonSign.sign.cn +
+        (d.house ? '　·　你的第 ' + d.house + ' 宫' : '') +
+        (d.retros && d.retros.length ? '　·　逆行：' + d.retros.join('、') : '') + '</p>';
+
+      if (!d.hits || !d.hits.length) {
+        html += '<p class="ntempty">今天没有紧的行运相位（容许度 5° 内），说明不是转折日，按自己的节奏走就行。</p>';
+      } else {
+        html += '<ul class="ntlist">' + d.hits.slice(0, 3).map(function (h) {
+          const tone = AT[h.kind] || h.kind;
+          return '<li><b>今天的' + h.t + ' ' + h.kind + ' 你的' + h.to + '</b>' +
+            '<span>容许度 ' + h.orb.toFixed(1) + '°</span>' +
+            '<p>' + (PT[h.t] || '') + ' 撞上 ' + (PT[h.to] || '你的这块') + '：' + tone + '。</p></li>';
+        }).join('') + '</ul>';
+      }
+      html += '<p class="ntfoot">按此刻的行星位置与你出生时的位置实时算，相位越紧影响越明显。</p>';
+      box.innerHTML = html;
+    })();
+
     drawWheel(ch, hasTime && hasPlace);
     saveCard("np", {
       date: todayStr(),

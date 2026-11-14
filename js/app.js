@@ -903,7 +903,9 @@
     }
 
     box.hidden = false;
-    box.innerHTML = '<h3 class="yhTitle">之 前 起 过 的 卦</h3>' +
+    box.innerHTML = '<div class="yhHead"><h3 class="yhTitle">之 前 起 过 的 卦</h3>' +
+      '<div class="yhTools"><span class="yhCount">共 ' + arr.length + ' 条</span>' +
+      '<button class="yhClear">清 空</button></div></div>' +
       arr.slice(0, 5).map(function (r, i) {
         return '<div class="yhrow">' +
           '<div class="yhtop"><span class="yhwhen">' + ago(r.t) + '</span>' +
@@ -926,6 +928,18 @@
         renderYjHist();
       };
     });
+
+    const clr = box.querySelector('.yhClear');
+    if (clr) {
+      clr.onclick = function () {
+        let list = [];
+        try { list = JSON.parse(localStorage.getItem('mystic.yijing') || '[]'); } catch (e) {}
+        if (!list.length) return;
+        if (!confirm('清空全部 ' + list.length + ' 条起卦记录？\n清空后无法恢复。')) return;
+        try { localStorage.setItem('mystic.yijing', '[]'); } catch (e) {}
+        renderYjHist();
+      };
+    }
   }
 
   function renderToday() {

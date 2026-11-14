@@ -1464,3 +1464,12 @@ html[data-theme="light"] .ntlist p,html[data-theme="light"] .nthead{color:#57503
 .homehint a{color:var(--gold);text-decoration:underline;text-underline-offset:4px}
 
 .ntsub{font-size:12.5px;color:var(--dim2)}
+
+/* 易经历史：标题行 + 清空 */
+.yhHead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 14px}
+.yhHead .yhTitle{margin:0}
+.yhTools{display:flex;align-items:center;gap:14px}
+.yhCount{font-size:12px;color:var(--dim2)}
+.yhClear{background:none;border:0;padding:0;font-size:12px;color:var(--dim2);cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px;letter-spacing:.1em}
+.yhClear:hover{color:var(--gold)}

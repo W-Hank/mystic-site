@@ -77,6 +77,20 @@
     } catch (e) {}
   })();
 
+  /* ================= 首页牌面：按日轮换 =================
+     22 张大阿卡纳按顺序走，同一天所有人看到同一张，跨设备一致。
+     想改成每 4 小时轮换：把 dayIndex 换成 Math.floor(Date.now() / 14400000) 即可。 */
+  function initHeroArt() {
+    const img = document.querySelector('.heroart img');
+    if (!img) return;
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const dayIndex = Math.floor((now - start) / 86400000);
+    const n = ((dayIndex % 22) + 22) % 22;
+    img.src = 'img/cards/major/' + n + '.jpg';
+    img.alt = '';
+  }
+
   /* ================= 塔罗 ================= */
   const OPTIONS = [
     { k: "auto", name: "自动匹配", desc: "按你的问题自动选题数与牌阵" },
@@ -2228,4 +2242,5 @@
 
 
   try { renderYjHist(); } catch (e) {}
+  try { initHeroArt(); } catch (e) {}
 })();

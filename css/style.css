@@ -1560,3 +1560,37 @@ html[data-theme="light"] .idledeck i::before{color:rgba(138,100,40,.38)}
 .heroart img{width:100%;height:100%;object-fit:cover;border-radius:10px;filter:saturate(.85)}
 html[data-theme="light"] .heroart{opacity:.22}
 @media (max-width:980px){.heroart{display:none}}
+
+/* ===== 面板徽记：与塔罗顶部的牌背同一套语言 ===== */
+.pemblem{width:46px;height:46px;margin:0 auto 18px;position:relative;opacity:.5}
+.pemblem::before,.pemblem::after{position:absolute;content:""}
+
+/* 星盘：黄道环 */
+.pem-astro{border:1px solid var(--gold-dim);border-radius:50%}
+.pem-astro::before{inset:9px;border:1px solid var(--gold-dim);border-radius:50%;opacity:.55}
+.pem-astro::after{left:50%;top:3px;bottom:3px;width:1px;background:var(--gold-dim);transform:translateX(-.5px) rotate(26deg)}
+
+/* 星座：月相 */
+.pem-today{border:1px solid var(--gold-dim);border-radius:50%;overflow:hidden}
+.pem-today::before{inset:0;background:var(--gold-dim);opacity:.16}
+.pem-today::after{width:100%;height:100%;border-radius:50%;background:var(--ink);left:-36%;top:-6%;transform:scale(.9)}
+
+/* 黄历：历页 */
+.pem-huangli{width:40px;height:46px;border:1px solid var(--gold-dim);border-radius:3px}
+.pem-huangli::before{left:0;right:0;top:10px;height:1px;background:var(--gold-dim);opacity:.8}
+.pem-huangli::after{left:8px;right:8px;top:17px;bottom:7px;
+  background:repeating-linear-gradient(to bottom,var(--gold-dim) 0 1px,transparent 1px 7px);opacity:.75}
+
+/* 易经：三爻（中爻断） */
+.pem-yijing{height:40px}
+.pem-yijing::before{left:0;right:0;top:4px;height:3px;background:var(--gold-dim);
+  box-shadow:0 14px 0 var(--gold-dim),0 28px 0 var(--gold-dim)}
+.pem-yijing::after{left:0;top:18px;width:40%;height:3px;background:var(--gold-dim);
+  box-shadow:28px 0 0 var(--gold-dim)}
+
+/* 合参：双环 */
+.pem-he::before,.pem-he::after{width:30px;height:30px;border:1px solid var(--gold-dim);border-radius:50%;top:8px}
+.pem-he::before{left:2px}
+.pem-he::after{right:2px;opacity:.75}
+
+@media (max-width:560px){.pemblem{width:40px;height:40px;margin-bottom:14px}}

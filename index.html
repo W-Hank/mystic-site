@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794632240152">
+<link rel="stylesheet" href="css/style.css?v=1794632338184">
 </head>
 <body>
 
@@ -155,7 +155,14 @@
         <label>出生日期<input type="date" id="natDate" min="1900-01-01" max="2026-12-31"></label>
         <label>出生时间<input type="time" id="natTime" step="60"></label>
         <label>出生城市
-          <select id="natCity"><option value="">请选择</option></select>
+          <div class="citypick">
+            <input type="text" id="natCityInput" placeholder="输入城市名或拼音首字母" autocomplete="off">
+            <div class="citypanel" id="natCityPanel" hidden>
+              <div class="cityletters" id="natCityLetters"></div>
+              <div class="citylist" id="natCityList"></div>
+            </div>
+          </div>
+          <input type="hidden" id="natCity" value="">
         </label>
         <label class="natNoTime"><input type="checkbox" id="natNoTime"> 不记得时间（不算上升）</label>
       </div>
@@ -330,7 +337,7 @@
 <script src="js/engine.js?v=20261109d"></script>
 <script src="js/calib.js?v=20261109d"></script>
 <script src="js/astro.js?v=20261109d"></script>
-<script src="js/cities.js?v=20261114n1"></script>
+<script src="js/cities.js?v=1794632338184"></script>
 <script src="js/huangli-data.js?v=20261109d"></script>
 <script src="js/huangli.js?v=20261109d"></script>
 <script src="js/yijing-data.js?v=20261109d"></script>
@@ -339,7 +346,7 @@
 <script src="js/yijing-yao-bai2.js"></script>
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
-<script src="js/app.js?v=1794632240152"></script>
+<script src="js/app.js?v=1794632338184"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

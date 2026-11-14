@@ -1749,12 +1749,66 @@
     if (!sel || !out || !go) return;
 
     const CITIES = window.MYSTIC_CITIES || [];
-    CITIES.forEach(function (c, i) {
-      const o = document.createElement('option');
-      o.value = String(i);
-      o.textContent = c[0];
-      sel.appendChild(o);
+    const input = document.getElementById('natCityInput');
+    const panel = document.getElementById('natCityPanel');
+    const listBox = document.getElementById('natCityList');
+    const lettersBox = document.getElementById('natCityLetters');
+
+    /* A-Z 索引 */
+    const groups = {};
+    CITIES.forEach(function (c, i) { (groups[c[4]] = groups[c[4]] || []).push(i); });
+
+    lettersBox.innerHTML = Object.keys(groups).sort().map(function (L) {
+      return '<button type="button" class="cl" data-l="' + L + '">' + L + '</button>';
+    }).join('');
+
+    function renderList(filter) {
+      const f = (filter || '').trim().toLowerCase();
+      let html = '';
+      Object.keys(groups).sort().forEach(function (L) {
+        const idxs = groups[L].filter(function (i) {
+          if (!f) return true;
+          const c = CITIES[i];
+          return c[0].indexOf(f) !== -1 || (c[3] || '').indexOf(f) === 0 || (c[3] || '').indexOf(f) !== -1;
+        });
+        if (!idxs.length) return;
+        html += '<div class="cgroup" data-g="' + L + '"><div class="cgh">' + L + '</div>' +
+          idxs.map(function (i) {
+            return '<button type="button" class="ci" data-i="' + i + '">' + CITIES[i][0] + '</button>';
+          }).join('') + '</div>';
+      });
+      listBox.innerHTML = html || '<div class="cempty">没找到这个城市，可以选临近的城市。</div>';
+    }
+
+    function openPanel() { panel.hidden = false; renderList(input.value); }
+    function closePanel() { panel.hidden = true; }
+
+    input.addEventListener('focus', openPanel);
+    input.addEventListener('input', function () { openPanel(); });
+
+    lettersBox.addEventListener('click', function (e) {
+      const b = e.target.closest('.cl');
+      if (!b) return;
+      input.value = '';
+      renderList('');
+      const g = listBox.querySelector('[data-g="' + b.dataset.l + '"]');
+      if (g) listBox.scrollTop = g.offsetTop - listBox.offsetTop;
     });
+
+    listBox.addEventListener('click', function (e) {
+      const b = e.target.closest('.ci');
+      if (!b) return;
+      const i = Number(b.dataset.i);
+      sel.value = String(i);
+      input.value = CITIES[i][0];
+      closePanel();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.citypick')) closePanel();
+    });
+
+    renderList('');
 
     function deg(d, m) { return d + "°" + (m < 10 ? "0" + m : m) + "′"; }
 

@@ -1561,22 +1561,55 @@ html[data-theme="light"] .idledeck i::before{color:rgba(138,100,40,.38)}
 html[data-theme="light"] .heroart{opacity:.22}
 @media (max-width:980px){.heroart{display:none}}
 
-/* ===== 面板徽记：取自牌面的小圆章 ===== */
-.pemblem{
-  width:62px;height:62px;margin:0 auto 22px;position:relative;border-radius:50%;
-  border:2px solid var(--gold-dim);padding:3px;background:transparent;
-  transform:rotate(-2deg);
+/* ===== 面板徽记：细线，与塔罗顶部同一套语言 ===== */
+.pemblem{width:46px;height:46px;margin:0 auto 18px;position:relative;opacity:.55}
+.pemblem::before,.pemblem::after{position:absolute;content:""}
+
+/* 星盘：黄道环 */
+.pem-astro{border:1px solid var(--gold-dim);border-radius:50%}
+.pem-astro::before{inset:9px;border:1px solid var(--gold-dim);border-radius:50%;opacity:.55}
+.pem-astro::after{left:50%;top:3px;bottom:3px;width:1px;background:var(--gold-dim);transform:translateX(-.5px) rotate(26deg)}
+
+/* 星座：月相 */
+.pem-today{border:1px solid var(--gold-dim);border-radius:50%;overflow:hidden}
+.pem-today::before{inset:0;background:var(--gold-dim);opacity:.16}
+.pem-today::after{width:100%;height:100%;border-radius:50%;background:var(--ink);left:-36%;top:-6%;transform:scale(.9)}
+
+/* 黄历：历页 */
+.pem-huangli{width:40px;height:46px;border:1px solid var(--gold-dim);border-radius:3px}
+.pem-huangli::before{left:0;right:0;top:10px;height:1px;background:var(--gold-dim);opacity:.8}
+.pem-huangli::after{left:8px;right:8px;top:17px;bottom:7px;
+  background:repeating-linear-gradient(to bottom,var(--gold-dim) 0 1px,transparent 1px 7px);opacity:.75}
+
+/* 易经：三爻（中爻断） */
+.pem-yijing{height:40px}
+.pem-yijing::before{left:0;right:0;top:4px;height:3px;background:var(--gold-dim);
+  box-shadow:0 14px 0 var(--gold-dim),0 28px 0 var(--gold-dim)}
+.pem-yijing::after{left:0;top:18px;width:40%;height:3px;background:var(--gold-dim);
+  box-shadow:28px 0 0 var(--gold-dim)}
+
+/* 合参：双环 */
+.pem-he::before,.pem-he::after{width:30px;height:30px;border:1px solid var(--gold-dim);border-radius:50%;top:8px}
+.pem-he::before{left:2px}
+.pem-he::after{right:2px;opacity:.75}
+
+/* ===== 塔罗顶部：三张牌改成线条（同一语言，放大一档） ===== */
+.idledeck{position:relative;width:104px;height:84px;margin:0 auto 22px;opacity:.55}
+.idledeck i{
+  position:absolute;top:0;width:44px;height:76px;border-radius:3px;
+  border:1px solid var(--gold-dim);background:none;box-shadow:none;
 }
-.pemblem img{
-  width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;
-  filter:saturate(.92) contrast(1.03);
+.idledeck i:nth-child(1){left:6px;transform:rotate(-8deg)}
+.idledeck i:nth-child(2){left:30px;z-index:2}
+.idledeck i:nth-child(3){left:54px;transform:rotate(8deg)}
+.idledeck i::after{content:"";position:absolute;inset:5px;border:1px solid var(--gold-dim);border-radius:2px;opacity:.45}
+.idledeck i::before{
+  content:"\2726";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:var(--gold-dim);font-size:11px;opacity:.8;
 }
-.pemblem::after{
-  content:"";position:absolute;inset:3px;border-radius:50%;
-  box-shadow:inset 0 0 0 1px rgba(201,168,106,.28);
-  pointer-events:none;
-}
-html[data-theme="light"] .pemblem::after{box-shadow:inset 0 0 0 1px rgba(138,100,40,.28)}
+.idledeck i:nth-child(2)::before{font-size:13px;opacity:1}
+
 @media (max-width:560px){
-  .pemblem{width:52px;height:52px;margin-bottom:16px}
+  .pemblem{width:40px;height:40px;margin-bottom:14px}
+  .idledeck{transform:scale(.9);margin-bottom:18px}
 }

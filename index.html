@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794636999876">
+<link rel="stylesheet" href="css/style.css?v=1794643973508">
 </head>
 <body>
 
@@ -53,6 +53,9 @@
       <h1>MYSTIC</h1>
       <p class="lead">塔罗 · 星盘 · 黄历 · 易经。所有计算都在你的浏览器里完成——不上传、不收费、不接任何 API。</p>
     </div>
+
+    
+    <p class="homehint">第一次来？不用填任何东西，<a href="#" id="homeTryTarot">先抽一张牌</a>看看。</p>
 
     <div class="sec" style="margin-top:38px">
       <h3>今 日 一 眼</h3>
@@ -149,7 +152,7 @@
   <!-- ================= 星盘 ================= -->
   <section class="panel" id="panel-astro">
     <div class="ask" style="max-width:640px;margin-top:14px">
-      <h2>本 命 盘</h2>
+      <h2>排 一 张 本 命 盘</h2>
 
       <div class="form-row">
         <div class="field"><label>年</label><input id="by" type="number" value="2000" min="1800" max="2060"></div>
@@ -220,6 +223,8 @@
 
   <!-- ================= 星座 ================= -->
   <section class="panel" id="panel-today">
+    <div class="tyou" id="todayForYou" hidden></div>
+    <div class="tyouhint" id="todayNoBirth" hidden>还没排过本命盘。去「星盘」排一次，这里就会按你自己的盘算，而不是按星座。</div>
     <div class="todayhead">
       <h2 id="tTitle">今天</h2>
       <div class="daycards" id="daycards"></div>
@@ -314,6 +319,7 @@
       <div class="hint">三枚铜钱，掷六次，自下而上成卦。老阳、老阴为动爻，动则生出变卦。</div>
       <button class="btn" id="yjCast">掷 六 次</button>
       <div class="err" id="yjErr"></div>
+      <div class="yhist" id="yjHist" hidden></div>
     </div>
     <div id="yjOut" hidden></div>
     <div class="cite">易经：卦辞、爻辞为公有领域《周易》原文，取自公开数据集（Johnson-Jia/liuyao-divination，MIT），并与维基文库《周易》交叉核对，修正 3 处抄校错误（损「曷之用」、困「大人吉」、丰「宜日中」）。起卦用三枚铜钱法，老阳老阴为动爻，四象概率 1/8 · 3/8 · 3/8 · 1/8，由钱币本身决定。变爻取用依朱熹《周易本义》。白话大意为本站按通行注本整理，非逐字翻译；爻辞以原文为准。</div>
@@ -354,7 +360,7 @@
 <script src="js/yijing-yao-bai2.js"></script>
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
-<script src="js/app.js?v=1794638319931"></script>
+<script src="js/app.js?v=1794643973508"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

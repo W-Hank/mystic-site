@@ -1,6 +1,72 @@
 (function () {
+      /* 大白话：行运行星带来什么、相位怎么落 */
+      const TODAY_WHAT = {
+        "木星": "机会比平时顺手，答应下来的事容易成",
+        "土星": "会觉得被压着，进度慢是正常的，不是你的问题",
+        "火星": "火气容易上来，话出口前先停一秒",
+        "金星": "和人相处顺，谈钱谈感情都比较好开口",
+        "水星": "消息多、容易改主意，重要的事写下来",
+        "太阳": "注意力回到自己身上，适合把方向定下来",
+        "月亮": "情绪起伏明显，别在晚上做决定"
+      };
+      const ASP_NAME = {
+        "合": "合相", "冲": "对冲", "三分": "三分相", "四分": "四分相", "六分": "六分相"
+      };
+      const HOW = {
+        "合": "正好压在上面，感受会被放大",
+        "冲": "正对着，容易拉扯",
+        "三分": "配合得好，可以借力",
+        "四分": "别着劲，得调整",
+        "六分": "轻轻搭上，影响不大"
+      };
+      const POINT = {
+        "太阳": "你想成为什么样的人",
+        "月亮": "你的情绪和安全感",
+        "上升": "别人眼里的你",
+        "水星": "你怎么说话、怎么想事",
+        "金星": "你怎么对人好、怎么花钱",
+        "火星": "你怎么行动、怎么生气",
+        "木星": "你信什么、往哪扩",
+        "土星": "你怕什么、扛什么"
+      };
+      /* 相位名归一化：合相/合、对冲/冲 都收成基础键 */
+      const ASP_BASE = {
+        "合": "合", "合相": "合",
+        "冲": "冲", "冲相": "冲", "对冲": "冲",
+        "三分": "三分", "三分相": "三分",
+        "四分": "四分", "四分相": "四分",
+        "六分": "六分", "六分相": "六分"
+      };
+      function aspBase(k) {
+        const s = String(k == null ? "" : k);
+        return ASP_BASE[s] || ASP_BASE[s.replace(/相$/, "")] || "";
+      }
+      function aspName(k) {
+        const b = aspBase(k);
+        return ASP_NAME[b] || String(k == null ? "" : k);
+      }
+      function aspHow(k) {
+        const b = aspBase(k);
+        return HOW[b] || "";
+      }
+
+      window.MYSTIC_PLAIN = { TODAY_WHAT: TODAY_WHAT, HOW: HOW, POINT: POINT };
+
   const $ = s => document.querySelector(s);
   const E = window.MysticEngine, A = window.MysticAstro;
+
+  /* 首页引导：点「先抽一张牌」直达 */
+  (function () {
+    const link = document.getElementById('homeTryTarot');
+    if (!link) return;
+    link.onclick = function (e) {
+      e.preventDefault();
+      const t = document.querySelector('nav button[data-tab="tarot"]');
+      if (t) t.click();
+      const g = document.getElementById('draw') || document.querySelector('.drawbtn');
+      if (g) g.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+  })();
 
   /* ================= Tab ================= */
   document.querySelectorAll('nav button').forEach(b => {
@@ -537,33 +603,6 @@
       const box = document.getElementById('natTransit');
       if (!box) return;
 
-      /* 大白话：行运行星带来什么、相位怎么落 */
-      const TODAY_WHAT = {
-        "木星": "机会比平时顺手，答应下来的事容易成",
-        "土星": "会觉得被压着，进度慢是正常的，不是你的问题",
-        "火星": "火气容易上来，话出口前先停一秒",
-        "金星": "和人相处顺，谈钱谈感情都比较好开口",
-        "水星": "消息多、容易改主意，重要的事写下来",
-        "太阳": "注意力回到自己身上，适合把方向定下来",
-        "月亮": "情绪起伏明显，别在晚上做决定"
-      };
-      const HOW = {
-        "合": "正好压在上面，感受会被放大",
-        "冲": "正对着，容易拉扯",
-        "三分": "配合得好，可以借力",
-        "四分": "别着劲，得调整",
-        "六分": "轻轻搭上，影响不大"
-      };
-      const POINT = {
-        "太阳": "你想成为什么样的人",
-        "月亮": "你的情绪和安全感",
-        "上升": "别人眼里的你",
-        "水星": "你怎么说话、怎么想事",
-        "金星": "你怎么对人好、怎么花钱",
-        "火星": "你怎么行动、怎么生气",
-        "木星": "你信什么、往哪扩",
-        "土星": "你怕什么、扛什么"
-      };
 
       let html = "";
       try {
@@ -607,10 +646,10 @@
         } else {
           html += '<ul class="ntlist">' + hits.slice(0, 3).map(function (h) {
             const what = TODAY_WHAT[h.t] || "";
-            const how = HOW[h.kind] || h.kind;
+            const how = aspHow(h.kind);
             const pt = POINT[h.to] || "你这块";
-            return '<li><b>今天的' + h.t + "和你的" + h.to + how + "（差 " + h.orb.toFixed(1) + "°）</b>" +
-              "<p>它碰的是" + pt + "：" + what + "。</p></li>";
+            return '<li><b>今天的' + h.t + "和你的" + h.to + aspName(h.kind) + "（差 " + h.orb.toFixed(1) + "°）</b>" +
+              "<p>" + (how ? how + "。" : "") + what + "。<br><span class=\"ntsub\">碰的是你「" + pt + "」这块。</span></p></li>";
           }).join("") + "</ul>";
         }
 
@@ -631,6 +670,15 @@
       }),
       footer: "行星位置 JPL 近似根数 + Meeus 月球级数，精度经 pyephem 校验（<0.2°）；宫位含义采 Lilly 1647"
     }, "natal");
+    /* 存出生参数，供「今日」用 */
+    try {
+      localStorage.setItem('mystic.birth', JSON.stringify({
+        y: y, m: m, d: d, h: h, mi: mi, tz: tz,
+        lat: hasPlace ? lat : null, lon: hasPlace ? lon : null,
+        hasTime: hasTime
+      }));
+    } catch (e) {}
+
     const ao = $('#astroOut');
     if (ao && ao.scrollIntoView) ao.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -785,6 +833,101 @@
 
   function starStr(n) { n = Math.max(1, Math.min(5, n)); return "★".repeat(n) + "☆".repeat(5 - n); }
 
+  /* ---- 今日：如果排过盘，按你自己的盘算 ---- */
+  function renderTodayYou() {
+    const box = document.getElementById('todayForYou');
+    const hint = document.getElementById('todayNoBirth');
+    if (!box) return;
+    let b = null;
+    try { b = JSON.parse(localStorage.getItem('mystic.birth') || 'null'); } catch (e) {}
+
+    if (!b) {
+      box.hidden = true;
+      if (hint) hint.hidden = false;
+      return;
+    }
+    if (hint) hint.hidden = true;
+
+    let d;
+    try {
+      d = A.daily(b.y, b.m, b.d, b.h, b.mi, b.tz, b.lat || 0, b.lon || 0, b.hasTime);
+    } catch (e) {
+      box.hidden = true;
+      return;
+    }
+
+    const ch = d.chart;
+    const pickB = (k) => ch.bodies.filter(function (x) { return x.key === k; })[0];
+    const sun = pickB('sun'), moon = pickB('moon'), asc = pickB('asc');
+
+    const PLAIN = window.MYSTIC_PLAIN || {};
+    const WHAT = PLAIN.TODAY_WHAT || {}, HOW = PLAIN.HOW || {}, POINT = PLAIN.POINT || {};
+
+    let html = '<div class="tyouhead"><span>你的盘 · 今天</span>' +
+      '<em>' + sun.sign.cn + '日 / ' + moon.sign.cn + '月' + (asc ? ' / ' + asc.sign.cn + '升' : '') + '</em></div>';
+
+    html += '<p class="tyouline">今天是' + (d.phase && d.phase.name ? d.phase.name : '') +
+      '，月亮走到' + (d.moonSign && d.moonSign.sign ? d.moonSign.sign.cn : '?') + '。' +
+      (d.retros && d.retros.length ? '现在 ' + d.retros.map(function (k) { return PCN[k] || k; }).join('、') + ' 在逆行。' : '没有星在逆行。') + '</p>';
+
+    if (d.hits && d.hits.length) {
+      html += '<ul class="tyouhits">' + d.hits.slice(0, 3).map(function (h) {
+        const what = WHAT[h.t] || '';
+        const how = aspHow(h.kind);
+        const pt = POINT[h.to] || '你这块';
+        return '<li><b>今天的' + h.t + '和你的' + h.to + aspName(h.kind) + '</b>' +
+          '<p>' + (how ? how + '。' : '') + what + '。<br><span class="ntsub">碰的是你「' + pt + '」这块。</span></p></li>';
+      }).join('') + '</ul>';
+    } else {
+      html += '<p class="tyounone">今天没有紧的星象压着你的盘。按自己的节奏做事就行。</p>';
+    }
+
+    box.innerHTML = html;
+    box.hidden = false;
+  }
+
+  /* ---- 易经历史 ---- */
+  function renderYjHist() {
+    const box = document.getElementById('yjHist');
+    if (!box) return;
+    let arr = [];
+    try { arr = JSON.parse(localStorage.getItem('mystic.yijing') || '[]'); } catch (e) {}
+    if (!arr.length) { box.hidden = true; box.innerHTML = ''; return; }
+
+    function ago(ts) {
+      const d = Math.floor((Date.now() - ts) / 86400000);
+      if (d <= 0) return '今天';
+      if (d === 1) return '昨天';
+      if (d < 30) return d + ' 天前';
+      return Math.floor(d / 30) + ' 个月前';
+    }
+
+    box.hidden = false;
+    box.innerHTML = '<h3 class="yhTitle">之 前 起 过 的 卦</h3>' +
+      arr.slice(0, 5).map(function (r, i) {
+        return '<div class="yhrow">' +
+          '<div class="yhtop"><span class="yhwhen">' + ago(r.t) + '</span>' +
+          '<button class="yhdel" data-i="' + i + '">删除</button></div>' +
+          '<div class="yhq">' + (r.q ? '「' + r.q + '」' : '未填问题') + '</div>' +
+          '<div class="yhben">' + r.ben + (r.bian ? ' → ' + r.bian : '（六爻不动）') + '</div>' +
+          '</div>';
+      }).join('');
+
+    Array.prototype.forEach.call(box.querySelectorAll('.yhdel'), function (btn) {
+      btn.onclick = function () {
+        const i = Number(btn.dataset.i);
+        let list = [];
+        try { list = JSON.parse(localStorage.getItem('mystic.yijing') || '[]'); } catch (e) {}
+        const rec = list[i];
+        if (!rec) return;
+        if (!confirm('删除这条？\n\n' + (rec.q || '未填问题') + '\n' + rec.ben + (rec.bian ? ' → ' + rec.bian : ''))) return;
+        list.splice(i, 1);
+        try { localStorage.setItem('mystic.yijing', JSON.stringify(list)); } catch (e) {}
+        renderYjHist();
+      };
+    });
+  }
+
   function renderToday() {
     const pl = planOf(curPeriod);
     const mid = pl.jds[Math.floor(pl.jds.length / 2)];
@@ -813,6 +956,8 @@
         { k: "逆 行", v: retroTxt, s: retros.length ? "正在倒退" : "全部顺行" }
       ];
     }
+
+    try { renderTodayYou(); } catch (e) {}
 
     $('#tTitle').textContent = pl.title;
     $('#daycards').innerHTML = cards.map(cd =>
@@ -1579,6 +1724,28 @@
           '</div>' +
         '</div>' +
       '</div>' + yjActions();
+    /* 存一卦，便于以后对照 */
+    try {
+      const nm = (r.ben && r.ben.name) || "";
+      const bn = (r.changing && v && v.name) ? v.name : "";
+      const rec = {
+        t: Date.now(),
+        q: (document.getElementById('yjQ').value || "").slice(0, 60),
+        ben: nm,
+        bian: bn,
+        changing: !!r.changing
+      };
+      const KEY = 'mystic.yijing';
+      const old = JSON.parse(localStorage.getItem(KEY) || '[]');
+      const lastRec = old[0];
+      const same = lastRec && lastRec.ben === rec.ben && lastRec.bian === rec.bian && (Date.now() - lastRec.t) < 3000;
+      if (!same) {
+        old.unshift(rec);
+        localStorage.setItem(KEY, JSON.stringify(old.slice(0, 30)));
+      }
+      renderYjHist();
+    } catch (e) {}
+
     $('#yjOut').hidden = false;
     saveCard("yj", {
       date: todayStr(),
@@ -1965,4 +2132,5 @@
   renderHist();
 
 
+  try { renderYjHist(); } catch (e) {}
 })();

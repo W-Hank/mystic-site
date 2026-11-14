@@ -1429,3 +1429,38 @@ html[data-theme="light"] .nsumline{color:#241f19}
 html[data-theme="light"] .nsumline b{color:#8a6428}
 html[data-theme="light"] .ntlist b{color:#241f19}
 html[data-theme="light"] .ntlist p,html[data-theme="light"] .nthead{color:#57503f}
+
+/* ===== 今日：你的盘 ===== */
+.tyou{margin:0 0 26px;padding:20px 22px 18px;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+.tyouhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+  padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.tyouhead span{font-size:12px;letter-spacing:.22em;color:var(--dim)}
+.tyouhead em{font-style:normal;font-size:13px;color:var(--fg)}
+.tyouline{margin:0 0 14px;font-size:14px;line-height:1.85;color:var(--dim)}
+.tyouhits{list-style:none;margin:0;padding:0}
+.tyouhits li{padding:12px 0;border-top:1px dashed var(--line)}
+.tyouhits li:first-child{border-top:0;padding-top:0}
+.tyouhits li b{display:block;font-size:14px;font-weight:600;color:var(--fg);margin-bottom:4px}
+.tyouhits li p{margin:0;font-size:13.5px;line-height:1.8;color:var(--dim)}
+.tyounone{margin:0;font-size:14px;line-height:1.85;color:var(--dim)}
+.tyouhint{margin:0 0 22px;padding:14px 18px;border-left:2px solid var(--gold);
+  font-size:13px;line-height:1.8;color:var(--dim);background:var(--card)}
+
+/* ===== 易经历史 ===== */
+.yhist{margin:30px 0 0;padding-top:22px;border-top:1px solid var(--line)}
+.yhTitle{font-size:12px;letter-spacing:.22em;font-weight:400;color:var(--dim);margin:0 0 14px}
+.yhrow{padding:12px 0;border-bottom:1px dashed var(--line)}
+.yhrow:last-child{border-bottom:0}
+.yhtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.yhwhen{font-size:12px;color:var(--dim2)}
+.yhdel{background:none;border:0;padding:0;font-size:12px;color:var(--dim2);cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px}
+.yhdel:hover{color:var(--gold)}
+.yhq{font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:3px}
+.yhben{font-size:13.5px;color:var(--fg);line-height:1.7}
+
+/* ===== 首页引导 ===== */
+.homehint{margin:22px 0 0;font-size:13.5px;line-height:1.8;color:var(--dim)}
+.homehint a{color:var(--gold);text-decoration:underline;text-underline-offset:4px}
+
+.ntsub{font-size:12.5px;color:var(--dim2)}

@@ -440,12 +440,35 @@
     const ch = A.natal(y, m, d, h, mi, tz, lat, lon, hasTime, hasPlace);
     $('#astroOut').hidden = false;
 
-    $('#bods').innerHTML = ch.bodies.map(b => `
-      <div class="bod">
-        <span class="bn">${b.cn}</span>
-        <span class="bs">${b.sign.cn} ${b.deg}°${String(b.min).padStart(2, "0")}′</span>
-        <span class="bd">${b.sign.el} · ${b.sign.mode} · 主星${b.sign.ruler}</span>
-      </div>`).join("");
+    /* 三核心：太阳 / 月亮 / 上升 —— 先说人话，再给数据 */
+    const pick = (k) => ch.bodies.filter(function (x) { return x.key === k; })[0];
+    const CORE = [
+      { k: "sun", label: "太阳", role: "你的基本性格与方向" },
+      { k: "moon", label: "月亮", role: "情绪与安全感从哪来" },
+      { k: "asc", label: "上升", role: "别人第一眼看到的你" }
+    ];
+    const coreBox = document.getElementById('natCore');
+    if (coreBox) {
+      coreBox.innerHTML = CORE.map(function (c) {
+        const b = pick(c.k);
+        if (!b) {
+          return '<div class="nc ncmiss"><span class="nck">' + c.label + '</span>' +
+            '<b>—</b><em>没有出生时间或地点，算不出上升</em></div>';
+        }
+        return '<div class="nc"><span class="nck">' + c.label + '</span>' +
+          '<b>' + b.sign.cn + '</b>' +
+          '<i>' + b.deg + '°' + String(b.min).padStart(2, '0') + '′</i>' +
+          '<em>' + c.role + '</em>' +
+          '<p>' + (b.sign.d || (b.sign.el + '象 · 主星' + b.sign.ruler)) + '</p></div>';
+      }).join("");
+    }
+
+    /* 表格：七曜落座 */
+    $('#bods').innerHTML = ch.bodies.map(function (b) {
+      return '<tr><td>' + b.cn + '</td><td>' + b.sign.cn + '</td>' +
+        '<td>' + b.deg + '°' + String(b.min).padStart(2, '0') + '′</td>' +
+        '<td>' + b.sign.el + '象 · ' + b.sign.mode + ' · 主星' + b.sign.ruler + '</td></tr>';
+    }).join("");
 
     $('#asps').innerHTML = ch.aspects.length
       ? ch.aspects.map(a => `<span class="asp">${a.a}${a.n}${a.b}　${a.orb.toFixed(1)}°</span>`).join("")

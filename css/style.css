@@ -1363,3 +1363,42 @@ html,body{scrollbar-width:none;-ms-overflow-style:none}
   #panel-astro .ask{max-width:100%}
 }
 .astro-wrap .bod-list{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+
+/* ===== 星盘结果：三核心 + 表格 ===== */
+.astro-wrap{display:flex;flex-direction:column;align-items:center;gap:30px;margin-top:40px}
+.ncore{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;max-width:700px}
+.nc{border:1px solid rgba(201,168,106,.22);border-radius:12px;padding:16px 18px;
+  background:rgba(201,168,106,.045);display:flex;flex-direction:column;gap:5px}
+.nc .nck{font-size:11.5px;letter-spacing:.16em;color:var(--dim2)}
+.nc b{font-size:20px;letter-spacing:.06em;color:var(--gold);font-weight:600}
+.nc i{font-style:normal;font-size:11.5px;color:var(--dim2);letter-spacing:.04em}
+.nc em{font-style:normal;font-size:11.5px;color:var(--dim);margin-top:4px}
+.nc p{margin:6px 0 0;font-size:12.5px;line-height:1.85;color:var(--dim)}
+.nc.ncmiss b{color:var(--dim2);font-size:15px}
+.nc.ncmiss p{display:none}
+
+.astro-wrap .wheelbox{width:100%;display:flex;justify-content:center}
+.astro-wrap .bodbox{width:100%;max-width:700px}
+.nsub{font-size:12.5px;letter-spacing:.16em;color:var(--gold-dim);font-weight:600;
+  margin:30px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(35,42,56,.7)}
+.ntable{width:100%;border-collapse:collapse;font-size:13.5px}
+.ntable th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.12em;color:var(--dim2);
+  padding:0 0 8px;border-bottom:1px solid rgba(35,42,56,.6)}
+.ntable td{padding:10px 0;border-bottom:1px solid rgba(35,42,56,.35);color:var(--dim)}
+.ntable td:first-child{color:var(--text);width:70px}
+.ntable td:nth-child(2){color:var(--gold-dim);width:80px}
+.ntable td:nth-child(3){width:90px;color:var(--dim)}
+.ntable td:last-child{font-size:12px;color:var(--dim2)}
+
+@media(max-width:760px){
+  .ncore{grid-template-columns:1fr;gap:10px}
+  .ntable td:last-child{display:none}
+  .ntable th:nth-child(4){display:none}
+}
+html[data-theme="light"] .nc{background:rgba(150,112,47,.06);border-color:rgba(138,100,40,.28)}
+html[data-theme="light"] .nc b{color:#8a6428}
+html[data-theme="light"] .nc p,html[data-theme="light"] .nc em{color:#57503f}
+html[data-theme="light"] .ntable td{color:#57503f}
+html[data-theme="light"] .ntable td:first-child{color:#241f19}
+html[data-theme="light"] .ntable td:nth-child(2){color:#8a6428}
+html[data-theme="light"] .nsub{border-bottom-color:rgba(138,100,40,.25)}

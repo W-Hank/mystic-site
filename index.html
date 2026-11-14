@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794634448344">
+<link rel="stylesheet" href="css/style.css?v=1794636131103">
 </head>
 <body>
 
@@ -192,12 +192,21 @@
     </div>
 
     <div class="astro-wrap" id="astroOut" hidden>
+      <div class="ncore" id="natCore"></div>
+
       <div class="wheelbox">
         <svg class="wheel" id="wheel" viewBox="0 0 420 420"></svg>
       </div>
+
       <div class="bodbox">
-        <div class="bod-list" id="bods"></div>
+        <h3 class="nsub">七 曜 落 座</h3>
+        <table class="ntable"><thead><tr><th>星体</th><th>星座</th><th>度数</th><th>属性</th></tr></thead>
+          <tbody id="bods"></tbody></table>
+
+        <h3 class="nsub">相 位</h3>
         <div class="aspects" id="asps"></div>
+
+        <h3 class="nsub">怎 么 读</h3>
         <div class="reading" id="aread"></div>
       </div>
     </div>
@@ -341,7 +350,7 @@
 <script src="js/yijing-yao-bai2.js"></script>
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
-<script src="js/app.js?v=1794634448344"></script>
+<script src="js/app.js?v=1794636131103"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

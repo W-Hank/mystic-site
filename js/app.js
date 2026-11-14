@@ -332,34 +332,90 @@
       catch (e) { return x[0] < y[0] ? -1 : 1; }
     });
   }
+  /* ---- 城市检索器（拼音 + A-Z 索引） ---- */
   const sel = $('#bcity');
   const coordMap = {};
-  const emptyOpt = document.createElement("option");
-  emptyOpt.value = ""; emptyOpt.textContent = "— 不填 —";
-  sel.appendChild(emptyOpt);
+  const cityInput = document.getElementById('bcityInput');
+  const cityPanel = document.getElementById('bcityPanel');
+  const cityList = document.getElementById('bcityList');
+  const cityLetters = document.getElementById('bcityLetters');
 
-  let vidx = 0;
-  PLACES.forEach(function (grp) {
-    const og = document.createElement("optgroup");
-    og.label = grp.country;
-    pinyinSort(grp.cities).forEach(function (c) {
-      const o = document.createElement("option");
-      const v = String(vidx++);
-      o.value = v;
-      o.textContent = c[0];
-      coordMap[v] = [c[1], c[2]];
-      og.appendChild(o);
-    });
-    sel.appendChild(og);
+  const FLAT = [];
+  (window.MYSTIC_CITIES || []).forEach(function (c) {
+    FLAT.push({ name: c[0], lat: c[1], lon: c[2], py: c[3] || "", ini: c[4] || "#" });
   });
-  sel.value = "";
+  PLACES.forEach(function (grp) {
+    if (grp.country === "\u4e2d\u56fd") return;
+    grp.cities.forEach(function (c) {
+      if (FLAT.some(function (x) { return x.name === c[0]; })) return;
+      FLAT.push({ name: c[0], lat: c[1], lon: c[2], py: "", ini: "#" });
+    });
+  });
+  FLAT.forEach(function (c, i) { coordMap[String(i)] = [c.lat, c.lon]; });
 
-  sel.onchange = () => {
-    if (sel.value === "") { $('#blat').value = ""; $('#blon').value = ""; return; }
-    const c = coordMap[sel.value];
-    if (!c) return;
-    $('#blat').value = c[0]; $('#blon').value = c[1];
-  };
+  const groups = {};
+  FLAT.forEach(function (c, i) { (groups[c.ini] = groups[c.ini] || []).push(i); });
+  const letters = Object.keys(groups).sort(function (x, y) {
+    if (x === "#") return 1;
+    if (y === "#") return -1;
+    return x < y ? -1 : 1;
+  });
+
+  if (cityLetters) {
+    cityLetters.innerHTML = letters.map(function (L) {
+      return '<button type="button" class="cl" data-l="' + L + '">' + L + '</button>';
+    }).join("");
+  }
+
+  function renderCityList(filter) {
+    if (!cityList) return;
+    const f = (filter || "").trim().toLowerCase();
+    let html = "";
+    letters.forEach(function (L) {
+      const idxs = groups[L].filter(function (i) {
+        if (!f) return true;
+        const c = FLAT[i];
+        return c.name.indexOf(f) !== -1 || (c.py && c.py.indexOf(f) === 0);
+      });
+      if (!idxs.length) return;
+      html += '<div class="cgroup" data-g="' + L + '"><div class="cgh">' + L + '</div>' +
+        idxs.map(function (i) {
+          return '<button type="button" class="ci" data-v="' + i + '">' + FLAT[i].name + '</button>';
+        }).join("") + '</div>';
+    });
+    cityList.innerHTML = html || '<div class="cempty">没找到，可选临近城市，或在下面手填经纬度。</div>';
+  }
+
+  if (cityInput) {
+    cityInput.addEventListener('focus', function () { cityPanel.hidden = false; renderCityList(cityInput.value); });
+    cityInput.addEventListener('input', function () { cityPanel.hidden = false; renderCityList(cityInput.value); });
+  }
+
+  if (cityLetters) cityLetters.addEventListener('click', function (e) {
+    const b = e.target.closest('.cl');
+    if (!b) return;
+    cityInput.value = "";
+    renderCityList("");
+    const g = cityList.querySelector('[data-g="' + b.dataset.l + '"]');
+    if (g) cityList.scrollTop = Math.max(0, g.offsetTop - cityList.offsetTop - 4);
+  });
+
+  if (cityList) cityList.addEventListener('click', function (e) {
+    const b = e.target.closest('.ci');
+    if (!b) return;
+    const v = b.dataset.v;
+    sel.value = v;
+    cityInput.value = FLAT[Number(v)].name;
+    cityPanel.hidden = true;
+    const c = coordMap[v];
+    if (c) { $('#blat').value = c[0]; $('#blon').value = c[1]; }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (cityPanel && !e.target.closest('.citypick')) cityPanel.hidden = true;
+  });
+
+  renderCityList("");
 
   $('#calc').onclick = () => {
     const y = +$('#by').value, m = +$('#bm').value, d = +$('#bd').value;

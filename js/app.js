@@ -436,8 +436,8 @@
     err.textContent = "";
 
     const hasTime = !document.querySelector('#notime').checked;
-    const placeOpen = document.querySelector('#place').open && hasCoord;
-    const ch = A.natal(y, m, d, h, mi, tz, lat, lon, hasTime, placeOpen);
+    const hasPlace = hasCoord;
+    const ch = A.natal(y, m, d, h, mi, tz, lat, lon, hasTime, hasPlace);
     $('#astroOut').hidden = false;
 
     $('#bods').innerHTML = ch.bodies.map(b => `
@@ -453,7 +453,7 @@
 
     $('#aread').innerHTML = readingHTML(A.reading(ch), A.aspectLine(ch.aspects));
 
-    drawWheel(ch, hasTime && placeOpen);
+    drawWheel(ch, hasTime && hasPlace);
     saveCard("np", {
       date: todayStr(),
       title: "本命盘 " + ch.bodies[0].sign.cn + "日 / " + ch.bodies[1].sign.cn + "月" + (ch.bodies.find(function (b) { return b.key === "asc"; }) ? " / " + ch.bodies.find(function (b) { return b.key === "asc"; }).sign.cn + "升" : ""),

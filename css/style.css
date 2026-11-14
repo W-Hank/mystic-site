@@ -1496,3 +1496,54 @@ html[data-theme="light"]::before{
 /* 页脚提亮：暗角会压到最底一行 */
 footer{color:#868ba1;font-size:11.5px}
 html[data-theme="light"] footer{color:#4a4433;font-size:11.5px}
+
+/* 浅色：卡片抬一档，别只靠一根线分界 */
+html[data-theme="light"] .dc,
+html[data-theme="light"] .hlcard,
+html[data-theme="light"] .sg,
+html[data-theme="light"] .tyou{
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,
+             0 1px 2px rgba(96,78,44,.06),
+             0 10px 22px rgba(96,78,44,.05);
+}
+
+/* 抽牌前的空状态：一小叠牌背 */
+.idledeck{position:relative;width:118px;height:96px;margin:2px auto 24px}
+.idledeck i{
+  position:absolute;top:0;width:52px;height:88px;border-radius:5px;
+  border:1px solid #2b3147;
+  background:repeating-linear-gradient(45deg,rgba(201,168,106,.05) 0 2px,transparent 2px 7px),
+             linear-gradient(160deg,#1b2136,#12151f);
+  box-shadow:0 6px 16px rgba(0,0,0,.35);
+}
+.idledeck i:nth-child(1){left:6px;transform:rotate(-8deg)}
+.idledeck i:nth-child(2){left:33px;z-index:2}
+.idledeck i:nth-child(3){left:60px;transform:rotate(8deg)}
+.idledeck i::after{content:"";position:absolute;inset:5px;border:1px solid rgba(201,168,106,.22);border-radius:3px}
+.idledeck i::before{
+  content:"✦";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:rgba(201,168,106,.30);font-size:13px;
+}
+html[data-theme="light"] .idledeck i{
+  border-color:#ddd0b4;
+  background:repeating-linear-gradient(45deg,rgba(138,100,40,.045) 0 2px,transparent 2px 7px),
+             linear-gradient(160deg,#fdf9f0,#f3ebda);
+  box-shadow:0 6px 16px rgba(96,78,44,.10);
+}
+html[data-theme="light"] .idledeck i::before{color:rgba(138,100,40,.38)}
+@media (max-width:560px){.idledeck{margin-bottom:18px}}
+
+/* 黄历：十二时辰 */
+.hhours{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.hh{border:1px solid var(--line);border-radius:3px;padding:13px 8px 11px;text-align:center;background:var(--card);position:relative}
+.hh b{display:block;font-size:18px;font-weight:500;line-height:1.2;letter-spacing:.1em}
+.hh span{display:block;font-size:11px;color:var(--dim2);letter-spacing:.06em;margin-top:3px}
+.hh i{display:block;font-style:normal;font-size:12px;margin-top:9px;letter-spacing:.2em}
+.hh.y i{color:var(--gold)}
+.hh.n i{color:var(--dim2)}
+.hh.now{border-color:var(--gold-dim)}
+.hh em{position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+  font-style:normal;font-size:10px;letter-spacing:.12em;color:var(--ink);
+  background:var(--gold);padding:1px 7px;border-radius:2px;white-space:nowrap}
+@media (max-width:760px){.hhours{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:420px){.hhours{grid-template-columns:repeat(3,1fr);gap:8px}.hh{padding:11px 6px 9px}.hh b{font-size:16px}}

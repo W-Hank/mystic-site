@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794662987383">
+<link rel="stylesheet" href="css/style.css?v=1794667135484">
 </head>
 <body>
 
@@ -78,6 +78,7 @@
   <section class="panel" id="panel-tarot">
 
     <div id="step-ask" class="ask">
+    <div class="idledeck" aria-hidden="true"><i></i><i></i><i></i></div>
       <h2>把你要问的，写成一句真话</h2>
       <textarea id="q" placeholder="例如：我给她发那条消息，现在合适吗？&#10;或者：我们之间有没有可能，往下该怎么走。"></textarea>
       <div class="hint">问题越具体，牌越有话说。避免「我的运势怎么样」这类没有落点的问题。</div>
@@ -301,6 +302,12 @@
     </div>
     <div id="hlMain"></div>
 
+
+    <div class="sec" style="margin-top:40px">
+      <h3>十 二 时 辰</h3>
+      <div class="hint" style="margin:-6px 0 14px">按当天日柱定，只分可用与不宜两档。点上面切换日期，这里跟着变。</div>
+      <div id="hlHours"></div>
+    </div>
     <div class="sec" style="margin-top:44px">
       <h3>接 下 来 七 天</h3>
       <div class="hint" style="margin:-6px 0 14px">宜忌取自通行通书体例，只收常用的二十项。不同版本的通书会有出入。</div>
@@ -357,7 +364,7 @@
 <script src="js/yijing-yao-bai2.js"></script>
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
-<script src="js/app.js?v=1794662987383"></script>
+<script src="js/app.js?v=1794667135484"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

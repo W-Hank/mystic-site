@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794633559908">
+<link rel="stylesheet" href="css/style.css?v=1794633939790">
 </head>
 <body>
 
@@ -148,27 +148,26 @@
 
   <!-- ================= 星盘 ================= -->
   <section class="panel" id="panel-astro">
-    <div class="astrohead">
+    <div class="ask" style="max-width:640px;margin-top:14px">
       <h2>本 命 盘</h2>
-      <p>填出生信息，算出太阳、月亮、上升和七颗星的位置。全部在你本机算完，不上传。</p>
-    </div>
 
-    <div class="birthcard">
-      <div class="bgrid">
-        <label class="bf"><span>年</span><input id="by" type="number" value="2000" min="1800" max="2060"></label>
-        <label class="bf"><span>月</span><input id="bm" type="number" placeholder="—" min="1" max="12"></label>
-        <label class="bf"><span>日</span><input id="bd" type="number" placeholder="—" min="1" max="31"></label>
-        <label class="bf"><span>时</span><input id="bh" type="number" value="12" min="0" max="23"></label>
-        <label class="bf"><span>分</span><input id="bmin" type="number" value="0" min="0" max="59"></label>
-        <label class="bf"><span>时区</span><input id="btz" type="number" value="8" step="0.5"></label>
+      <div class="form-row">
+        <div class="field"><label>年</label><input id="by" type="number" value="2000" min="1800" max="2060"></div>
+        <div class="field"><label>月</label><input id="bm" type="number" placeholder="—" min="1" max="12"></div>
+        <div class="field"><label>日</label><input id="bd" type="number" placeholder="—" min="1" max="31"></div>
       </div>
 
-      <label class="check"><input type="checkbox" id="notime"> 不记得准确出生时间（这样算不出上升）</label>
+      <div class="form-row">
+        <div class="field"><label>时</label><input id="bh" type="number" value="12" min="0" max="23"></div>
+        <div class="field"><label>分</label><input id="bmin" type="number" value="0" min="0" max="59"></div>
+        <div class="field"><label>时区</label><input id="btz" type="number" value="8" step="0.5"></div>
+      </div>
 
-      <div class="bcity">
-        <div class="blabel">出生城市<em>排上升才需要</em></div>
+      <label class="check"><input type="checkbox" id="notime"> 不记得准确出生时间（算不出上升）</label>
+
+      <div class="field" style="margin-top:6px"><label>出生城市</label>
         <div class="citypick">
-          <input type="text" id="bcityInput" placeholder="输入城市名，或拼音（如 bei）" autocomplete="off">
+          <input type="text" id="bcityInput" placeholder="输入城市名或拼音（如 bei）" autocomplete="off">
           <div class="citypanel" id="bcityPanel" hidden>
             <div class="cityletters" id="bcityLetters"></div>
             <div class="citylist" id="bcityList"></div>
@@ -179,15 +178,17 @@
 
       <details class="place" id="place">
         <summary>手动指定经纬度</summary>
-        <div class="bgrid2">
-          <label class="bf"><span>纬度</span><input id="blat" type="number" step="0.01" placeholder="如 39.90"></label>
-          <label class="bf"><span>经度（东正）</span><input id="blon" type="number" step="0.01" placeholder="如 116.41"></label>
+        <div class="form-row" style="margin-top:12px">
+          <div class="field"><label>纬度</label><input id="blat" type="number" step="0.01" placeholder="如 39.90"></div>
+          <div class="field"><label>经度（东正）</label><input id="blon" type="number" step="0.01" placeholder="如 116.41"></div>
         </div>
       </details>
 
-      <button class="btn wide" id="calc">排 盘</button>
+      <div class="hint">不填城市也能看：日月与五行星、以及它们的相位。上升必须同时有出生时间和地点，缺一个就不排。</div>
+      <div class="notice">只为自己，或已征得同意的人排盘。所有计算都在你的浏览器里完成，不上传、不存储、没有后端。</div>
+
+      <button class="btn" id="calc">排 盘</button>
       <div class="err" id="calcErr"></div>
-      <p class="micro">不填城市也能算：日月与五星、以及它们的相位。上升必须同时有出生时间和地点。</p>
     </div>
 
     <div class="astro-wrap" id="astroOut" hidden>

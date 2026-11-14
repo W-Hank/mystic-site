@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794597424164">
+<link rel="stylesheet" href="css/style.css?v=1794632240152">
 </head>
 <body>
 
@@ -148,6 +148,21 @@
 
   <!-- ================= 星盘 ================= -->
   <section class="panel" id="panel-astro">
+    <div class="natalbox">
+      <h3 class="natTitle">本 命 盘</h3>
+      <p class="natHint">填出生信息，算太阳、月亮、上升和七颗星的位置。全部在本机算，不上传。</p>
+      <div class="natForm">
+        <label>出生日期<input type="date" id="natDate" min="1900-01-01" max="2026-12-31"></label>
+        <label>出生时间<input type="time" id="natTime" step="60"></label>
+        <label>出生城市
+          <select id="natCity"><option value="">请选择</option></select>
+        </label>
+        <label class="natNoTime"><input type="checkbox" id="natNoTime"> 不记得时间（不算上升）</label>
+      </div>
+      <button class="btn" id="natGo" style="margin-top:18px">生 成 本 命 盘</button>
+      <div id="natOut" class="natOut"></div>
+    </div>
+
     <div class="ask" style="max-width:520px;margin-top:14px">
       <h2>出生信息</h2>
       <div class="form-row">
@@ -315,6 +330,7 @@
 <script src="js/engine.js?v=20261109d"></script>
 <script src="js/calib.js?v=20261109d"></script>
 <script src="js/astro.js?v=20261109d"></script>
+<script src="js/cities.js?v=20261114n1"></script>
 <script src="js/huangli-data.js?v=20261109d"></script>
 <script src="js/huangli.js?v=20261109d"></script>
 <script src="js/yijing-data.js?v=20261109d"></script>
@@ -323,7 +339,7 @@
 <script src="js/yijing-yao-bai2.js"></script>
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
-<script src="js/app.js?v=1794597424164"></script>
+<script src="js/app.js?v=1794632240152"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

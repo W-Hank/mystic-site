@@ -1275,3 +1275,47 @@ html[data-theme="light"] .hdlead{color:#57503f}
 html[data-theme="light"] .hdverdict{color:#57503f;border-top-color:rgba(138,100,40,.25)}
 html[data-theme="light"] .histopen{color:#8a6428}
 html[data-theme="light"] .btn#rshare{color:#8a6428;border-color:rgba(138,100,40,.45)}
+
+/* ===== 本命盘 ===== */
+.natalbox{margin-top:44px;padding-top:28px;border-top:1px solid rgba(35,42,56,.7)}
+.natTitle{font-size:13px;letter-spacing:.16em;color:var(--gold-dim);margin:0 0 8px;font-weight:600}
+.natHint{font-size:12.5px;line-height:1.9;color:var(--dim2);margin:0 0 20px}
+.natForm{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;max-width:520px}
+.natForm label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--dim);letter-spacing:.06em}
+.natForm input,.natForm select{appearance:none;background:rgba(255,255,255,.03);color:var(--text);
+  border:1px solid var(--line);border-radius:8px;padding:10px 11px;font:inherit;font-size:13.5px}
+.natForm input:focus,.natForm select:focus{outline:none;border-color:rgba(201,168,106,.55)}
+.natForm .natNoTime{grid-column:1/-1;flex-direction:row;align-items:center;gap:8px;font-size:12.5px}
+.natOut{margin-top:26px}
+.natErr{font-size:13px;color:#b4564a;padding:10px 0}
+.natCore{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:8px}
+.nc{border:1px solid rgba(201,168,106,.22);border-radius:10px;padding:14px 16px;background:rgba(201,168,106,.04)}
+.nc .nck{display:block;font-size:11.5px;color:var(--dim2);letter-spacing:.14em;margin-bottom:6px}
+.nc b{display:block;font-size:19px;letter-spacing:.06em;color:var(--gold);margin-bottom:4px;font-weight:600}
+.nc em{font-style:normal;font-size:11.5px;color:var(--dim);line-height:1.7}
+.nc.ncmiss b{color:var(--dim2)}
+.natWarn{margin:14px 0 0;font-size:12.5px;line-height:1.9;color:var(--warm,#8a5a2b)}
+.natTable{width:100%;border-collapse:collapse;margin-top:22px;font-size:13px}
+.natTable th{text-align:left;font-weight:500;font-size:11.5px;letter-spacing:.1em;color:var(--dim2);
+  padding:0 0 8px;border-bottom:1px solid rgba(35,42,56,.7)}
+.natTable td{padding:9px 0;border-bottom:1px solid rgba(35,42,56,.4);color:var(--dim)}
+.natTable td:first-child{color:var(--text)}
+.natSub{font-size:12.5px;letter-spacing:.12em;color:var(--gold-dim);margin:26px 0 10px;font-weight:600}
+.natAsp{list-style:none;padding:0;margin:0}
+.natAsp li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px;
+  border-bottom:1px dashed rgba(35,42,56,.4)}
+.natAsp b{color:var(--text);font-weight:500}
+.natAsp span{color:var(--dim2);font-size:12px}
+.natRead{margin-top:26px;padding-top:20px;border-top:1px solid rgba(35,42,56,.7)}
+.natRead p{font-size:14.5px;line-height:2.05;color:var(--text);margin:0 0 12px}
+@media(max-width:560px){
+  .natForm{grid-template-columns:1fr}
+  .natCore{grid-template-columns:1fr}
+}
+html[data-theme="light"] .natalbox{border-top-color:rgba(138,100,40,.25)}
+html[data-theme="light"] .nc{background:rgba(150,112,47,.05);border-color:rgba(138,100,40,.25)}
+html[data-theme="light"] .nc b{color:#8a6428}
+html[data-theme="light"] .nc em,html[data-theme="light"] .natTable td{color:#57503f}
+html[data-theme="light"] .natTable td:first-child,html[data-theme="light"] .natRead p{color:#241f19}
+html[data-theme="light"] .natForm input,html[data-theme="light"] .natForm select{
+  background:rgba(255,252,244,.7);color:#241f19;border-color:rgba(138,100,40,.3)}

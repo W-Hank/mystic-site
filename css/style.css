@@ -1547,3 +1547,16 @@ html[data-theme="light"] .idledeck i::before{color:rgba(138,100,40,.38)}
   background:var(--gold);padding:1px 7px;border-radius:2px;white-space:nowrap}
 @media (max-width:760px){.hhours{grid-template-columns:repeat(4,1fr)}}
 @media (max-width:420px){.hhours{grid-template-columns:repeat(3,1fr);gap:8px}.hh{padding:11px 6px 9px}.hh b{font-size:16px}}
+
+/* hero 右侧牌面（渐隐，窄屏隐藏） */
+.hero{position:relative}
+.heroart{
+  position:absolute;right:-40px;top:-26px;width:280px;height:420px;
+  pointer-events:none;user-select:none;
+  -webkit-mask-image:linear-gradient(100deg,rgba(0,0,0,0) 6%,rgba(0,0,0,.85) 46%,#000 92%);
+  mask-image:linear-gradient(100deg,rgba(0,0,0,0) 6%,rgba(0,0,0,.85) 46%,#000 92%);
+  opacity:.34;
+}
+.heroart img{width:100%;height:100%;object-fit:cover;border-radius:10px;filter:saturate(.85)}
+html[data-theme="light"] .heroart{opacity:.22}
+@media (max-width:980px){.heroart{display:none}}

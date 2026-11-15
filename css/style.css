@@ -1613,3 +1613,60 @@ html[data-theme="light"] .heroart{opacity:.22}
   .pemblem{width:40px;height:40px;margin-bottom:14px}
   .idledeck{transform:scale(.9);margin-bottom:18px}
 }
+
+/* ===== 确认弹窗（重做） ===== */
+.modalov{background:rgba(4,6,12,.78);backdrop-filter:blur(4px)}
+.modalbox{
+  background:linear-gradient(180deg,rgba(24,29,44,.98),rgba(17,21,33,.99));
+  border:1px solid rgba(201,168,106,.22);border-radius:14px;
+  padding:24px 26px 18px;max-width:400px;
+  box-shadow:0 26px 70px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.02) inset;
+}
+.modalbox.out{animation:popout .14s ease forwards}
+@keyframes popout{to{opacity:0;transform:scale(.98)}}
+.mtitle{
+  font-size:12px;letter-spacing:.22em;color:var(--gold);margin:0 0 14px;
+  padding-bottom:12px;border-bottom:1px solid rgba(201,168,106,.16);
+}
+.mbody p{margin:0 0 16px;font-size:14.5px;line-height:1.85;color:var(--text)}
+.mlines{margin:0 0 20px;padding:0;display:grid;grid-template-columns:auto 1fr;gap:10px 16px;align-items:baseline}
+.mlines dt{font-size:12px;color:var(--dim2);letter-spacing:.1em;white-space:nowrap}
+.mlines dd{margin:0;font-size:14px;line-height:1.7;color:var(--text)}
+.modalbtns{gap:12px;padding-top:4px}
+.modalbtns button{font-size:13px;padding:9px 24px;letter-spacing:.14em}
+.modalbtns .mno{border-color:rgba(255,255,255,.14);color:var(--dim)}
+.modalbtns .mno:hover{border-color:rgba(255,255,255,.26);color:var(--text)}
+.modalbox.danger .myes{
+  background:rgba(178,86,74,.14);border:1px solid rgba(198,102,88,.55);color:#dda79a;
+}
+.modalbox.danger .myes:hover{background:rgba(178,86,74,.26);border-color:rgba(212,118,102,.8);color:#f0c2b6}
+.modalbtns .myes:focus{outline:2px solid rgba(201,168,106,.45);outline-offset:2px}
+
+html[data-theme="light"] .modalov{background:rgba(70,58,36,.42)}
+html[data-theme="light"] .modalbox{
+  background:linear-gradient(180deg,#fdfaf2,#f7f0e0);
+  border-color:rgba(138,100,40,.28);
+  box-shadow:0 24px 60px rgba(88,70,38,.24);
+}
+html[data-theme="light"] .mtitle{color:#8a6428;border-bottom-color:rgba(138,100,40,.2)}
+html[data-theme="light"] .mbody p,
+html[data-theme="light"] .mlines dd{color:#332c22}
+html[data-theme="light"] .mlines dt{color:#6f6552}
+html[data-theme="light"] .modalbtns .mno{border-color:rgba(90,72,40,.24);color:#5c5240}
+html[data-theme="light"] .modalbtns .mno:hover{border-color:rgba(90,72,40,.45);color:#2f291f}
+html[data-theme="light"] .modalbox.danger .myes{
+  background:rgba(168,74,62,.1);border-color:rgba(168,74,62,.45);color:#9e4a3c;
+}
+html[data-theme="light"] .modalbox.danger .myes:hover{background:rgba(168,74,62,.18);color:#8a3b2e}
+
+/* ===== 塔罗顶部：单张牌线条，与其他面板同规格 ===== */
+.pem-tarot{
+  width:36px;height:50px;border:1px solid var(--gold-dim);border-radius:3px;
+  margin:0 auto 20px;
+}
+.pem-tarot::before{inset:5px;border:1px solid var(--gold-dim);border-radius:2px;opacity:.42}
+.pem-tarot::after{
+  inset:0;display:flex;align-items:center;justify-content:center;
+  color:var(--gold-dim);font-size:12px;opacity:.9;content:"\2726";
+}
+@media (max-width:560px){.pem-tarot{width:32px;height:44px;margin-bottom:16px}}

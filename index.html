@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794678503492">
+<link rel="stylesheet" href="css/style.css?v=1794716656464">
 </head>
 <body>
 
@@ -79,8 +79,8 @@
   <section class="panel" id="panel-tarot">
 
     <div id="step-ask" class="ask">
-    <div class="idledeck" aria-hidden="true"><i></i><i></i><i></i></div>
-      <h2>把你要问的，写成一句真话</h2>
+    <div class="pemblem pem-tarot" aria-hidden="true"></div>
+    <h2>把你要问的，写成一句真话</h2>
       <textarea id="q" placeholder="例如：我给她发那条消息，现在合适吗？&#10;或者：我们之间有没有可能，往下该怎么走。"></textarea>
       <div class="hint">问题越具体，牌越有话说。避免「我的运势怎么样」这类没有落点的问题。</div>
       <div class="notice">你的问题只在这个浏览器里被处理——不发送、不留存。</div>
@@ -224,7 +224,7 @@
   <!-- ================= 星座 ================= -->
   <section class="panel" id="panel-today">
     <div class="tyou" id="todayForYou" hidden></div>
-    <div class="tyouhint" id="todayNoBirth" hidden>还没排过本命盘。去「星盘」排一次，这里就会按你自己的盘算，而不是按星座。</div>
+    <div class="tyouhint" id="todayNoBirth" hidden>还没排过本命盘。<a href="#" id="todayGoAstro">去排一张</a>，以后这里就按你自己的盘算，不用每次填。</div>
     <div class="pemblem pem-today" aria-hidden="true"></div>
     <div class="todayhead">
       <h2 id="tTitle">今天</h2>
@@ -370,7 +370,7 @@
 <script src="js/yijing-yao-bai2.js"></script>
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
-<script src="js/app.js?v=1794678503492"></script>
+<script src="js/app.js?v=1794716656464"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

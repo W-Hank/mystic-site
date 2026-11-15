@@ -91,6 +91,12 @@
     img.alt = '';
   }
 
+  /* 点进星盘时自动回填并排盘 */
+  (function () {
+    const btn = document.querySelector('nav button[data-tab="astro"]');
+    if (btn) btn.addEventListener('click', function () { setTimeout(restoreAstro, 30); });
+  })();
+
   /* ================= 塔罗 ================= */
   const OPTIONS = [
     { k: "auto", name: "自动匹配", desc: "按你的问题自动选题数与牌阵" },
@@ -361,6 +367,50 @@
 
   const tb = document.querySelector('#tarotBack');
   if (tb) tb.onclick = () => tarotBack(true);
+
+  /* ---- 星盘：用存过的出生信息回填，不用每次重填 ---- */
+  function savedBirth() {
+    try { return JSON.parse(localStorage.getItem('mystic.birth') || 'null'); } catch (e) { return null; }
+  }
+
+  function fillAstroForm(b) {
+    if (!b) return false;
+    const set = function (id, v) {
+      const el = document.getElementById(id);
+      if (el && v !== null && v !== undefined) el.value = v;
+    };
+    set('by', b.y); set('bm', b.m); set('bd', b.d);
+    set('bh', b.h); set('bmin', b.mi); set('btz', b.tz);
+    const nt = document.getElementById('notime');
+    if (nt) nt.checked = !b.hasTime;
+    if (b.lat !== null && b.lat !== undefined && b.lon !== null && b.lon !== undefined) {
+      set('blat', b.lat); set('blon', b.lon);
+    }
+    return true;
+  }
+
+  /* 进入星盘页时：有存档就自动排一次（只排一次，之后重开页面会再排） */
+  function restoreAstro() {
+    const b = savedBirth();
+    if (!b) return;
+    const out = document.getElementById('astroOut');
+    if (out && !out.hidden) return;
+    if (!fillAstroForm(b)) return;
+    const calc = document.getElementById('calc');
+    if (calc) calc.click();
+  }
+
+  /* 今日页「去排一张」 */
+  (function () {
+    const link = document.getElementById('todayGoAstro');
+    if (!link) return;
+    link.onclick = function (e) {
+      e.preventDefault();
+      const t = document.querySelector('nav button[data-tab="astro"]');
+      if (t) t.click();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  })();
 
   /* ================= 星盘 ================= */
   const PLACES = [
@@ -917,13 +967,20 @@
       }).join('');
 
     Array.prototype.forEach.call(box.querySelectorAll('.yhdel'), function (btn) {
-      btn.onclick = function () {
+      btn.onclick = async function () {
         const i = Number(btn.dataset.i);
         let list = [];
         try { list = JSON.parse(localStorage.getItem('mystic.yijing') || '[]'); } catch (e) {}
         const rec = list[i];
         if (!rec) return;
-        if (!confirm('删除这条？\n\n' + (rec.q || '未填问题') + '\n' + rec.ben + (rec.bian ? ' → ' + rec.bian : ''))) return;
+        const ok = await showConfirm('这条记录会从本机删除，删掉没法恢复。', null, {
+          title: '删除这一卦？', danger: true, okText: '删除',
+          lines: [
+            { k: '问的', v: rec.q || '未填问题' },
+            { k: '卦', v: rec.ben + (rec.bian ? ' → ' + rec.bian : '（六爻不动）') }
+          ]
+        });
+        if (!ok) return;
         list.splice(i, 1);
         try { localStorage.setItem('mystic.yijing', JSON.stringify(list)); } catch (e) {}
         renderYjHist();
@@ -932,11 +989,14 @@
 
     const clr = box.querySelector('.yhClear');
     if (clr) {
-      clr.onclick = function () {
+      clr.onclick = async function () {
         let list = [];
         try { list = JSON.parse(localStorage.getItem('mystic.yijing') || '[]'); } catch (e) {}
         if (!list.length) return;
-        if (!confirm('清空全部 ' + list.length + ' 条起卦记录？\n清空后无法恢复。')) return;
+        const ok = await showConfirm('共 ' + list.length + ' 条，清空后无法恢复。', null, {
+          title: '清空起卦记录？', danger: true, okText: '清空'
+        });
+        if (!ok) return;
         try { localStorage.setItem('mystic.yijing', '[]'); } catch (e) {}
         renderYjHist();
       };
@@ -1282,45 +1342,56 @@
     });
   });
 
-  function showConfirm(msg, onYes) {
+  /* 统一确认弹窗：标题 + 明细 + 危险按钮；不传回调时返回 Promise<boolean> */
+  function showConfirm(msg, onYes, opts) {
+    const o = opts || {};
     const ov = document.createElement("div");
     ov.className = "modalov";
-    ov.innerHTML = '<div class="modalbox" role="dialog" aria-modal="true">' +
-      '<p>' + msg + '</p>' +
-      '<div class="modalbtns"><button type="button" class="mno">否</button>' +
-      '<button type="button" class="myes">是</button></div></div>';
+    const lines = o.lines || [];
+    ov.innerHTML =
+      '<div class="modalbox' + (o.danger ? ' danger' : '') + '" role="dialog" aria-modal="true">' +
+        (o.title ? '<div class="mtitle">' + o.title + '</div>' : '') +
+        '<div class="mbody">' + (msg ? '<p>' + msg + '</p>' : '') +
+          (lines.length ? '<dl class="mlines">' + lines.map(function (l) {
+            return '<dt>' + l.k + '</dt><dd>' + l.v + '</dd>';
+          }).join('') + '</dl>' : '') +
+        '</div>' +
+        '<div class="modalbtns">' +
+          '<button type="button" class="mno">' + (o.cancelText || '取消') + '</button>' +
+          '<button type="button" class="myes">' + (o.okText || '确定') + '</button>' +
+        '</div>' +
+      '</div>';
     document.body.appendChild(ov);
 
     const noBtn = ov.querySelector(".mno");
     const yesBtn = ov.querySelector(".myes");
     let done = false;
+    let resolveFn = null;
 
-    function close() {
+    const promise = (typeof onYes === 'function') ? null : new Promise(function (r) { resolveFn = r; });
+
+    function close(val) {
       if (done) return;
       done = true;
       document.removeEventListener("keydown", onKey, true);
-      ov.remove();
+      ov.classList.add("out");
+      setTimeout(function () { ov.remove(); }, 140);
+      if (resolveFn) resolveFn(val);
     }
     function onKey(e) {
-      if (e.key === "Escape" || e.key === "Enter") { e.preventDefault(); e.stopPropagation(); close(); }
+      if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); close(false); }
+      if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); close(true); if (typeof onYes === 'function') onYes(); }
     }
-    noBtn.addEventListener("click", close);
-    yesBtn.addEventListener("click", function () { close(); onYes(); });
-    ov.addEventListener("click", function (e) { if (e.target === ov) close(); });
+    noBtn.addEventListener("click", function () { close(false); });
+    yesBtn.addEventListener("click", function () { close(true); if (typeof onYes === 'function') onYes(); });
+    ov.addEventListener("click", function (e) { if (e.target === ov) close(false); });
     document.addEventListener("keydown", onKey, true);
     setTimeout(function () { if (noBtn.focus) noBtn.focus(); }, 30);
+
+    return promise;
   }
 
-  const clearBtn = document.querySelector('#clearHist');
-  if (clearBtn) clearBtn.addEventListener('click', function () {
-    showConfirm("确定要清除记录吗？", function () {
-      LS.set("mystic.hist", {});
-      renderHist();
-      toast("记录已清除");
-    });
-  });
 
-  window.__showConfirm = showConfirm;
 
   /* ================= 首页 ================= */
   function renderHome() {
@@ -2214,14 +2285,21 @@
     });
 
     Array.prototype.forEach.call(box.querySelectorAll('.histdel'), function (btn) {
-      btn.onclick = function () {
+      btn.onclick = async function () {
         const i = Number(btn.dataset.i);
         let list = [];
         try { list = JSON.parse(localStorage.getItem('mystic.readings') || '[]'); } catch (e) {}
         const rec = list[i];
         if (!rec) return;
         const label = (rec.q || '').slice(0, 20);
-        if (!confirm('删除这条记录？\n\n' + (label ? '「' + label + '」' : '未填问题') + '\n' + (rec.cards || ''))) return;
+        const ok = await showConfirm('这条占卜记录会从本机删除。', null, {
+          title: '删除这条记录？', danger: true, okText: '删除',
+          lines: [
+            { k: '问的', v: label ? '「' + label + '」' : '未填问题' },
+            { k: '牌', v: rec.cards || '—' }
+          ]
+        });
+        if (!ok) return;
         list.splice(i, 1);
         try { localStorage.setItem('mystic.readings', JSON.stringify(list)); } catch (e) {}
         renderHist();
@@ -2230,11 +2308,14 @@
   }
 
   const histClear = document.getElementById('rhistClear');
-  if (histClear) histClear.onclick = function () {
+  if (histClear) histClear.onclick = async function () {
     let n = 0;
     try { n = JSON.parse(localStorage.getItem('mystic.readings') || '[]').length; } catch (e) {}
     if (!n) { renderHist(); return; }
-    if (!confirm('清空全部 ' + n + ' 条记录？这个操作不能撤销。')) return;
+    const ok = await showConfirm('共 ' + n + ' 条，清空后无法恢复。', null, {
+      title: '清空占卜记录？', danger: true, okText: '清空'
+    });
+    if (!ok) return;
     try { localStorage.removeItem('mystic.readings'); } catch (e) {}
     renderHist();
   };

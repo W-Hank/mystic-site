@@ -1689,3 +1689,23 @@ html[data-theme="light"] .tyouhint a:hover{color:#8a6428;text-decoration-color:#
 @media (max-width:820px){
   .cite{max-width:none !important}
 }
+
+/* ===== 星座页：背后的星座连线 ===== */
+#panel-today{position:relative}
+.constbg{
+  position:absolute;right:-20px;top:-30px;width:620px;height:620px;
+  color:var(--gold-dim);opacity:.13;pointer-events:none;z-index:0;
+  -webkit-mask-image:radial-gradient(closest-side,#000 30%,rgba(0,0,0,.55) 62%,transparent 100%);
+  mask-image:radial-gradient(closest-side,#000 30%,rgba(0,0,0,.55) 62%,transparent 100%);
+}
+.constbg svg{width:100%;height:100%;display:block}
+.constbg path{fill:none;stroke:currentColor;stroke-width:.45;stroke-linejoin:round;stroke-linecap:round}
+.constbg circle{fill:currentColor}
+#panel-today > *:not(.constbg){position:relative;z-index:1}
+html[data-theme="light"] .constbg{opacity:.1}
+@media (max-width:980px){
+  .constbg{width:380px;height:380px;right:-70px;top:-10px;opacity:.1}
+}
+@media (max-width:600px){
+  .constbg{width:300px;height:300px;right:-80px;opacity:.08}
+}

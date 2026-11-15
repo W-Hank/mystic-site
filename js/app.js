@@ -1113,6 +1113,24 @@
     if (idx >= 0) { mySign = idx; autoPicked = true; }
   }
 
+  /* ---- 星座页背景：画所选星座的真实连线 ---- */
+  function renderConstBg(idx) {
+    const box = document.getElementById('constBg');
+    if (!box) return;
+    if (idx == null || idx < 0) { box.innerHTML = ''; return; }
+    const sig = A.SIGNS[idx];
+    const data = window.CONST_LINES && window.CONST_LINES[sig.cn];
+    if (!data) { box.innerHTML = ''; return; }
+    if (box.dataset.sign === sig.cn) return;
+    box.dataset.sign = sig.cn;
+    box.innerHTML = '<svg viewBox="-6 -6 112 112" preserveAspectRatio="xMidYMid meet">' +
+      '<path d="' + data.d + '"></path>' +
+      data.dots.map(function (d) {
+        return '<circle cx="' + d[0] + '" cy="' + d[1] + '" r=".85"></circle>';
+      }).join('') +
+      '</svg>';
+  }
+
   function renderSignPicker() {
     const box = $('#picksign');
     box.innerHTML = A.SIGNS.map(function (sg, i) {
@@ -1127,6 +1145,7 @@
   }
 
   function renderMine(rows, pl) {
+    try { renderConstBg(mySign); } catch (e) {}
     renderSignPicker();
     Array.prototype.forEach.call($('#signgrid').children, function (el, i) {
       el.classList.toggle('sel', i === mySign);

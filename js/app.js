@@ -2036,6 +2036,43 @@
       "）——外面是" + de[b.upper] + "，里面是" + de[b.lower] + "。" + bai + move + dir + domLine;
   }
 
+  /* 迷你六爻图：给易经/合参做视觉块 */
+  function miniHex(benLines, changes) {
+    if (!benLines || !benLines.length) return '';
+    const ch = changes || [];
+    let out = '';
+    for (let i = 5; i >= 0; i--) {
+      const yang = benLines[i] === 1;
+      const dong = ch.indexOf(i) !== -1;
+      out += '<i class="mh-line' + (yang ? ' yang' : ' yin') + (dong ? ' dong' : '') + '">' +
+        (yang ? '<b></b>' : '<b></b><b></b>') + '</i>';
+    }
+    return '<div class="minihex">' + out + '</div>';
+  }
+
+  const TRIGRAM = {
+    乾: '☰', 兑: '☱', 离: '☲', 震: '☳', 巽: '☴', 坎: '☵', 艮: '☶', 坤: '☷'
+  };
+
+  /* 合参的三个视觉块 */
+  function heFace(card, rev) {
+    if (!card) return '';
+    let src = '';
+    const num = (card.num != null) ? card.num : card.no;
+    if (card.arcana === 'minor' && card.suit && card.rank != null) {
+      src = 'img/cards/minor/' + card.suit + '/' + card.rank + '.jpg';
+    } else if (num != null) {
+      src = 'img/cards/major/' + num + '.jpg';
+    }
+    if (!src) return '';
+    return '<img class="heface' + (rev ? ' rev' : '') + '" src="' + src + '" alt="' + (card.name || '') + '" loading="lazy">';
+  }
+
+  function moonDisc(ph) {
+    const ill = Math.max(0, Math.min(100, (ph && ph.illum) || 0));
+    return '<div class="moondisc" aria-hidden="true"><i style="--ill:' + ill + '%"></i></div>';
+  }
+
   function renderYj(r, q) {
     const Y = window.MysticYijing;
     q = (q || "").trim();
@@ -2055,7 +2092,7 @@
 
     const bianBlock = r.changing && v && v.no !== b.no
       ? '<div class="yjbian"><span class="bi">本卦</span><span class="bn">' + b.symbol + ' ' + b.name + '</span>' +
-        '<span class="arrow">→</span><span class="bi">变卦</span><span class="bn">' + v.symbol + ' ' + v.name +
+        '<span class="arrow">→</span>' + miniHex(r.bianLines || r.benLines.map(function (x, k) { return r.changes.indexOf(k) !== -1 ? 1 - x : x; }), []) + '<span class="bi">变卦</span><span class="bn">' + v.symbol + ' ' + v.name +
         '</span><span class="bi">第 ' + v.no + ' 卦 · ' + v.upper + '上' + v.lower + '下</span></div>'
       : (r.changing ? '' : '<div class="yjbian"><span class="bi">六爻皆静，无变卦</span></div>');
 
@@ -2063,7 +2100,7 @@
       '<div class="yjwrap">' +
         '<div class="yjleft">' +
           '<div class="yjname"><span class="sym">' + b.symbol + '</span>' +
-            '<div><b>' + b.name + '</b><i>第 ' + b.no + ' 卦 · ' + b.upper + '上' + b.lower + '下</i></div></div>' +
+            '<div><b>' + b.name + '</b><i>第 ' + b.no + ' 卦 · ' + b.upper + '上' + b.lower + '下</i><span class="yjtri">' + TRIGRAM[b.upper] + ' 上　' + TRIGRAM[b.lower] + ' 下</span></div></div>' +
           '<div class="yjlines">' + lines + '</div>' +
           '<div class="yjlegend">○ 老阳为动　× 老阴为动</div>' +
         '</div>' +
@@ -2252,11 +2289,13 @@
 
     $('#heOut').innerHTML =
       '<div class="hecard"><div class="src">塔 罗</div>' +
+      heFace(card, rev) +
         '<div class="big">' + card.name + (rev ? "（逆）" : "") + '</div>' +
         '<div class="sub">' + card.en + '　·　' + card.el + '</div>' +
         '<div class="body">' + cardTxt + '<em>照的是你此刻心里的位置。</em></div></div>' +
 
       '<div class="hecard"><div class="src">易</div>' +
+      miniHex(yj.benLines, yj.changes) +
         '<div class="big">' + yj.ben.symbol + ' ' + yj.ben.name + '</div>' +
         '<div class="sub">第 ' + yj.ben.no + ' 卦　·　' + yj.ben.upper + '上' + yj.ben.lower + '下' +
           (yj.changing ? '　·　' + yj.changes.length + ' 爻动' : '　·　六爻皆静') + '</div>' +
@@ -2265,6 +2304,7 @@
           '<em>' + (yj.changing ? '本卦 → 变卦 ' + yj.bian.name + '，事在动。' : '六爻不动，势是定的。') + '</em></div></div>' +
 
       '<div class="hecard"><div class="src">天 象</div>' +
+      moonDisc(ph) +
         '<div class="big">' + ph.name + '</div>' +
         '<div class="sub">月亮 ' + ms.sign.cn + ' ' + ms.deg + '°　·　亮面 ' + ph.illum + '%</div>' +
         '<div class="body">' + heTxt + retroTxt + '<em>说的是所有人都要过的这一天。</em></div></div>' +

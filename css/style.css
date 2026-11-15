@@ -1878,3 +1878,50 @@ html[data-theme="light"] .astrobar a{color:#8a6428;border-bottom-color:rgba(138,
   a.cctarot img{width:56px;height:93px}
   a.cctarot span{display:none}
 }
+
+/* ===== 易经：卦牌化 ===== */
+.yjleft{
+  border:1px solid var(--line);border-radius:6px;padding:22px 24px;
+  background:linear-gradient(160deg,rgba(201,168,106,.05),rgba(0,0,0,0) 62%),var(--card);
+  position:relative;overflow:hidden;
+}
+.yjleft::before{
+  content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,106,.10),transparent 70%);pointer-events:none;
+}
+.yjtri{display:block;margin-top:7px;font-size:12px;letter-spacing:.18em;color:var(--gold-dim)}
+
+/* 迷你六爻 */
+.minihex{display:inline-flex;flex-direction:column;gap:3px;vertical-align:middle;margin:0 8px}
+.mh-line{display:flex;gap:5px;width:26px;height:4px}
+.mh-line b{flex:1;background:var(--gold-dim);opacity:.9;border-radius:1px}
+.mh-line.dong b{background:var(--gold);opacity:1}
+
+/* 易经右列的变卦条 */
+.yjbian .minihex{margin:0 8px}
+
+/* ===== 合参：三卡的视觉块 ===== */
+.heface{
+  width:58px;height:96px;object-fit:cover;border-radius:4px;display:block;margin-bottom:12px;
+  border:1px solid rgba(201,168,106,.28);box-shadow:0 6px 16px rgba(0,0,0,.35);
+  filter:saturate(.95);
+}
+.heface.rev{transform:rotate(180deg)}
+.hecard .minihex{margin:0 0 12px}
+
+.moondisc{
+  width:58px;height:58px;border-radius:50%;margin-bottom:12px;position:relative;overflow:hidden;
+  border:1px solid var(--gold-dim);background:rgba(255,255,255,.02);
+}
+.moondisc i{
+  position:absolute;inset:0;border-radius:50%;background:var(--gold-dim);opacity:.8;
+  clip-path:inset(0 calc(100% - var(--ill, 50%)) 0 0);
+}
+html[data-theme="light"] .heface{box-shadow:0 6px 16px rgba(96,78,44,.2);border-color:rgba(138,100,40,.3)}
+html[data-theme="light"] .yjleft{background:linear-gradient(160deg,rgba(138,100,40,.05),rgba(0,0,0,0) 62%),var(--card)}
+
+@media (max-width:560px){
+  .yjleft{padding:18px}
+  .heface{width:50px;height:83px}
+  .moondisc{width:50px;height:50px}
+}

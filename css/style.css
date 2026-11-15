@@ -1840,3 +1840,41 @@ html[data-theme="light"] .ccattr{border-left-color:var(--line)}
   .ccattr{flex-direction:row;gap:18px;margin-left:0;padding-left:0;border-left:0;
     border-top:1px solid var(--line);padding-top:12px;width:100%}
 }
+
+/* 星座卡右侧：可点击的对应牌 */
+a.cctarot{
+  position:relative;z-index:1;margin-left:auto;flex:0 0 auto;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  text-decoration:none;transition:.2s;
+}
+a.cctarot img{
+  width:66px;height:110px;object-fit:cover;border-radius:5px;
+  border:1px solid rgba(201,168,106,.30);
+  box-shadow:0 8px 22px rgba(0,0,0,.42);
+  filter:saturate(.94);transition:.2s;
+}
+a.cctarot em{font-style:normal;font-size:11px;letter-spacing:.12em;color:var(--gold)}
+a.cctarot span{font-size:10px;letter-spacing:.06em;color:var(--dim2);white-space:nowrap}
+a.cctarot:hover img{border-color:rgba(201,168,106,.6);transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,0,0,.5)}
+html[data-theme="light"] a.cctarot img{box-shadow:0 8px 20px rgba(96,78,44,.22);border-color:rgba(138,100,40,.32)}
+html[data-theme="light"] a.cctarot em{color:#8a6428}
+
+/* 星盘：排过盘后收起表单 */
+.astrobar{
+  display:none;align-items:center;justify-content:space-between;gap:14px;
+  padding:11px 16px;margin:0 0 20px;border:1px solid var(--line);border-radius:4px;
+  background:rgba(23,27,41,.35);font-size:12.5px;color:var(--dim);letter-spacing:.04em;
+}
+.astrobar a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,106,.4);padding-bottom:1px;white-space:nowrap}
+.astrobar a:hover{color:var(--warm)}
+html[data-theme="light"] .astrobar{background:rgba(253,249,240,.6)}
+html[data-theme="light"] .astrobar a{color:#8a6428;border-bottom-color:rgba(138,100,40,.4)}
+.ask.formcollapsed > *{display:none}
+.ask.formcollapsed > .astrobar{display:flex}
+.ask.formcollapsed > .pemblem{display:block}
+
+@media (max-width:620px){
+  a.cctarot{margin-left:0}
+  a.cctarot img{width:56px;height:93px}
+  a.cctarot span{display:none}
+}

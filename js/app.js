@@ -368,6 +368,42 @@
   const tb = document.querySelector('#tarotBack');
   if (tb) tb.onclick = () => tarotBack(true);
 
+  /* ---- 星盘：排过盘后把表单收起 ---- */
+  function collapseAstro(on) {
+    const ask = document.querySelector('#panel-astro .ask');
+    const bar = document.getElementById('astroBar');
+    if (!ask || !bar) return;
+    if (on) {
+      const b = savedBirth();
+      if (b) {
+        const parts = [];
+        parts.push(b.y + ' 年 ' + b.m + ' 月 ' + b.d + ' 日');
+        if (b.hasTime) parts.push(String(b.h).padStart(2, '0') + ':' + String(b.mi).padStart(2, '0'));
+        if (b.lat != null && b.lon != null) parts.push(b.lat.toFixed(2) + ', ' + b.lon.toFixed(2));
+        const who = document.getElementById('astroWho');
+        if (who) who.textContent = parts.join(' · ');
+      }
+      ask.classList.add('formcollapsed');
+      bar.hidden = false;
+    } else {
+      ask.classList.remove('formcollapsed');
+      bar.hidden = true;
+    }
+  }
+
+  (function () {
+    const t = document.getElementById('astroToggle');
+    const bar = document.getElementById('astroBar');
+    if (!t) return;
+    t.onclick = function (e) {
+      e.preventDefault();
+      const ask = document.querySelector('#panel-astro .ask');
+      const collapsed = ask && ask.classList.contains('formcollapsed');
+      if (collapsed) { collapseAstro(false); const f = document.getElementById('by'); if (f) f.focus(); }
+      else collapseAstro(true);
+    };
+  })();
+
   /* ---- 星盘：用存过的出生信息回填，不用每次重填 ---- */
   function savedBirth() {
     try { return JSON.parse(localStorage.getItem('mystic.birth') || 'null'); } catch (e) { return null; }
@@ -398,6 +434,7 @@
     if (!fillAstroForm(b)) return;
     const calc = document.getElementById('calc');
     if (calc) calc.click();
+    setTimeout(function () { try { collapseAstro(true); } catch (e) {} }, 120);
   }
 
   /* 今日页「去排一张」 */
@@ -1143,6 +1180,22 @@
     双鱼: ['Pisces', '2/19 – 3/20']
   };
 
+  /* 星座对应的塔罗牌（黄金黎明体系）+ 牌义页地址 */
+  const TAROT_OF_SIGN = {
+    白羊: [4, '皇帝', '04-emperor'],
+    金牛: [5, '教皇', '05-hierophant'],
+    双子: [6, '恋人', '06-lovers'],
+    巨蟹: [7, '战车', '07-chariot'],
+    狮子: [8, '力量', '08-strength'],
+    处女: [9, '隐者', '09-hermit'],
+    天秤: [11, '正义', '11-justice'],
+    天蝎: [13, '死神', '13-death'],
+    射手: [14, '节制', '14-temperance'],
+    摩羯: [15, '恶魔', '15-devil'],
+    水瓶: [17, '星星', '17-star'],
+    双鱼: [18, '月亮', '18-moon']
+  };
+
   function constSvg(cn, cls) {
     const data = window.CONST_LINES && window.CONST_LINES[cn];
     if (!data) return '';
@@ -1201,6 +1254,19 @@
         setTxt('ccEl', sig.el + '象');
         setTxt('ccMode', sig.mode + '宫');
         setTxt('ccRuler', '主星 ' + sig.ruler);
+      }
+
+      const tc = TAROT_OF_SIGN[cn];
+      const timg = document.getElementById('ccTarot');
+      const tname = document.getElementById('ccTarotName');
+      const tlink = document.getElementById('ccTarotLink');
+      if (tc) {
+        if (timg) {
+          const src = 'img/cards/major/' + tc[0] + '.jpg';
+          if (timg.getAttribute('src') !== src) { timg.setAttribute('src', src); timg.setAttribute('alt', tc[1]); }
+        }
+        if (tname) tname.textContent = '对应牌 · ' + tc[1];
+        if (tlink) tlink.setAttribute('href', 'cards/' + tc[2] + '.html');
       }
 
       card.hidden = false;

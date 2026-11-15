@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794718711480">
+<link rel="stylesheet" href="css/style.css?v=1794718923045">
 </head>
 <body>
 
@@ -48,12 +48,15 @@
 <main>
   <!-- ================= 首页 ================= -->
   <section class="panel on" id="panel-home">
-    <div class="constbg constbg-home" id="homeConstBg" aria-hidden="true"></div>
     <div class="hero">
       <div class="hero-mark">☯</div>
       <h1>MYSTIC</h1>
       <p class="lead">塔罗 · 星盘 · 黄历 · 易经。所有计算都在你的浏览器里完成——不上传、不收费、不接任何 API。</p>
-    <div class="heroart" aria-hidden="true"><img src="img/cards/major/17.jpg" alt=""></div>
+    <div class="heroart" aria-hidden="true"><img src="img/cards/major/17.jpg" alt=""></div></div>
+
+    <div class="homeconst" id="homeConst" hidden>
+      <div class="hc-art" id="homeConstArt" aria-hidden="true"></div>
+      <div class="hc-txt"><b id="homeConstName">—</b><span>你选的星座 · 点这里看今天的运势</span></div>
     </div>
 
     <div class="sec" style="margin-top:38px">
@@ -224,7 +227,6 @@
 
   <!-- ================= 星座 ================= -->
   <section class="panel" id="panel-today">
-    <div class="constbg" id="constBg" aria-hidden="true"></div>
     <div class="tyou" id="todayForYou" hidden></div>
     <div class="tyouhint" id="todayNoBirth" hidden>还没排过本命盘。<a href="#" id="todayGoAstro">去排一张</a>，以后这里就按你自己的盘算，不用每次填。</div>
     <div class="pemblem pem-today" aria-hidden="true"></div>
@@ -245,6 +247,15 @@
 
     <div class="minebox">
       <div class="picksign" id="picksign"></div>
+      <div class="constcard" id="constCard" hidden>
+        <div class="ccart" id="constArt" aria-hidden="true"></div>
+        <div class="ccmeta">
+          <b id="ccName">—</b>
+          <em id="ccLatin">—</em>
+          <span id="ccRange">—</span>
+          <p>这是你这个星座在天空里的真实连线，不是装饰图。选别的星座，图会跟着换。</p>
+        </div>
+      </div>
       <div id="mineOut"></div>
     </div>
 
@@ -373,7 +384,7 @@
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
 <script src="js/const-bg.js?v=20261115a"></script>
-<script src="js/app.js?v=1794718711480"></script>
+<script src="js/app.js?v=1794718923045"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

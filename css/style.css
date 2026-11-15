@@ -1739,3 +1739,41 @@ html[data-theme="light"] .constbg-home{opacity:.18}
   .constbg{width:300px;height:300px;right:-100px;opacity:.13}
   .constbg-home{display:none}
 }
+
+/* ===== 星座卡：看得懂的那张图 ===== */
+.constcard{
+  display:flex;align-items:center;gap:20px;
+  margin:0 0 22px;padding:16px 20px;border:1px solid var(--line);border-radius:4px;
+  background:var(--card);
+}
+.ccart{width:104px;height:104px;flex:0 0 104px;color:var(--gold-dim);opacity:.9}
+.ccart svg{width:100%;height:100%;display:block}
+.ccart path{fill:none;stroke:currentColor;stroke-width:.9;stroke-linejoin:round;stroke-linecap:round}
+.ccart circle{fill:currentColor}
+.ccmeta{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ccmeta b{font-size:19px;font-weight:500;letter-spacing:.12em;color:var(--text)}
+.ccmeta em{font-style:normal;font-size:12px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+.ccmeta span{font-size:12.5px;color:var(--dim2);letter-spacing:.06em}
+.ccmeta p{margin:6px 0 0;font-size:12.5px;line-height:1.7;color:var(--dim)}
+
+/* 首页那条：更小，只说一句 */
+.homeconst{
+  display:flex;align-items:center;gap:14px;margin:26px 0 0;
+  padding:12px 16px;border:1px solid var(--line);border-radius:4px;background:rgba(23,27,41,.35);
+  cursor:pointer;transition:.18s;
+}
+.homeconst:hover{border-color:var(--gold-dim)}
+.homeconst .hc-art{width:56px;height:56px;flex:0 0 56px;color:var(--gold-dim);opacity:.85}
+.homeconst .hc-art svg{width:100%;height:100%;display:block}
+.homeconst .hc-art path{fill:none;stroke:currentColor;stroke-width:1.1;stroke-linejoin:round}
+.homeconst .hc-art circle{fill:currentColor}
+.homeconst .hc-txt{display:flex;flex-direction:column;gap:3px}
+.homeconst .hc-txt b{font-size:14px;font-weight:500;letter-spacing:.1em;color:var(--text)}
+.homeconst .hc-txt span{font-size:12px;color:var(--dim2);letter-spacing:.06em}
+html[data-theme="light"] .homeconst{background:rgba(253,249,240,.6)}
+
+@media (max-width:560px){
+  .constcard{flex-direction:column;align-items:flex-start;gap:12px;padding:14px 16px}
+  .ccart{width:88px;height:88px;flex:0 0 88px}
+  .homeconst{margin-top:20px}
+}

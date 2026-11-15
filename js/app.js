@@ -412,6 +412,17 @@
     };
   })();
 
+  /* 首页星座条：点一下去星座页 */
+  (function () {
+    const strip = document.getElementById('homeConst');
+    if (!strip) return;
+    strip.onclick = function () {
+      const t = document.querySelector('nav button[data-tab="today"]');
+      if (t) t.click();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  })();
+
   /* ================= 星盘 ================= */
   const PLACES = [
     { country: "中国", cities: [["北京", 39.90, 116.41], ["上海", 31.23, 121.47], ["广州", 23.13, 113.26], ["深圳", 22.54, 114.06],
@@ -1116,44 +1127,39 @@
     }
   }
 
-  /* ---- 背景：所选星座的真实连线 + 星尘 ---- */
-  let constSeed = 7;
+  /* ---- 星座图卡：画所选星座的真实连线，并把名字写清楚 ---- */
+  const SIGN_META = {
+    白羊: ['Aries', '3/21 – 4/19'],
+    金牛: ['Taurus', '4/20 – 5/20'],
+    双子: ['Gemini', '5/21 – 6/21'],
+    巨蟹: ['Cancer', '6/22 – 7/22'],
+    狮子: ['Leo', '7/23 – 8/22'],
+    处女: ['Virgo', '8/23 – 9/22'],
+    天秤: ['Libra', '9/23 – 10/23'],
+    天蝎: ['Scorpio', '10/24 – 11/22'],
+    射手: ['Sagittarius', '11/23 – 12/21'],
+    摩羯: ['Capricorn', '12/22 – 1/19'],
+    水瓶: ['Aquarius', '1/20 – 2/18'],
+    双鱼: ['Pisces', '2/19 – 3/20']
+  };
 
-  function dustDots(n) {
-    let s = constSeed, out = '';
-    const rnd = function () { s = (s * 9301 + 49297) % 233280; return s / 233280; };
-    for (let i = 0; i < n; i++) {
-      const x = (rnd() * 118 - 9).toFixed(1);
-      const y = (rnd() * 118 - 9).toFixed(1);
-      const r = (0.12 + rnd() * 0.34).toFixed(2);
-      out += '<circle class="dust" cx="' + x + '" cy="' + y + '" r="' + r + '"></circle>';
-    }
-    return out;
-  }
-
-  function drawConst(box, cn) {
-    if (!box || !cn) return;
+  function constSvg(cn, cls) {
     const data = window.CONST_LINES && window.CONST_LINES[cn];
-    if (!data) { box.innerHTML = ''; return; }
-    if (box.dataset.sign === cn) return;
-    box.dataset.sign = cn;
-    constSeed = 7 + cn.charCodeAt(0) % 37;
-    box.innerHTML = '<svg viewBox="-6 -6 112 112" preserveAspectRatio="xMidYMid meet">' +
-      dustDots(110) +
+    if (!data) return '';
+    return '<svg viewBox="-6 -6 112 112" preserveAspectRatio="xMidYMid meet">' +
       '<path d="' + data.d + '"></path>' +
       data.dots.map(function (d) {
-        return '<circle class="st" cx="' + d[0] + '" cy="' + d[1] + '" r="1"></circle>';
+        return '<circle cx="' + d[0] + '" cy="' + d[1] + '" r="1.1"></circle>';
       }).join('') +
       '</svg>';
   }
 
-  /* 当前该画哪个星座：先看选中的，再看存过的，最后用太阳星座 */
   function currentSignCn() {
     if (mySign != null && A.SIGNS[mySign]) return A.SIGNS[mySign].cn;
     try {
-      const saved = localStorage.getItem('mystic.sign');
-      if (saved !== null) {
-        const i = +saved;
+      const sv = localStorage.getItem('mystic.sign');
+      if (sv !== null) {
+        const i = +sv;
         if (A.SIGNS[i]) return A.SIGNS[i].cn;
       }
     } catch (e) {}
@@ -1162,13 +1168,38 @@
 
   function renderConstBg(idx) {
     const cn = (idx != null && A.SIGNS[idx]) ? A.SIGNS[idx].cn : currentSignCn();
+
+    const card = document.getElementById('constCard');
+    const art = document.getElementById('constArt');
+    const strip = document.getElementById('homeConst');
+    const stripArt = document.getElementById('homeConstArt');
+
     if (!cn) {
-      const b1 = document.getElementById('constBg');
-      if (b1) b1.innerHTML = '';
+      if (card) card.hidden = true;
+      if (strip) strip.hidden = true;
       return;
     }
-    drawConst(document.getElementById('constBg'), cn);
-    drawConst(document.getElementById('homeConstBg'), cn);
+
+    const meta = SIGN_META[cn] || ['', ''];
+    const svg = constSvg(cn);
+
+    if (card && art) {
+      if (art.dataset.sign !== cn) { art.innerHTML = svg; art.dataset.sign = cn; }
+      const n = document.getElementById('ccName');
+      const la = document.getElementById('ccLatin');
+      const rg = document.getElementById('ccRange');
+      if (n) n.textContent = cn + '座';
+      if (la) la.textContent = meta[0];
+      if (rg) rg.textContent = meta[1];
+      card.hidden = false;
+    }
+
+    if (strip && stripArt) {
+      if (stripArt.dataset.sign !== cn) { stripArt.innerHTML = svg; stripArt.dataset.sign = cn; }
+      const hn = document.getElementById('homeConstName');
+      if (hn) hn.textContent = cn + '座 · ' + meta[0];
+      strip.hidden = false;
+    }
   }
 
   function renderSignPicker() {

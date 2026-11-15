@@ -1670,3 +1670,22 @@ html[data-theme="light"] .modalbox.danger .myes:hover{background:rgba(168,74,62,
   color:var(--gold-dim);font-size:12px;opacity:.9;content:"\2726";
 }
 @media (max-width:560px){.pem-tarot{width:32px;height:44px;margin-bottom:16px}}
+
+/* 今日页提示里的链接：同正文色 + 金色下划线，不用系统蓝 */
+.tyouhint a{
+  color:var(--text);text-decoration:underline;text-decoration-thickness:1px;
+  text-decoration-color:rgba(201,168,106,.55);text-underline-offset:4px;
+}
+.tyouhint a:hover{color:var(--gold);text-decoration-color:var(--gold)}
+html[data-theme="light"] .tyouhint a{color:#332c22;text-decoration-color:rgba(138,100,40,.5)}
+html[data-theme="light"] .tyouhint a:hover{color:#8a6428;text-decoration-color:#8a6428}
+
+/* 页脚注解：宽度跟着所在面板的内容宽度走 */
+.cite{max-width:none;margin-left:auto;margin-right:auto}
+#panel-tarot .cite{max-width:900px}
+#panel-astro .cite{max-width:700px}
+#panel-yijing .cite,
+#panel-he .cite{max-width:660px}
+@media (max-width:820px){
+  .cite{max-width:none !important}
+}

@@ -1004,6 +1004,7 @@
   }
 
   function renderToday() {
+    try { autoPickSign(); } catch (e) {}
     const pl = planOf(curPeriod);
     const mid = pl.jds[Math.floor(pl.jds.length / 2)];
     const ph = A.moonPhase(mid);
@@ -1093,6 +1094,23 @@
 
   function dateKey(d) {
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  /* ---- 星座页：有本命盘就自动选上太阳星座 ---- */
+  let autoPicked = false;
+  function autoPickSign() {
+    if (autoPicked || mySign != null) return;
+    let b = null;
+    try { b = JSON.parse(localStorage.getItem('mystic.birth') || 'null'); } catch (e) {}
+    if (!b) return;
+    let ch;
+    try {
+      ch = A.natal(b.y, b.m, b.d, b.h, b.mi, b.tz, b.lat || 0, b.lon || 0, !!b.hasTime);
+    } catch (e) { return; }
+    const sun = (ch.bodies || []).filter(function (x) { return x.key === 'sun'; })[0];
+    if (!sun) return;
+    const idx = A.SIGNS.map(function (s) { return s.cn; }).indexOf(sun.sign.cn);
+    if (idx >= 0) { mySign = idx; autoPicked = true; }
   }
 
   function renderSignPicker() {

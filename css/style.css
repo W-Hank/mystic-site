@@ -1998,3 +1998,8 @@ html[data-theme="light"] .ccglyph{color:#8a6428;filter:drop-shadow(0 0 10px rgba
   #panel-today .trendbox{text-align:center}
   #panel-today .signgrid{text-align:center}
 }
+
+/* 星盘面板：收起表单会让上方内容变矮，浏览器默认会“保持视觉位置”导致停在中间 */
+#panel-astro{overflow-anchor:none}
+#panel-astro .ask.formcollapsed{overflow-anchor:none}
+html{overflow-anchor:auto}

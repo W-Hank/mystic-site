@@ -64,6 +64,10 @@
       $('#panel-' + b.dataset.tab).classList.add('on');
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
+      /* 面板切换会改变高度，下一帧再压一次，避免停在中间 */
+      requestAnimationFrame(function () {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      });
     };
   });
 
@@ -399,7 +403,13 @@
       e.preventDefault();
       const ask = document.querySelector('#panel-astro .ask');
       const collapsed = ask && ask.classList.contains('formcollapsed');
-      if (collapsed) { collapseAstro(false); const f = document.getElementById('by'); if (f) f.focus(); }
+      if (collapsed) {
+        collapseAstro(false);
+        const panel = document.querySelector('#panel-astro .ask');
+        if (panel) panel.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        const f = document.getElementById('by');
+        if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, 220);
+      }
       else collapseAstro(true);
     };
   })();
@@ -434,7 +444,15 @@
     if (!fillAstroForm(b)) return;
     const calc = document.getElementById('calc');
     if (calc) calc.click();
-    setTimeout(function () { try { collapseAstro(true); } catch (e) {} }, 120);
+    setTimeout(function () {
+      try { collapseAstro(true); } catch (e) {}
+      /* 表单收起会让上方内容变矮，浏览器会“保持视觉位置”而把页面留在中间 —— 这里强制回顶 */
+      requestAnimationFrame(function () {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      });
+    }, 120);
   }
 
   /* 今日页「去排一张」 */

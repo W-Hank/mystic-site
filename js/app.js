@@ -1110,25 +1110,65 @@
     const sun = (ch.bodies || []).filter(function (x) { return x.key === 'sun'; })[0];
     if (!sun) return;
     const idx = A.SIGNS.map(function (s) { return s.cn; }).indexOf(sun.sign.cn);
-    if (idx >= 0) { mySign = idx; autoPicked = true; }
+    if (idx >= 0) {
+      mySign = idx; autoPicked = true;
+      try { if (localStorage.getItem('mystic.sign') === null) localStorage.setItem('mystic.sign', String(idx)); } catch (e) {}
+    }
   }
 
-  /* ---- 星座页背景：画所选星座的真实连线 ---- */
-  function renderConstBg(idx) {
-    const box = document.getElementById('constBg');
-    if (!box) return;
-    if (idx == null || idx < 0) { box.innerHTML = ''; return; }
-    const sig = A.SIGNS[idx];
-    const data = window.CONST_LINES && window.CONST_LINES[sig.cn];
+  /* ---- 背景：所选星座的真实连线 + 星尘 ---- */
+  let constSeed = 7;
+
+  function dustDots(n) {
+    let s = constSeed, out = '';
+    const rnd = function () { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    for (let i = 0; i < n; i++) {
+      const x = (rnd() * 118 - 9).toFixed(1);
+      const y = (rnd() * 118 - 9).toFixed(1);
+      const r = (0.12 + rnd() * 0.34).toFixed(2);
+      out += '<circle class="dust" cx="' + x + '" cy="' + y + '" r="' + r + '"></circle>';
+    }
+    return out;
+  }
+
+  function drawConst(box, cn) {
+    if (!box || !cn) return;
+    const data = window.CONST_LINES && window.CONST_LINES[cn];
     if (!data) { box.innerHTML = ''; return; }
-    if (box.dataset.sign === sig.cn) return;
-    box.dataset.sign = sig.cn;
+    if (box.dataset.sign === cn) return;
+    box.dataset.sign = cn;
+    constSeed = 7 + cn.charCodeAt(0) % 37;
     box.innerHTML = '<svg viewBox="-6 -6 112 112" preserveAspectRatio="xMidYMid meet">' +
+      dustDots(110) +
       '<path d="' + data.d + '"></path>' +
       data.dots.map(function (d) {
-        return '<circle cx="' + d[0] + '" cy="' + d[1] + '" r=".85"></circle>';
+        return '<circle class="st" cx="' + d[0] + '" cy="' + d[1] + '" r="1"></circle>';
       }).join('') +
       '</svg>';
+  }
+
+  /* 当前该画哪个星座：先看选中的，再看存过的，最后用太阳星座 */
+  function currentSignCn() {
+    if (mySign != null && A.SIGNS[mySign]) return A.SIGNS[mySign].cn;
+    try {
+      const saved = localStorage.getItem('mystic.sign');
+      if (saved !== null) {
+        const i = +saved;
+        if (A.SIGNS[i]) return A.SIGNS[i].cn;
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function renderConstBg(idx) {
+    const cn = (idx != null && A.SIGNS[idx]) ? A.SIGNS[idx].cn : currentSignCn();
+    if (!cn) {
+      const b1 = document.getElementById('constBg');
+      if (b1) b1.innerHTML = '';
+      return;
+    }
+    drawConst(document.getElementById('constBg'), cn);
+    drawConst(document.getElementById('homeConstBg'), cn);
   }
 
   function renderSignPicker() {
@@ -1432,6 +1472,7 @@
 
   /* ================= 首页 ================= */
   function renderHome() {
+    try { renderConstBg(mySign); } catch (e) {}
     const box = $('#homeFacts');
     if (!box) return;
     const d = new Date();
@@ -2361,4 +2402,5 @@
 
   try { renderYjHist(); } catch (e) {}
   try { initHeroArt(); } catch (e) {}
+  try { autoPickSign(); renderConstBg(mySign); } catch (e) {}
 })();

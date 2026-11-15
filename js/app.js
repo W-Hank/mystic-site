@@ -1196,6 +1196,13 @@
     双鱼: [18, '月亮', '18-moon']
   };
 
+  /* 星座符号（\uFE0E 强制文本呈现，防止被当成 emoji 彩色渲染） */
+  const SIGN_GLYPH = {
+    '白羊': '\u2648\uFE0E', '金牛': '\u2649\uFE0E', '双子': '\u264A\uFE0E', '巨蟹': '\u264B\uFE0E',
+    '狮子': '\u264C\uFE0E', '处女': '\u264D\uFE0E', '天秤': '\u264E\uFE0E', '天蝎': '\u264F\uFE0E',
+    '射手': '\u2650\uFE0E', '摩羯': '\u2651\uFE0E', '水瓶': '\u2652\uFE0E', '双鱼': '\u2653\uFE0E'
+  };
+
   function constSvg(cn, cls) {
     const data = window.CONST_LINES && window.CONST_LINES[cn];
     if (!data) return '';
@@ -1236,8 +1243,14 @@
     const meta = SIGN_META[cn] || ['', ''];
     const svg = constSvg(cn);
 
+    const glyph = SIGN_GLYPH[cn] || '';
+
     if (card && art) {
-      if (art.dataset.sign !== cn) { art.innerHTML = svg; art.dataset.sign = cn; }
+      if (art.dataset.sign !== cn) {
+        art.innerHTML = '<b>' + glyph + '</b>';
+        art.dataset.sign = cn;
+      }
+      art.classList.add('ccglyph');
       const n = document.getElementById('ccName');
       const la = document.getElementById('ccLatin');
       const rg = document.getElementById('ccRange');
@@ -1273,7 +1286,11 @@
     }
 
     if (strip && stripArt) {
-      if (stripArt.dataset.sign !== cn) { stripArt.innerHTML = svg; stripArt.dataset.sign = cn; }
+      if (stripArt.dataset.sign !== cn) {
+        stripArt.innerHTML = '<b>' + glyph + '</b>';
+        stripArt.dataset.sign = cn;
+      }
+      stripArt.classList.add('ccglyph');
       const hn = document.getElementById('homeConstName');
       if (hn) hn.textContent = cn + '座 · ' + meta[0];
       strip.hidden = false;

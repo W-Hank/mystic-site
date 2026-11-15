@@ -1951,3 +1951,22 @@ html[data-theme="light"] .astrobar a,
 html[data-theme="light"] a.cctarot em{color:#8a6428}
 html[data-theme="light"] .homeconst .hc-txt span{color:#5c5344}
 html[data-theme="light"] .tyouhint{color:#4d4636}
+
+/* ===== 星座卡视觉：改用星座符号 ===== */
+.ccglyph{
+  width:96px;height:96px;flex:0 0 96px;position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);
+  font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols2",serif;
+  font-size:72px;line-height:1;
+  filter:drop-shadow(0 0 12px rgba(201,168,106,.28));
+}
+.ccglyph b{font-weight:400}
+html[data-theme="light"] .ccglyph{color:#8a6428;filter:drop-shadow(0 0 10px rgba(138,100,40,.2))}
+
+.hc-art.ccglyph{width:52px;height:52px;flex:0 0 52px;font-size:40px}
+
+@media (max-width:620px){
+  .ccglyph{width:72px;height:72px;flex:0 0 72px;font-size:54px}
+  .hc-art.ccglyph{width:44px;height:44px;flex:0 0 44px;font-size:34px}
+}

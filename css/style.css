@@ -1777,3 +1777,51 @@ html[data-theme="light"] .homeconst{background:rgba(253,249,240,.6)}
   .ccart{width:88px;height:88px;flex:0 0 88px}
   .homeconst{margin-top:20px}
 }
+
+/* ===== 星座卡（升级）：星图 + 对应塔罗牌 ===== */
+.constcard{
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;gap:24px;
+  margin:0 0 24px;padding:20px 24px;
+  border:1px solid var(--line);border-radius:5px;
+  background:linear-gradient(155deg,rgba(201,168,106,.055),rgba(0,0,0,0) 58%),var(--card);
+}
+.constcard::before{
+  content:"";position:absolute;left:-60px;top:-60px;width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,106,.12),transparent 68%);pointer-events:none;
+}
+.ccart{
+  width:116px;height:116px;flex:0 0 116px;position:relative;z-index:1;
+  color:var(--gold);opacity:.95;
+  filter:drop-shadow(0 0 5px rgba(201,168,106,.30));
+}
+.ccart svg{width:100%;height:100%;display:block;overflow:visible}
+.ccart path{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linejoin:round;stroke-linecap:round}
+.ccart circle{fill:currentColor}
+.ccmeta{position:relative;z-index:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+.ccmeta b{font-size:20px;font-weight:500;letter-spacing:.14em;color:var(--text)}
+.ccmeta em{font-style:normal;font-size:11.5px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+.ccmeta span{font-size:12.5px;color:var(--dim2);letter-spacing:.06em}
+.ccmeta p{margin:8px 0 0;font-size:12.5px;line-height:1.75;color:var(--dim);max-width:32em}
+.cctarot{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;margin-left:auto;flex:0 0 auto}
+.cctarot img{
+  width:66px;height:110px;object-fit:cover;border-radius:5px;
+  border:1px solid rgba(201,168,106,.30);
+  box-shadow:0 8px 22px rgba(0,0,0,.42);
+  filter:saturate(.94);
+}
+.cctarot span{font-size:10.5px;letter-spacing:.14em;color:var(--dim2);white-space:nowrap}
+
+html[data-theme="light"] .constcard{background:linear-gradient(155deg,rgba(138,100,40,.05),rgba(0,0,0,0) 58%),var(--card)}
+html[data-theme="light"] .constcard::before{background:radial-gradient(circle,rgba(138,100,40,.10),transparent 68%)}
+html[data-theme="light"] .ccart{color:#8a6428;filter:drop-shadow(0 0 5px rgba(138,100,40,.22))}
+html[data-theme="light"] .cctarot img{box-shadow:0 8px 20px rgba(96,78,44,.22);border-color:rgba(138,100,40,.32)}
+
+@media (max-width:620px){
+  .constcard{flex-wrap:wrap;gap:16px;padding:16px 18px}
+  .ccart{width:92px;height:92px;flex:0 0 92px}
+  .ccmeta{flex:1 1 140px}
+  .ccmeta p{display:none}
+  .cctarot{margin-left:0}
+  .cctarot img{width:56px;height:93px}
+}

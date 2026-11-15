@@ -1143,13 +1143,6 @@
     双鱼: ['Pisces', '2/19 – 3/20']
   };
 
-  /* 星座对应的塔罗牌（黄金黎明体系，RWS 编号） */
-  const TAROT_OF_SIGN = {
-    白羊: [4, '皇帝'], 金牛: [5, '教皇'], 双子: [6, '恋人'], 巨蟹: [7, '战车'],
-    狮子: [8, '力量'], 处女: [9, '隐者'], 天秤: [11, '正义'], 天蝎: [13, '死神'],
-    射手: [14, '节制'], 摩羯: [15, '恶魔'], 水瓶: [17, '星星'], 双鱼: [18, '月亮']
-  };
-
   function constSvg(cn, cls) {
     const data = window.CONST_LINES && window.CONST_LINES[cn];
     if (!data) return '';
@@ -1199,16 +1192,15 @@
       if (la) la.textContent = meta[0];
       if (rg) rg.textContent = meta[1];
 
-      const tc = TAROT_OF_SIGN[cn];
-      const timg = document.getElementById('ccTarot');
-      const tname = document.getElementById('ccTarotName');
-      if (tc && timg) {
-        const src = 'img/cards/major/' + tc[0] + '.jpg';
-        if (timg.getAttribute('src') !== src) {
-          timg.setAttribute('src', src);
-          timg.setAttribute('alt', tc[1]);
-        }
-        if (tname) tname.textContent = '对应牌 · ' + tc[1];
+      const sig = A.SIGNS.filter(function (s) { return s.cn === cn; })[0];
+      const setTxt = function (id, v) {
+        const el = document.getElementById(id);
+        if (el && v) el.textContent = v;
+      };
+      if (sig) {
+        setTxt('ccEl', sig.el + '象');
+        setTxt('ccMode', sig.mode + '宫');
+        setTxt('ccRuler', '主星 ' + sig.ruler);
       }
 
       card.hidden = false;

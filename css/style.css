@@ -1970,3 +1970,31 @@ html[data-theme="light"] .ccglyph{color:#8a6428;filter:drop-shadow(0 0 10px rgba
   .ccglyph{width:72px;height:72px;flex:0 0 72px;font-size:54px}
   .hc-art.ccglyph{width:44px;height:44px;flex:0 0 44px;font-size:34px}
 }
+
+/* ===== 手机端：星座页整体居中 ===== */
+@media (max-width:620px){
+  #panel-today .constcard{
+    align-items:center;text-align:center;
+  }
+  #panel-today .ccmeta{align-items:center;text-align:center}
+  #panel-today .ccmeta p{margin-top:6px}
+  #panel-today .ccattr{
+    justify-content:center;text-align:center;width:100%;
+    padding-left:0;border-left:0;border-top:1px solid var(--line);padding-top:12px;
+  }
+  #panel-today .ccattr div{align-items:center}
+  #panel-today a.cctarot{margin:0 auto}
+
+  #panel-today .picksign{justify-content:center}
+  #panel-today .periods{justify-content:center}
+  #panel-today .todayhead{text-align:center}
+  #panel-today .todayhead h2{text-align:center}
+  #panel-today .daycards{justify-content:center;text-align:center}
+  #panel-today .dc{text-align:center}
+  #panel-today #mineOut{text-align:center}
+  #panel-today #mineOut .mine .mh{justify-content:center}
+  #panel-today #perHint,
+  #panel-today #periodHint{text-align:center}
+  #panel-today .trendbox{text-align:center}
+  #panel-today .signgrid{text-align:center}
+}

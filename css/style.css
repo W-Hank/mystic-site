@@ -2024,3 +2024,25 @@ html[data-theme="light"] .kn p,
 html[data-theme="light"] .kn ul,
 html[data-theme="light"] .yjknow summary{color:#4d4636}
 html[data-theme="light"] .kn h4{color:#8a6428}
+
+/* ===== 全站链接基线（此前 footer 等处是浏览器默认蓝） ===== */
+a{
+  color:var(--gold);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-decoration-color:rgba(201,168,106,.45);
+  text-underline-offset:3px;
+  transition:color .16s ease,text-decoration-color .16s ease;
+}
+a:visited{color:var(--gold)}
+a:hover{color:var(--warm);text-decoration-color:var(--warm)}
+a:focus-visible{outline:2px solid rgba(201,168,106,.5);outline-offset:2px;border-radius:2px}
+
+/* 页脚：链接不抢正文，但要看得清 */
+footer a{color:var(--dim);text-decoration-color:rgba(201,168,106,.4)}
+footer a:hover{color:var(--gold);text-decoration-color:var(--gold)}
+
+html[data-theme="light"] a{color:#8a6428;text-decoration-color:rgba(138,100,40,.45)}
+html[data-theme="light"] a:hover{color:#6d4d1c;text-decoration-color:#6d4d1c}
+html[data-theme="light"] footer a{color:#4d4636;text-decoration-color:rgba(138,100,40,.45)}
+html[data-theme="light"] footer a:hover{color:#8a6428}

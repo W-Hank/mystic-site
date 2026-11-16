@@ -116,15 +116,25 @@ window.MysticEngine = (function () {
   };
 
   /* ---------- 单牌解读 ---------- */
+  /* 逆位的「卡在哪」：不是坏，是这股力量没接上 */
+  const REV_STUCK = {
+    wands: "逆位的火不是没火，是烧的方向不对——想动，力气却用在了别扭的地方。",
+    cups: "逆位的水是往里流的——感受还在，只是收着，没让对方看见。",
+    swords: "逆位的风在绕圈——想法不少，判断却卡在同一个地方。",
+    pentacles: "逆位的土是悬着的——条件还没落地，或者你不敢让它落地。",
+    major: "大牌逆位不等于坏，是这个力量还没接上：它在，你没拿稳。"
+  };
+
   function readCard(card, role, domain, rev) {
     const txt = rev ? card.v : card.u;
     let lead = ROLE_LEAD[role] || "";
     if (role === "action" && HARD.has(card.id) && !rev)
       lead = "这一格没有出现一个可以照做的动作，出现的是个提醒——";
     const elNote = rev
-      ? `（${card.name}${rev ? "逆" : ""}，属${card.el}，能量是向内收的）`
+      ? `（${card.name}逆，属${card.el}）`
       : `（${card.name}，属${card.el}）`;
-    return { lead, txt, elNote, full: `${lead}${txt}${elNote}` };
+    const stuck = rev ? (REV_STUCK[card.suit] || REV_STUCK.major) : "";
+    return { lead, txt, elNote, stuck, full: `${lead}${txt}${stuck}${elNote}` };
   }
 
   /* ---------- 牌间关系 ---------- */

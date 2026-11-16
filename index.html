@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794813839112">
+<link rel="stylesheet" href="css/style.css?v=1794814428102">
 </head>
 <body>
 
@@ -91,6 +91,7 @@
 
       <div class="spread-head">牌 阵</div>
       <div class="spreads" id="spreads"></div>
+            <label class="check" style="margin-top:4px"><input type="checkbox" id="allowRev"> 允许逆位（默认全部正位，勾上后牌可能倒着出）</label>
       <button class="btn" id="toPick">洗 牌</button>
       <div class="err" id="qErr"></div>
     </div>
@@ -99,6 +100,7 @@
       <div class="pickbar">
         <div class="q" id="pickQ"></div>
         <div class="counter" id="counter">已选 0 / 0</div>
+        <div class="poshint" id="posHint"></div>
       </div>
       <div class="grid" id="grid"></div>
     </div>
@@ -427,7 +429,7 @@
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
 <script src="js/const-bg.js?v=20261115a"></script>
-<script src="js/app.js?v=1794813839112"></script>
+<script src="js/app.js?v=1794814428102"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

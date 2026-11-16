@@ -194,6 +194,7 @@
     $('#pickQ').textContent = state.q;
     renderGrid();
     updateCounter();
+    renderPosHint();
   };
 
   function renderGrid() {
@@ -208,8 +209,21 @@
     });
   }
 
+  /* 选牌时提示「这一张代表什么」 */
+  function renderPosHint() {
+    const box = document.getElementById('posHint');
+    if (!box) return;
+    const sp = window.MysticEngine && window.MysticEngine.spreads[state.resolved];
+    if (!sp) { box.innerHTML = ''; return; }
+    box.innerHTML = sp.pos.map(function (name, i) {
+      const cls = i < state.picked.length ? 'done' : (i === state.picked.length ? 'now' : '');
+      return '<span class="' + cls + '">' + (i + 1) + '. ' + name + '</span>';
+    }).join('');
+  }
+
   function updateCounter() {
     $('#counter').textContent = `已选 ${state.picked.length} / ${state.count}`;
+    renderPosHint();
   }
 
   function toggle(i, el) {
@@ -228,10 +242,23 @@
     }
   }
 
+  /* 逆位开关（默认关闭：保持可汗原来要求的「全部正位」） */
+  let allowRev = false;
+  try { allowRev = localStorage.getItem('mystic.allowRev') === '1'; } catch (e) {}
+  (function () {
+    const box = document.getElementById('allowRev');
+    if (!box) return;
+    box.checked = allowRev;
+    box.addEventListener('change', function () {
+      allowRev = box.checked;
+      try { localStorage.setItem('mystic.allowRev', allowRev ? '1' : '0'); } catch (e) {}
+    });
+  })();
+
   function reveal() {
     const cards = state.picked.map(i => state.deck[i]);
-    /* 按用户要求：牌不倒置，全部正位（不再随机 32% 逆位） */
-    const revs = cards.map(() => false);
+    /* 默认全部正位；勾了「允许逆位」才按 32% 概率倒置 */
+    const revs = cards.map(function () { return allowRev ? Math.random() < 0.32 : false; });
     state.revs = revs;
 
     const sk = state.resolved;
@@ -279,6 +306,7 @@
           <i>${spread.pos[i]}　·　${p.rev ? "逆位" : "正位"}　·　${p.card.kw.join(" / ")}</i>
         </div>
         <p class="leadline">${p.lead}</p>
+        ${p.stuck ? `<p class="stuck">${p.stuck}</p>` : ""}
         <details class="fold">
           <summary>再往下看</summary>
           <p>${p.txt}<em>${p.elNote}</em></p>

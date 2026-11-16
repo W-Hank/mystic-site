@@ -2046,3 +2046,23 @@ html[data-theme="light"] a{color:#8a6428;text-decoration-color:rgba(138,100,40,.
 html[data-theme="light"] a:hover{color:#6d4d1c;text-decoration-color:#6d4d1c}
 html[data-theme="light"] footer a{color:#4d4636;text-decoration-color:rgba(138,100,40,.45)}
 html[data-theme="light"] footer a:hover{color:#8a6428}
+
+/* 选牌阶段：位置提示 */
+.poshint{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.poshint span{
+  font-size:11.5px;letter-spacing:.06em;color:var(--dim2);
+  border:1px solid var(--line);border-radius:999px;padding:3px 11px;
+  transition:.18s;
+}
+.poshint span.done{color:var(--gold-dim);border-color:rgba(201,168,106,.35);text-decoration:line-through;text-decoration-thickness:1px}
+.poshint span.now{color:var(--gold);border-color:var(--gold-dim);background:rgba(201,168,106,.08)}
+html[data-theme="light"] .poshint span{color:#6f6552}
+html[data-theme="light"] .poshint span.now{color:#8a6428;background:rgba(138,100,40,.07);border-color:#a98a55}
+@media (max-width:560px){.poshint span{font-size:11px;padding:3px 9px}}
+
+/* 逆位说明 */
+.cardread .stuck{
+  margin:8px 0 0;padding:9px 12px;font-size:12.5px;line-height:1.85;color:var(--dim);
+  border-left:2px solid rgba(201,168,106,.35);background:rgba(201,168,106,.04);
+}
+html[data-theme="light"] .cardread .stuck{color:#4d4636;background:rgba(138,100,40,.05)}

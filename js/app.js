@@ -1927,6 +1927,23 @@
       '</div>';
   }
 
+  /* 专业模式开关：只影响六亲/世应是否显示 */
+  (function () {
+    const box = document.getElementById('proMode');
+    if (!box) return;
+    let on = false;
+    try { on = localStorage.getItem('mystic.pro') === '1'; } catch (e) {}
+    box.checked = on;
+    box.addEventListener('change', function () {
+      try { localStorage.setItem('mystic.pro', box.checked ? '1' : '0'); } catch (e) {}
+      const btn = document.getElementById('yjCast');
+      if (btn && !document.getElementById('yjOut').hidden) {
+        /* 重新渲染当前结果：用保存的最后一卦 */
+        if (window.__lastYj) { try { renderYj(window.__lastYj.r, window.__lastYj.q); } catch (e) {} }
+      }
+    });
+  })();
+
   /* ================= 黄历 ================= */
   let hlOffset = 0;
   const WD = ["日", "一", "二", "三", "四", "五", "六"];
@@ -2315,6 +2332,9 @@
 
   /* 进阶：六亲 + 世应 + 用神（默认折叠，不想看的人不受影响） */
   function advHTML(r, q) {
+    let pro = false;
+    try { pro = localStorage.getItem('mystic.pro') === '1'; } catch (e) {}
+    if (!pro) return "";
     const L = window.MysticLiuqin;
     if (!L || !r || !r.benLines) return "";
     const an = L.analyze(r.benLines);
@@ -2360,6 +2380,7 @@
   }
 
   function renderYj(r, q) {
+    window.__lastYj = { r: r, q: q };
     const Y = window.MysticYijing;
     q = (q || "").trim();
     const b = r.ben, v = r.bian;

@@ -507,7 +507,7 @@
         Object.keys(cb).map(function (k) { return k + cb[k]; }).join(' ') + '</b></div>' +
       (hits.length
         ? '<div class="synasp">彼此之间最紧的三处：<br>' + hits.slice(0, 3).map(function (x) {
-            return '· 你的' + x.a + '和对方的' + x.b + '　<em>' + x.kind + '</em>（差 ' + x.orb.toFixed(1) + '°）——' + (x.how || '');
+            return '· 你的' + x.a + '和对方的' + x.b + '　<em>' + x.kind + '</em>（差 ' + (x.orb < 0.1 ? '<0.1' : x.orb.toFixed(1)) + '°）——' + (x.how || '');
           }).join('<br>') + '</div>'
         : '<div class="synasp">这几颗主要行星之间没有很紧的相位，关系里没有特别强的牵引，也就不用被它推着走。</div>');
 

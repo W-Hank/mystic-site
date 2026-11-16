@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794815520223">
+<link rel="stylesheet" href="css/style.css?v=1794815955826">
 </head>
 <body>
 
@@ -204,7 +204,28 @@
       <div class="err" id="calcErr"></div>
     </div>
 
-    <div class="astro-wrap" id="astroOut" hidden>
+        <div class="sec synwrap" style="max-width:700px;margin:52px auto 0">
+      <details class="synbox">
+        <summary>看两个人的盘</summary>
+        <div class="synin">
+          <p class="synhint">填对方的生日。不需要对方同意也能排，但这件事的意思，最好先问过对方。</p>
+          <div class="form-row">
+            <div class="field"><label>年</label><input id="sby" type="number" placeholder="1998" min="1800" max="2060"></div>
+            <div class="field"><label>月</label><input id="sbm" type="number" placeholder="—" min="1" max="12"></div>
+            <div class="field"><label>日</label><input id="sbd" type="number" placeholder="—" min="1" max="31"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>时</label><input id="sbh" type="number" placeholder="12" min="0" max="23"></div>
+            <div class="field"><label>分</label><input id="sbmn" type="number" placeholder="0" min="0" max="59"></div>
+            <div class="field"><label>时区</label><input id="sbtz" type="number" value="8" step="0.5"></div>
+          </div>
+          <button class="btn" id="synGo">看合盘</button>
+          <div class="err" id="synErr"></div>
+        </div>
+        <div id="synOut" hidden></div>
+      </details>
+    </div>
+<div class="astro-wrap" id="astroOut" hidden>
       <div class="ncore" id="natCore"></div>
       <div class="nsum" id="natSummary" hidden></div>
 
@@ -332,6 +353,7 @@
         <button id="hlPrev">← 前一天</button>
         <button id="hlToday">回到今天</button>
         <button id="hlNext">后一天 →</button>
+        <input type="date" id="hlDate" class="hlDate" aria-label="跳到某一天">
       </div>
     </div>
     <div id="hlMain"></div>
@@ -429,7 +451,7 @@
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
 <script src="js/const-bg.js?v=20261115a"></script>
-<script src="js/app.js?v=1794815520223"></script>
+<script src="js/app.js?v=1794815955826"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

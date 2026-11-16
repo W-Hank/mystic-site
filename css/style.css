@@ -2085,3 +2085,43 @@ html[data-theme="light"] .hexrel .hxmeta em{color:#4d4636}
   .hexrel .hx{flex-direction:row;align-items:center;text-align:left;gap:14px}
   .hexrel .minihex{margin:0;flex:0 0 34px}
 }
+
+/* 黄历：日期直跳 + 吉时汇总 */
+.hlDate{
+  background:rgba(23,27,41,.6);border:1px solid var(--line);border-radius:999px;
+  color:var(--text);font-family:inherit;font-size:12.5px;padding:6px 12px;
+  letter-spacing:.04em;
+}
+.hlDate::-webkit-calendar-picker-indicator{filter:invert(.7);cursor:pointer}
+html[data-theme="light"] .hlDate{background:rgba(253,249,240,.7);color:#332c22}
+html[data-theme="light"] .hlDate::-webkit-calendar-picker-indicator{filter:none}
+
+.hlsum{
+  margin:14px 0 0;padding:11px 16px;border-left:2px solid rgba(201,168,106,.4);
+  font-size:13px;line-height:1.9;color:var(--dim);background:rgba(201,168,106,.04);
+}
+.hlsum b{color:var(--gold);font-weight:500;letter-spacing:.06em}
+html[data-theme="light"] .hlsum{color:#4d4636;background:rgba(138,100,40,.05)}
+html[data-theme="light"] .hlsum b{color:#8a6428}
+
+/* 合盘 */
+.synbox{border:1px solid var(--line);border-radius:5px;background:var(--card)}
+.synbox > summary{
+  cursor:pointer;list-style:none;padding:15px 18px;font-size:13.5px;letter-spacing:.06em;color:var(--dim);
+}
+.synbox > summary::-webkit-details-marker{display:none}
+.synbox > summary::after{content:"＋";float:right;color:var(--gold-dim)}
+.synbox[open] > summary::after{content:"－"}
+.synbox > summary:hover{color:var(--text)}
+.synin{padding:4px 18px 18px;border-top:1px solid var(--line)}
+.synhint{font-size:12.5px;line-height:1.8;color:var(--dim2);margin:14px 0 16px}
+#synOut{padding:0 18px 18px}
+.synsum{margin:0 0 16px;padding:13px 16px;border-left:2px solid rgba(201,168,106,.4);
+  font-size:13.5px;line-height:1.95;color:var(--dim);background:rgba(201,168,106,.04)}
+.synsum b{color:var(--gold);font-weight:500}
+.synrow{display:grid;grid-template-columns:64px 1fr 1fr;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.synrow span{color:var(--dim2);font-size:12px;letter-spacing:.1em}
+.synrow b{color:var(--text);font-weight:400}
+.synasp{margin:14px 0 0;font-size:12.5px;line-height:1.9;color:var(--dim)}
+.synasp em{color:var(--gold);font-style:normal}
+html[data-theme="light"] .synhint,html[data-theme="light"] .synsum,html[data-theme="light"] .synasp{color:#4d4636}

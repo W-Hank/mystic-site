@@ -97,6 +97,11 @@
 
   /* 点进星盘时自动回填并排盘 */
   (function () {
+    const g = document.getElementById('synGo');
+    if (g) g.addEventListener('click', function () { try { renderSynastry(); } catch (e) {} });
+  })();
+
+  (function () {
     const btn = document.querySelector('nav button[data-tab="astro"]');
     if (btn) btn.addEventListener('click', function () { setTimeout(restoreAstro, 30); });
   })();
@@ -401,6 +406,113 @@
 
   const tb = document.querySelector('#tarotBack');
   if (tb) tb.onclick = () => tarotBack(true);
+
+  /* ---- 合盘：两张本命盘叠起来看 ---- */
+  const SYN_ELEM = {
+    "火": "火", "土": "土", "风": "风", "水": "水"
+  };
+
+  function synPair(a1, a2) {
+    if (!a1 || !a2) return null;
+    const r = A.aspectBetween(a1, a2);
+    if (!r || r.orb > 5) return null;
+    return r;
+  }
+
+  function renderSynastry() {
+    const err = document.getElementById('synErr');
+    const out = document.getElementById('synOut');
+    if (!out) return;
+
+    const b = savedBirth();
+    if (!b) { if (err) err.textContent = "先在上面排一次你自己的盘，合盘才有第一张。"; return; }
+
+    const y = +document.getElementById('sby').value;
+    const m = +document.getElementById('sbm').value;
+    const d = +document.getElementById('sbd').value;
+    const h = +document.getElementById('sbh').value || 0;
+    const mi = +document.getElementById('sbmn').value || 0;
+    const tz = +document.getElementById('sbtz').value || 8;
+
+    if (!y || !m || !d) { if (err) err.textContent = "对方的年月日要填。"; return; }
+    if (err) err.textContent = "";
+
+    let mine, theirs;
+    try {
+      mine = A.natal(b.y, b.m, b.d, b.h, b.mi, b.tz, b.lat || 0, b.lon || 0, !!b.hasTime);
+      theirs = A.natal(y, m, d, h, mi, tz, b.lat || 0, b.lon || 0, true);
+    } catch (e) {
+      if (err) err.textContent = "这两个日期算不出来，检查一下。";
+      return;
+    }
+
+    const pick = function (ch, k) {
+      return (ch.bodies || []).filter(function (x) { return x.key === k; })[0];
+    };
+
+    const rows = [
+      { k: "太阳", a: pick(mine, 'sun'), b: pick(theirs, 'sun') },
+      { k: "月亮", a: pick(mine, 'moon'), b: pick(theirs, 'moon') }
+    ];
+
+    // 元素计数
+    const count = function (ch) {
+      const c = { 火: 0, 土: 0, 风: 0, 水: 0 };
+      (ch.bodies || []).forEach(function (x) {
+        if (x.key === 'asc') return;
+        const e = x.sign && x.sign.el;
+        if (c[e] != null) c[e]++;
+      });
+      return c;
+    };
+    const ca = count(mine), cb = count(theirs);
+
+    // 相互相位
+    const hits = [];
+    ["sun", "moon", "mercury", "venus", "mars"].forEach(function (ka) {
+      const pa = pick(mine, ka);
+      if (!pa) return;
+      ["sun", "moon", "mercury", "venus", "mars"].forEach(function (kb) {
+        const pb = pick(theirs, kb);
+        if (!pb) return;
+        const r = synPair(pa.lon, pb.lon);
+        if (r) hits.push({ a: pa.cn, b: pb.cn, kind: aspName(r.asp.kind), orb: r.orb, how: aspHow(r.asp.kind) });
+      });
+    });
+    hits.sort(function (x, y2) { return x.orb - y2.orb; });
+
+    // 一句总结：元素互补
+    const dominant = function (c) {
+      let best = null;
+      Object.keys(c).forEach(function (k) { if (!best || c[k] > c[best]) best = k; });
+      return best;
+    };
+    const da = dominant(ca), db = dominant(cb);
+    const same = da === db;
+
+    let line;
+    if (same) line = "两个人的盘重心都在<b>" + da + "象</b>：好沟通，因为看事情的角度接近；也容易一起卡在同一个盲点上。";
+    else line = "一个偏<b>" + da + "象</b>，一个偏<b>" + db + "象</b>：互补，但需要翻译——你们说的不是同一种话。";
+
+    out.innerHTML =
+      '<div class="synsum">' + line + '</div>' +
+      rows.map(function (r) {
+        if (!r.a || !r.b) return '';
+        return '<div class="synrow"><span>' + r.k + '</span>' +
+          '<b>' + (r.a.sign ? r.a.sign.cn : '—') + '</b>' +
+          '<b>' + (r.b.sign ? r.b.sign.cn : '—') + '</b></div>';
+      }).join('') +
+      '<div class="synrow"><span>元素</span><b>' +
+        Object.keys(ca).map(function (k) { return k + ca[k]; }).join(' ') + '</b><b>' +
+        Object.keys(cb).map(function (k) { return k + cb[k]; }).join(' ') + '</b></div>' +
+      (hits.length
+        ? '<div class="synasp">彼此之间最紧的三处：<br>' + hits.slice(0, 3).map(function (x) {
+            return '· 你的' + x.a + '和对方的' + x.b + '　<em>' + x.kind + '</em>（差 ' + x.orb.toFixed(1) + '°）——' + (x.how || '');
+          }).join('<br>') + '</div>'
+        : '<div class="synasp">这几颗主要行星之间没有很紧的相位，关系里没有特别强的牵引，也就不用被它推着走。</div>');
+
+    out.hidden = false;
+  }
 
   /* ---- 星盘：排过盘后把表单收起 ---- */
   function collapseAstro(on) {
@@ -1795,6 +1907,9 @@
 
     const nowIdx = isToday ? Math.floor(((new Date().getHours() + 1) % 24) / 2) : -1;
 
+    const goodNames = HOURS.filter(function (h, i) { return pat.charAt(i) === '1'; })
+      .map(function (h) { return h[0] + '时(' + h[1].replace('–', '-') + ')'; });
+
     box.innerHTML = '<div class="hhours">' + HOURS.map(function (h, i) {
       const good = pat.charAt(i) === '1';
       const cls = 'hh ' + (good ? 'y' : 'n') + (i === nowIdx ? ' now' : '');
@@ -1804,7 +1919,12 @@
         '<i>' + (good ? '吉' : '凶') + '</i>' +
         (i === nowIdx ? '<em>现在</em>' : '') +
         '</div>';
-    }).join('') + '</div>';
+    }).join('') + '</div>' +
+      '<div class="hlsum">' +
+        (goodNames.length
+          ? '这天可用的时辰共 <b>' + goodNames.length + '</b> 个：' + goodNames.join('、') + '。'
+          : '这天十二个时辰都偏紧，重要的事换一天。') +
+      '</div>';
   }
 
   /* ================= 黄历 ================= */
@@ -1822,6 +1942,9 @@
       $('#hlList').innerHTML = "";
       return;
     }
+    const inpDate = document.getElementById('hlDate');
+    if (inpDate) inpDate.value = y + '-' + String(m).padStart(2, '0') + '-' + String(dd).padStart(2, '0');
+
     $('#hlTitle').textContent = (hlOffset === 0 ? "今天 · " : "") +
       y + " 年 " + m + " 月 " + dd + " 日　星期" + WD[d.getDay()];
 
@@ -1871,6 +1994,23 @@
 
     renderHlHours(y, m, dd, hlOffset === 0);
   }
+
+  /* 黄历：直接跳到某一天（hlOffset 由日期差算出） */
+  (function () {
+    const inp = document.getElementById('hlDate');
+    if (!inp) return;
+    inp.addEventListener('change', function () {
+      if (!inp.value) return;
+      const parts = inp.value.split('-').map(Number);
+      if (parts.length !== 3 || !parts[0]) return;
+      const target = new Date(parts[0], parts[1] - 1, parts[2]);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      target.setHours(0, 0, 0, 0);
+      hlOffset = Math.round((target - today) / 86400000);
+      renderHuangli();
+    });
+  })();
 
   Array.prototype.forEach.call([['#hlPrev', -1], ['#hlNext', 1], ['#hlToday', 'reset']], function (p) {
     const el = document.querySelector(p[0]);

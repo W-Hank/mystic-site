@@ -108,7 +108,9 @@
     { k: "past_present_future", name: "三张 · 时间线", desc: "过去的因 · 此刻的实况 · 正在形成的走向" },
     { k: "situation_action_outcome", name: "三张 · 状况 行动 结果", desc: "该做什么，以及照此下去的落点" },
     { k: "relation5", name: "五张 · 关系", desc: "你 · 对方 · 连接 · 阻碍 · 走向" },
-    { k: "cross5", name: "五张 · 十字", desc: "现状 · 阻碍 · 助力 · 建议 · 结果" }
+    { k: "cross5", name: "五张 · 十字", desc: "现状 · 阻碍 · 助力 · 建议 · 结果" },
+    { k: "celtic10", name: "十张 · 凯尔特十字", desc: "最完整的一副。看得深，也最费时间" },
+    { k: "choice5", name: "五张 · 二选一", desc: "两条路各走一遍，看落点差在哪" }
   ];
 
   let state = { q: "", spreadKey: "auto", count: 3, deck: [], picked: [], revs: [] };

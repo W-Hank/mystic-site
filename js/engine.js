@@ -75,6 +75,7 @@ window.MysticEngine = (function () {
 
   function pickSpread(domain, type, n) {
     if (n === 1) return "one";
+    if (n === 10) return "celtic10";
     if (n === 5) return domain === "love" ? "relation5" : "cross5";
     if (type === "yesno" || type === "howto") return "situation_action_outcome";
     return "past_present_future";
@@ -86,10 +87,20 @@ window.MysticEngine = (function () {
     past_present_future: ["past", "now", "future"],
     situation_action_outcome: ["now", "action", "outcome"],
     relation5: ["self", "other", "bond", "block", "outcome"],
-    cross5: ["now", "block", "help", "advice", "outcome"]
+    cross5: ["now", "block", "help", "advice", "outcome"],
+    celtic10: ["now", "block", "root", "past", "goal", "near", "self", "other", "fear", "outcome"],
+    choice5: ["now", "pathA", "pathAout", "pathB", "pathBout"]
   };
 
   const ROLE_LEAD = {
+    root: "底下撑着这件事的是——",
+    goal: "你希望它变成的样子是——",
+    near: "接下来几步之内会遇到的是——",
+    fear: "你既想要又怕的是——",
+    pathA: "选这条路，牌面是——",
+    pathAout: "这条路走到底，落点是——",
+    pathB: "另一条路，牌面是——",
+    pathBout: "另一条路走到底，落点是——",
     past: "这一格看的是「因」——",
     now: "现状这一格说的是——",
     future: "照现在这个势头往下走，落点是——",

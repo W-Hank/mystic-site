@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>这个站在做什么</title>
+<meta name="description" content="MYSTIC 是什么、算什么、数据从哪来、哪些事做不了、你的数据存在哪。">
+<link rel="stylesheet" href="css/style.css?v=20261116a">
+<style>
+  .wrap{max-width:640px;margin:0 auto;padding:64px 24px 120px}
+  .navtop{margin-bottom:40px}
+  .cback{font-size:13px;color:var(--dim);text-decoration:none;border-bottom:1px solid rgba(125,139,166,.35);padding-bottom:2px}
+  .cback:hover{color:var(--gold)}
+  .hero{text-align:center;margin-bottom:40px}
+  h1{font-size:24px;letter-spacing:.2em;margin:0 0 12px;font-weight:500;text-indent:.2em}
+  .sub{font-size:11px;letter-spacing:.28em;color:var(--dim2);text-transform:uppercase}
+  .rule{width:44px;height:1px;background:rgba(201,168,106,.45);margin:24px auto 0}
+
+  h2{font-size:14px;letter-spacing:.16em;font-weight:500;color:var(--gold);margin:44px 0 14px;
+     padding-bottom:10px;border-bottom:1px solid var(--line)}
+  p{font-size:15px;line-height:2.05;margin:0 0 14px;color:var(--dim)}
+  p b{color:var(--text);font-weight:500}
+  ul{margin:0 0 16px;padding-left:20px;font-size:15px;line-height:2.05;color:var(--dim)}
+  li{margin-bottom:4px}
+  li b{color:var(--text);font-weight:500}
+  table{width:100%;border-collapse:collapse;margin:4px 0 18px;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.8}
+  th{color:var(--dim2);font-weight:400;font-size:12px;letter-spacing:.12em}
+  td:first-child{color:var(--text);white-space:nowrap;width:92px}
+  .note{margin:22px 0;padding:14px 18px;border-left:2px solid rgba(201,168,106,.45);
+        background:linear-gradient(90deg,rgba(201,168,106,.05),transparent 70%);font-size:14px;line-height:1.95;color:var(--dim)}
+  .end{margin-top:56px;text-align:center;font-size:12px;color:var(--dim2);line-height:2}
+  .end a{color:var(--gold);text-decoration:none}
+  html[data-theme="light"] p,html[data-theme="light"] ul,html[data-theme="light"] td{color:#4d4636}
+  html[data-theme="light"] h2{color:#8a6428}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="navtop"><a class="cback" href="./">‹ 回到首页</a></div>
+
+  <div class="hero">
+    <h1>这个站在做什么</h1>
+    <div class="sub">About</div>
+    <div class="rule"></div>
+  </div>
+
+  <p><b>它是一套免费、无广告、不用注册的占卜与历法工具。</b>所有计算都在你的浏览器里跑完，结果不经过任何服务器，也没有账号和后台。</p>
+
+  <h2>五套东西，各管一段</h2>
+  <table>
+    <tr><th>模块</th><th>回答什么问题</th></tr>
+    <tr><td>塔罗</td><td>此刻我心里站在哪、这件事的势往哪走</td></tr>
+    <tr><td>星盘</td><td>我的性格底色、情绪来源、别人看到的我</td></tr>
+    <tr><td>星座</td><td>今天大概是个什么天气（按日、周、月、年分段看）</td></tr>
+    <tr><td>黄历</td><td>哪天适合做什么，哪个时辰能用</td></tr>
+    <tr><td>易经</td><td>一件具体的事，眼下是「定」还是「变」</td></tr>
+  </table>
+  <p>「合参」是把塔罗、易经、天象三边各看一次再并起来读，不是第五套体系。</p>
+
+  <h2>数据从哪来</h2>
+  <ul>
+    <li><b>牌面</b>：78 张全部本地生成，用自己训的风格模型（LoRA）画，再叠双色印刷与做旧。不是网上找的图。</li>
+    <li><b>星位</b>：用公开的 JPL 星历根数与 Meeus 算法在浏览器里实时计算，不经第三方接口。</li>
+    <li><b>黄历</b>：cnlunar 开源历法库，覆盖 2024 至 2035 年共 4383 天，抽样 60 天逐项复核。</li>
+    <li><b>卦爻辞</b>：公开数据集，并与维基文库《周易》交叉核对，改正过 3 处抄录错误。</li>
+  </ul>
+
+  <h2>它做不了什么</h2>
+  <ul>
+    <li><b>不做医疗、投资、法律、婚姻的判断。</b>这些事请找活人，别找牌。</li>
+    <li><b>不替别人算。</b>除非对方同意。你替人排盘，读的是你的想象，不是他的人生。</li>
+    <li><b>不预测确定的结果。</b>它给的是「此刻的势」，不是「下周会发生什么」。</li>
+    <li><b>不是唯一解。</b>同一卦，汉人重象数、宋人重义理；同一张牌，不同流派读法不同。这里选了一种讲法，并注明依据。</li>
+  </ul>
+
+  <div class="note">
+    一句话：它可以帮你把心里模糊的东西说清楚一点，不能替你承担任何决定。
+  </div>
+
+  <h2>你的数据存在哪</h2>
+  <p>全部在你自己浏览器的 <b>localStorage</b> 里，服务器上没有副本：</p>
+  <ul>
+    <li><b>出生信息</b>：年月日时分、时区、城市经纬度</li>
+    <li><b>抽牌记录</b>：最近 30 次，含问题与逐张结果</li>
+    <li><b>起卦记录</b>：最近 30 卦</li>
+    <li><b>每日打卡</b>、<b>主题选择</b>、<b>解读详略</b></li>
+  </ul>
+  <p>换浏览器、换设备、清缓存，这些就没了，也不会同步过去。要长期留着，请自己截图或用「存图」。</p>
+
+  <h2>为什么免费</h2>
+  <p>个人做的东西。不接广告、不收订阅、没有账号体系，也没有把数据卖给谁的路子，因为压根没收集。</p>
+  <p>服务器成本接近于零：它是纯静态页面，托管在公开的静态空间上。</p>
+
+  <h2>已知的不足</h2>
+  <ul>
+    <li>没有八字（四柱）模块，只有日柱与十二时辰</li>
+    <li>没有云同步，换设备要重排一次盘</li>
+    <li>时辰只分「可用 / 不宜」两档，没有逐时辰宜忌细项</li>
+    <li>手机端仍在打磨，个别页面排版还在调</li>
+  </ul>
+
+  <h2>更新记录</h2>
+  <ul>
+    <li><b>2026-11-16</b>　加这份说明页；易经补起卦科普；修主星重复与星盘回顶</li>
+    <li><b>2026-11-15</b>　星座页改星座符号；黄历加十二时辰；易经与合参加视觉块</li>
+    <li><b>2026-11-14</b>　78 张牌面全量重绘上线；牌义页、组合页、世界观页</li>
+  </ul>
+
+  <div class="end">
+    全部计算在浏览器本地完成 · 无账号 · 无广告 · 不收费<br>
+    <a href="./?tab=tarot">去抽一张 ›</a>
+  </div>
+</div>
+<script src="js/theme.js?v=20261114c1"></script>
+</body>
+</html>

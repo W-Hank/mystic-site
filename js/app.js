@@ -2313,6 +2313,52 @@
     }).join('') + '</div>';
   }
 
+  /* 进阶：六亲 + 世应 + 用神（默认折叠，不想看的人不受影响） */
+  function advHTML(r, q) {
+    const L = window.MysticLiuqin;
+    if (!L || !r || !r.benLines) return "";
+    const an = L.analyze(r.benLines);
+    if (!an) return "";
+
+    const ys = L.yongshen(q, an);
+    const SHI_NAME = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"];
+
+    let meta = "这一卦属 <b>" + an.palace + "宫（" + an.wx + "）</b>，" +
+      "世在<b>" + SHI_NAME[an.shi] + "</b>，应在<b>" + SHI_NAME[an.ying] + "</b>。";
+
+    let ysLine = "";
+    if (ys) {
+      const positions = an.lines.filter(function (l) { return l.liuqin === ys.key; })
+        .map(function (l) { return SHI_NAME[l.idx]; });
+      ysLine = ys.why + "。" + (positions.length
+        ? "本卦的" + ys.key + "在<b>" + positions.join("、") + "</b>。"
+        : "本卦没有" + ys.key + "爻——这条线这次没露头，得看变卦或伏神。");
+    }
+
+    const rows = an.lines.slice().reverse().map(function (l) {
+      const mark = l.shi ? "世" : (l.ying ? "应" : "");
+      const hit = ys && l.liuqin === ys.key ? " class=\"hit\"" : "";
+      return '<tr' + hit + '>' +
+        '<td class="mark">' + mark + '</td>' +
+        '<td class="lq">' + l.liuqin + '</td>' +
+        '<td>' + l.zhi + '</td>' +
+        '<td class="wx">' + l.wx + '</td>' +
+        '<td>' + (l.yang ? "阳爻" : "阴爻") + '</td>' +
+      '</tr>';
+    }).join("");
+
+    return '<details class="advbox"><summary>进阶：六亲 · 世应</summary>' +
+      '<div class="advbody">' +
+        '<div class="advmeta">' + meta + (ysLine ? "<br>" + ysLine : "") + '</div>' +
+        '<table class="adytable">' +
+          '<tr><th></th><th>六亲</th><th>地支</th><th>五行</th><th>爻</th></tr>' +
+          rows +
+        '</table>' +
+        '<div class="advnote">六亲以宫的五行为「我」推出：生我者父母，我生者子孙，克我者官鬼，我克者妻财，同我者兄弟。' +
+        '世爻代表你自己，应爻代表对方或外部。这一套是三枚铜钱（纳甲）一脉的读法，不是唯一读法。</div>' +
+      '</div></details>';
+  }
+
   function renderYj(r, q) {
     const Y = window.MysticYijing;
     q = (q || "").trim();
@@ -2353,6 +2399,7 @@
           '<div class="yjpart"><div class="lbl">怎么用这一卦</div><div class="txt small">' +
             yjClose + '</div></div>' +
           hexRelHTML(r.benLines) +
+          advHTML(r, q) +
           parts +
           bianBlock +
           '<div class="yjstruct">' + Y.readingLine(r) +

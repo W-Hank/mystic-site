@@ -2066,3 +2066,22 @@ html[data-theme="light"] .poshint span.now{color:#8a6428;background:rgba(138,100
   border-left:2px solid rgba(201,168,106,.35);background:rgba(201,168,106,.04);
 }
 html[data-theme="light"] .cardread .stuck{color:#4d4636;background:rgba(138,100,40,.05)}
+
+/* 互卦 / 错卦 / 综卦 */
+.hexrel{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0 4px}
+.hexrel .hx{
+  border:1px solid var(--line);border-radius:5px;padding:14px 12px;background:var(--card);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.hexrel .minihex{margin:0 0 10px;width:34px}
+.hexrel .mh-line{width:34px;height:5px}
+.hexrel .hxmeta b{display:block;font-size:11px;letter-spacing:.2em;color:var(--dim2);margin-bottom:4px}
+.hexrel .hxmeta span{display:block;font-size:15px;color:var(--text);letter-spacing:.06em}
+.hexrel .hxmeta em{display:block;margin-top:7px;font-style:normal;font-size:11.5px;line-height:1.7;color:var(--dim)}
+html[data-theme="light"] .hexrel .hxmeta span{color:#2f291f}
+html[data-theme="light"] .hexrel .hxmeta em{color:#4d4636}
+@media (max-width:560px){
+  .hexrel{grid-template-columns:1fr;gap:10px}
+  .hexrel .hx{flex-direction:row;align-items:center;text-align:left;gap:14px}
+  .hexrel .minihex{margin:0;flex:0 0 34px}
+}

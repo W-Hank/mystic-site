@@ -107,6 +107,6 @@ window.MysticYijing = (function () {
     return structure;
   }
 
-  return { cast: cast, toss: toss, byBin: function (bin) { return byBin[bin]; },
+  return { hexOf: function (bin) { return byBin[bin] || null; }, cast: cast, toss: toss, byBin: function (bin) { return byBin[bin]; },
            TRI_DE: TRI_DE, POS_MEAN: POS_MEAN, readingLine: readingLine, list: D.list };
 })();

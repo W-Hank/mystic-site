@@ -2138,6 +2138,41 @@
     return '<div class="moondisc" aria-hidden="true"><i style="--ill:' + ill + '%"></i></div>';
   }
 
+  /* 互卦 / 错卦 / 综卦：从本卦六爻推出来 */
+  function hexRelatives(benLines) {
+    const Y = window.MysticYijing;
+    if (!Y || !Y.hexOf || !benLines) return [];
+    const L = benLines;
+    // 互卦：下卦取 2-3-4 爻，上卦取 3-4-5 爻
+    const hu = [L[1], L[2], L[3], L[2], L[3], L[4]];
+    // 错卦：六爻全反
+    const cuo = L.map(function (x) { return x === 1 ? 0 : 1; });
+    // 综卦：上下颠倒
+    const zong = L.slice().reverse();
+
+    const out = [];
+    const push = function (label, lines, note) {
+      const h = Y.hexOf(lines.join(""));
+      if (!h) return;
+      out.push({ label: label, name: h.name, lines: lines, note: note });
+    };
+    push("互卦", hu, "藏在里面的结构：这件事内部是怎么运转的");
+    push("错卦", cuo, "整个翻过来看：如果你站在完全相反的位置");
+    push("综卦", zong, "上下掉个头看：从对面的人眼里看这件事");
+    return out;
+  }
+
+  function hexRelHTML(benLines) {
+    const list = hexRelatives(benLines);
+    if (!list.length) return "";
+    return '<div class="hexrel">' + list.map(function (x) {
+      return '<div class="hx">' +
+        miniHex(x.lines, []) +
+        '<div class="hxmeta"><b>' + x.label + '</b><span>' + x.name + '</span>' +
+        '<em>' + x.note + '</em></div></div>';
+    }).join('') + '</div>';
+  }
+
   function renderYj(r, q) {
     const Y = window.MysticYijing;
     q = (q || "").trim();
@@ -2177,6 +2212,7 @@
             ((window.YIJING_BAI && window.YIJING_BAI[b.name]) || '（暂无）') + '</div></div>' +
           '<div class="yjpart"><div class="lbl">怎么用这一卦</div><div class="txt small">' +
             yjClose + '</div></div>' +
+          hexRelHTML(r.benLines) +
           parts +
           bianBlock +
           '<div class="yjstruct">' + Y.readingLine(r) +

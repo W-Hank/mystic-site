@@ -1284,7 +1284,7 @@
       if (sig) {
         setTxt('ccEl', sig.el + '象');
         setTxt('ccMode', sig.mode + '宫');
-        setTxt('ccRuler', '主星 ' + sig.ruler);
+        setTxt('ccRuler', sig.ruler);
       }
 
       const tc = TAROT_OF_SIGN[cn];

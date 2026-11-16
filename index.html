@@ -23,7 +23,7 @@
 <meta property="og:title" content="Mystic · 塔罗 星盘 黄历 易经">
 <meta property="og:description" content="六十四卦、七十八张牌、日月五星与通书宜忌。全部在浏览器本地计算，不上传、不收费、不接 API。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="css/style.css?v=1794726130553">
+<link rel="stylesheet" href="css/style.css?v=1794801859990">
 </head>
 <body>
 
@@ -359,6 +359,34 @@
       <div class="yhist" id="yjHist" hidden></div>
     </div>
     <div id="yjOut" hidden></div>
+    <div class="sec yjknow" style="max-width:660px;margin:44px auto 0">
+      <details class="fold2">
+        <summary>这三枚铜钱，是怎么算出一卦的</summary>
+        <div class="kn">
+          <h4>一、抛法</h4>
+          <p>三枚一样的硬币或铜钱一起抛。习惯上有字的一面算阳（记 3），另一面算阴（记 2），三枚相加只得四个数：</p>
+          <ul>
+            <li><b>6</b>　三面皆阴 —— 老阴，是阴爻，但会动</li>
+            <li><b>7</b>　两阴一阳 —— 少阳，是阳爻，不动</li>
+            <li><b>8</b>　一阴两阳 —— 少阴，是阴爻，不动</li>
+            <li><b>9</b>　三面皆阳 —— 老阳，是阳爻，但会动</li>
+          </ul>
+          <p>抛六次，<b>从下往上</b>记：第一次是初爻，最后一次是上爻。六次落定，就是一个卦。</p>
+
+          <h4>二、为什么老阳老阴会「变」</h4>
+          <p>六是老阴、九是老阳，都到了极端。古人讲物极必反：老阳要转成阴，老阴要转成阳。转过之后得到的那一卦，叫<b>变卦</b>。</p>
+          <p>所以一次起卦，通常有两个卦：<b>本卦</b>是此刻的势，<b>变卦</b>是它往哪里去。六爻都不动，就只有本卦，说明这件事眼下是定的。</p>
+
+          <h4>三、这套东西从哪来</h4>
+          <p>更早的做法是用五十根蓍草反复分揲，很费时间。三枚铜钱的办法一般认为成型于唐宋，收在《火珠林》一脉的体系里，因为快，后来成了民间主流。</p>
+          <p>卦爻辞本身成书于西周，比后来那些解释早得多。同一卦，汉人重象数，宋人重义理，讲法并不统一——这也是为什么同一卦在不同书里能读出不同意思。</p>
+
+          <h4>四、本站怎么算</h4>
+          <p>你用不着真抛硬币。点「掷六次」，程序按同样的概率分布生成六爻，规则与上面完全一致：老阳老阴为动，动则生变卦。</p>
+          <p>「白话大意」是本站在通行注解基础上整理的，不是原文，也不是唯一解。</p>
+        </div>
+      </details>
+    </div>
     <div class="cite">易经：卦辞、爻辞为公有领域《周易》原文，取自公开数据集（Johnson-Jia/liuyao-divination，MIT），并与维基文库《周易》交叉核对，修正 3 处抄校错误（损「曷之用」、困「大人吉」、丰「宜日中」）。起卦用三枚铜钱法，老阳老阴为动爻，四象概率 1/8 · 3/8 · 3/8 · 1/8，由钱币本身决定。变爻取用依朱熹《周易本义》。白话大意为本站按通行注本整理，非逐字翻译；爻辞以原文为准。</div>
   </section>
   <!-- ================= 合参 ================= -->
@@ -399,7 +427,7 @@
 <script src="js/yijing.js?v=20261109d"></script>
 <script src="js/share.js?v=20261109d"></script>
 <script src="js/const-bg.js?v=20261115a"></script>
-<script src="js/app.js?v=1794726130553"></script>
+<script src="js/app.js?v=1794801859990"></script>
 <script src="js/theme.js?v=20261112a"></script>
 </body>
 </html>

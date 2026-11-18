@@ -316,6 +316,7 @@
           <summary>再往下看</summary>
           <p>${p.txt}<em>${p.elNote}</em></p>
           ${sc ? `<p class="scene">${sc}</p>` : ""}
+          ${p.srcTip ? `<p class="srcline">${p.srcTip}</p>` : ""}
         </details>
       </div>`;
     }).join("");

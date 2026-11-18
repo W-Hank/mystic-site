@@ -126,7 +126,9 @@ window.MysticEngine = (function () {
   };
 
   function readCard(card, role, domain, rev) {
-    const txt = rev ? card.v : card.u;
+    /* 有文献版权文案就用它（22 张大牌），否则退回原牌义 */
+    const custom = (window.TAROT_COPY || {})[card.name];
+    const txt = custom ? (rev ? custom.rev : custom.up) : (rev ? card.v : card.u);
     let lead = ROLE_LEAD[role] || "";
     if (role === "action" && HARD.has(card.id) && !rev)
       lead = "这一格没有出现一个可以照做的动作，出现的是个提醒——";
@@ -134,7 +136,8 @@ window.MysticEngine = (function () {
       ? `（${card.name}逆，属${card.el}）`
       : `（${card.name}，属${card.el}）`;
     const stuck = rev ? (REV_STUCK[card.suit] || REV_STUCK.major) : "";
-    return { lead, txt, elNote, stuck, full: `${lead}${txt}${stuck}${elNote}` };
+    const srcTip = custom ? custom.src : "";
+    return { lead, txt, elNote, stuck, srcTip, full: `${lead}${txt}${stuck}${elNote}` };
   }
 
   /* ---------- 牌间关系 ---------- */

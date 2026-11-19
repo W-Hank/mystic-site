@@ -188,6 +188,7 @@
       return;
     }
     $('#q').style.borderColor = "";
+    state.q = ($('#q').value || '').trim();
     const sk = resolveSpread();
     state.resolved = sk;
     state.count = E.spreads[sk].n;
@@ -400,9 +401,21 @@
     if ($('#q').focus) $('#q').focus();
   }
 
+  function tarotAgain() {
+    if (!state.q) state.q = ($('#q').value || '').trim();
+    if (!state.q) { tarotBack(false); return; }
+    state.picked = []; state.revs = [];
+    state.deck = E.shuffle();
+    $('#step-ask').hidden = true;
+    $('#step-pick').hidden = false;
+    $('#step-read').hidden = true;
+    $('#pickQ').textContent = state.q;
+    try { renderGrid(); updateCounter(); renderPosHint(); } catch (e) {}
+  }
+
   $('#again').onclick = () => {
-    if (!confirm('同一件事只建议抽一次。再抽一次等于重问，结果不作数——确定继续？')) return;
-    tarotBack(false);
+    if (!confirm('问题不变，只是重抽一遍。同一件事只建议抽一次，重抽的结果不作数——仍要继续？')) return;
+    tarotAgain();
   };
 
   const tb = document.querySelector('#tarotBack');
@@ -2499,15 +2512,15 @@
   function yjHint() {
     const err = $('#yjErr');
     if (!err) return;
-    err.textContent = "这一问已经起过卦了。同一件事不重复占——要换问题请点「返回」，想重摇请点「再算一卦」。";
+    err.textContent = "这一问已经起过卦了。同一件事不重复占——换问题点「换个问题」，同一个问题再摇一次点「同问重摇」。";
     if (err.scrollIntoView) err.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   function yjActions() {
     return '<div class="yjactions">' +
-      '<button class="btn ghost" id="yjBack">返 回</button>' +
-      '<button class="btn ghost" id="yjAgain">再算一卦</button>' +
-      '<span class="yjtip">一事一占：重摇等于把同一件事问第二遍，结果不作数。</span>' +
+      '<button class="btn ghost" id="yjBack" title="清空当前问题，重新提问">换个问题</button>' +
+      '<button class="btn ghost" id="yjAgain" title="问题不变，只是重新摇一次">同问重摇</button>' +
+      '<span class="yjtip">一事一占：重摇是同一个问题再问一遍，不换题；重摇的结果不作数。</span>' +
       '</div>';
   }
 
@@ -2535,7 +2548,7 @@
     if (e.target.id === 'yjAgain') {
       const q = ($('#yjQ').value || '').trim();
       if (!q) return;
-      if (!confirm('同一件事只建议占一次。再摇一次等于重问，结果不作数——确定继续？')) return;
+      if (!confirm('问题不变，只是重摇一遍。同一件事只建议占一次，重摇的结果不作数——仍要继续？')) return;
       const r = window.MysticYijing.cast();
       yjSaveLock({ q: q, vals: r.vals, at: Date.now() });
       renderYj(r, q);
